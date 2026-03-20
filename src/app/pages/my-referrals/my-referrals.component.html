@@ -6,7 +6,6 @@
     </button>
   </div>
 
-  <p class="subtext">Referral data is loaded from direct.php and shown in the table below.</p>
 
   <div class="info loading" *ngIf="isLoading">Fetching latest referrals...</div>
   <div class="info error" *ngIf="!isLoading && errorMessage">{{ errorMessage }}</div>

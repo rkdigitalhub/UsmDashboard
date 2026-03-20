@@ -8,6 +8,64 @@
   overflow: visible;
 }
 
+.users-load-error {
+  text-align: center;
+  padding: 8px 16px;
+  margin-bottom: 12px;
+  color: #ff6b6b;
+  font-size: 0.85rem;
+  background: rgba(255, 107, 107, 0.08);
+  border: 1px solid rgba(255, 107, 107, 0.25);
+  border-radius: 6px;
+}
+
+.entry-countdown-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 140;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  background: rgba(0, 0, 0, 0.28);
+}
+
+.entry-spinner {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  border: 6px solid rgba(255, 217, 120, 0.28);
+  border-top-color: #ffd978;
+  border-right-color: rgba(255, 140, 40, 0.85);
+  filter: drop-shadow(0 0 18px rgba(255, 176, 74, 0.45));
+  animation: entrySpin 0.9s linear infinite;
+}
+
+.entry-count-number {
+  font-size: clamp(76px, 14vw, 152px);
+  line-height: 1;
+  font-weight: 900;
+  color: #ffd978;
+  text-shadow:
+    0 0 18px rgba(255, 217, 120, 0.75),
+    0 0 44px rgba(232, 116, 21, 0.5),
+    0 2px 4px rgba(0, 0, 0, 0.9);
+}
+
+.spin-page.entry-blur > *:not(.entry-countdown-overlay) {
+  filter: blur(8px);
+  pointer-events: none;
+  user-select: none;
+}
+
+@keyframes entrySpin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 .spin-page::before {
   content: none;
   position: absolute;
@@ -224,7 +282,7 @@
   box-shadow:
     0 0 14px rgba(255, 140, 40, 0.35),
     0 0 30px rgba(232, 116, 21, 0.2);
-  transition: transform 5s cubic-bezier(0.15, 0.7, 0.2, 1);
+  transition: transform 30s cubic-bezier(0.15, 0.7, 0.2, 1);
   z-index: 2;
 }
 
@@ -418,13 +476,13 @@
 
 .winner-popup {
   position: relative;
-  width: min(520px, 100%);
-  min-height: 460px;
+  width: min(325px, 100%);
+  min-height: 288px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 10px;
+  gap: 6px;
   border-radius: 20px;
   border: 1px solid rgba(255, 229, 135, 0.45);
   background:
@@ -433,7 +491,7 @@
   box-shadow: 0 24px 56px rgba(0, 0, 0, 0.45);
   text-align: center;
   color: #fff;
-  padding: 42px 20px 36px;
+  padding: 20px 10px 16px;
   overflow: hidden;
 }
 
@@ -450,7 +508,7 @@
 .popup-overline {
   margin: 0;
   text-transform: uppercase;
-  font-size: 12px;
+  font-size: 10px;
   letter-spacing: 0.12em;
   color: rgba(255, 233, 174, 0.88);
 }
@@ -458,12 +516,12 @@
 .winner-popup h2 {
   margin: 8px 0 6px;
   color: #ffde44;
-  font-size: 34px;
+  font-size: 22px;
 }
 
 .popup-id {
-  margin: 0 0 18px;
-  font-size: 18px;
+  margin: 0 0 10px;
+  font-size: 13px;
   color: rgba(255, 255, 255, 0.9);
 }
 
@@ -476,8 +534,8 @@
 
 .burst {
   position: absolute;
-  width: 14px;
-  height: 14px;
+  width: 40px;
+  height: 40px;
   opacity: 0;
   animation: burstBloom 1.9s ease-out infinite;
 }
@@ -488,20 +546,21 @@
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 4px;
-  height: 4px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
-  background: rgba(255, 213, 112, 0.95);
+  background: rgba(255, 223, 140, 0.98);
   transform: translate(-50%, -50%) scale(0.25);
   box-shadow:
-    0 -24px 0 0 rgba(255, 222, 120, 0.95),
-    0 24px 0 0 rgba(255, 154, 64, 0.9),
-    24px 0 0 0 rgba(255, 208, 100, 0.9),
-    -24px 0 0 0 rgba(255, 140, 40, 0.88),
-    18px 18px 0 0 rgba(255, 220, 129, 0.82),
-    -18px -18px 0 0 rgba(255, 164, 66, 0.78),
-    18px -18px 0 0 rgba(255, 203, 95, 0.82),
-    -18px 18px 0 0 rgba(239, 127, 26, 0.78);
+    0 -72px 0 0 rgba(255, 230, 138, 1),
+    0 72px 0 0 rgba(255, 164, 74, 0.96),
+    72px 0 0 0 rgba(255, 215, 114, 0.96),
+    -72px 0 0 0 rgba(255, 146, 46, 0.94),
+    54px 54px 0 0 rgba(255, 224, 135, 0.9),
+    -54px -54px 0 0 rgba(255, 170, 72, 0.88),
+    54px -54px 0 0 rgba(255, 210, 104, 0.9),
+    -54px 54px 0 0 rgba(239, 127, 26, 0.86);
+  filter: drop-shadow(0 0 16px rgba(255, 176, 74, 0.82));
 }
 
 .burst::after {
@@ -541,7 +600,7 @@
 .cracker-row {
   position: absolute;
   left: 50%;
-  bottom: 26px;
+  bottom: 12px;
   transform: translateX(-50%);
   display: flex;
   align-items: flex-end;

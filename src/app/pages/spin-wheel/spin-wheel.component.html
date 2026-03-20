@@ -1,4 +1,11 @@
-<div class="page spin-page">
+<div class="page spin-page" [class.entry-blur]="showEntryOverlay">
+
+  <div class="entry-countdown-overlay" *ngIf="showEntryOverlay" aria-live="polite" aria-atomic="true">
+    <div class="entry-spinner" *ngIf="showEntrySpinner" aria-label="Loading"></div>
+    <span class="entry-count-number" *ngIf="!showEntrySpinner">{{ entryCountdownValue }}</span>
+  </div>
+
+  <div *ngIf="usersError" class="users-load-error">{{ usersError }}</div>
 
   <div class="spin-stage">
     <div class="card wheel-panel">

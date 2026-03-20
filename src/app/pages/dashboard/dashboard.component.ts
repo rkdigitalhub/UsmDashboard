@@ -75,7 +75,7 @@ export class DashboardComponent implements OnInit {
     // Leader rewards are mapped from available summary values until dedicated API fields are available.
     this.incentiveRewardsLeader = this.monthlyInterestInvestorBenefit;
     this.redeemRewardsWalletLeader = this.referralRewardsLeader;
-    this.premiumRewardLeader = getText('.buy-coin .btn') || 'Premium Reward Pending';
+    this.premiumRewardLeader = 'Dell Laptop'; // TODO: replace with API value after integration
 
     const nextSpinText = getText('#nav-openorder tbody tr td:nth-child(2)');
     this.nextSpinNotification = nextSpinText

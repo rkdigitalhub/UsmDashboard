@@ -11,6 +11,15 @@
   color: #ffde44;
 }
 
+.subscribe-msg {
+  margin: 0 0 14px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  color: #c9ffd5;
+  background: rgba(72, 201, 120, 0.12);
+  border: 1px solid rgba(72, 201, 120, 0.35);
+}
+
 .teams-layout {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -66,6 +75,12 @@
   color: #fff;
 }
 
+.team-row-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .btn-subscribe {
   border: none;
   border-radius: 8px;
@@ -74,6 +89,16 @@
   font-weight: 600;
   padding: 8px 12px;
   cursor: pointer;
+}
+
+.pending-status {
+  color: #f0d58a;
+  font-weight: 600;
+  font-size: 0.92rem;
+  border: 1px solid rgba(255, 222, 68, 0.4);
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: rgba(255, 222, 68, 0.08);
 }
 
 .empty {
@@ -98,6 +123,58 @@
   border: 1px solid rgba(212, 175, 55, 0.3);
   border-radius: 12px;
   padding: 14px;
+}
+
+.subscribe-popup {
+  width: min(520px, 100%);
+}
+
+.subscribe-details p {
+  margin: 0 0 10px;
+  color: #f7f7f7;
+}
+
+.subscribe-actions {
+  margin-top: 16px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.btn-ghost {
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  border-radius: 8px;
+  background: transparent;
+  color: #ffd978;
+  font-weight: 600;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.btn-small {
+  padding: 6px 10px;
+  font-size: 0.82rem;
+}
+
+.status-badge {
+  border-radius: 999px;
+  padding: 5px 10px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.status-badge.live {
+  color: #c5ffd3;
+  background: rgba(68, 212, 117, 0.15);
+  border: 1px solid rgba(68, 212, 117, 0.45);
+}
+
+button.status-badge.closed {
+  color: #ffd7b1;
+  background: rgba(211, 116, 62, 0.16);
+  border: 1px solid rgba(211, 116, 62, 0.55);
+  cursor: pointer;
 }
 
 .popup-head {
