@@ -467,16 +467,90 @@
   color: rgba(255, 255, 255, 0.9);
 }
 
-.cracker-row {
+.burst-layer {
   position: absolute;
   inset: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.burst {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  opacity: 0;
+  animation: burstBloom 1.9s ease-out infinite;
+}
+
+.burst::before,
+.burst::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: rgba(255, 213, 112, 0.95);
+  transform: translate(-50%, -50%) scale(0.25);
+  box-shadow:
+    0 -24px 0 0 rgba(255, 222, 120, 0.95),
+    0 24px 0 0 rgba(255, 154, 64, 0.9),
+    24px 0 0 0 rgba(255, 208, 100, 0.9),
+    -24px 0 0 0 rgba(255, 140, 40, 0.88),
+    18px 18px 0 0 rgba(255, 220, 129, 0.82),
+    -18px -18px 0 0 rgba(255, 164, 66, 0.78),
+    18px -18px 0 0 rgba(255, 203, 95, 0.82),
+    -18px 18px 0 0 rgba(239, 127, 26, 0.78);
+}
+
+.burst::after {
+  animation-delay: 0.25s;
+  opacity: 0.65;
+}
+
+.burst:nth-child(1) {
+  left: 16%;
+  top: 22%;
+}
+
+.burst:nth-child(2) {
+  left: 78%;
+  top: 24%;
+  animation-delay: 0.35s;
+}
+
+.burst:nth-child(3) {
+  left: 28%;
+  top: 46%;
+  animation-delay: 0.7s;
+}
+
+.burst:nth-child(4) {
+  left: 72%;
+  top: 54%;
+  animation-delay: 1.05s;
+}
+
+.burst:nth-child(5) {
+  left: 50%;
+  top: 34%;
+  animation-delay: 1.35s;
+}
+
+.cracker-row {
+  position: absolute;
+  left: 50%;
+  bottom: 26px;
+  transform: translateX(-50%);
   display: flex;
   align-items: flex-end;
-  justify-content: space-around;
-  padding: 0 24px 26px;
+  justify-content: center;
+  gap: 5px;
+  padding: 0;
   pointer-events: none;
   opacity: 0.8;
-  z-index: 2;
+  z-index: 3;
 }
 
 .cracker {
@@ -504,9 +578,9 @@
   z-index: 1;
 }
 
-.winner-popup > :not(.cash-rain):not(.cracker-row) {
+.winner-popup > :not(.cash-rain):not(.cracker-row):not(.burst-layer) {
   position: relative;
-  z-index: 3;
+  z-index: 4;
 }
 
 .cash-note {
@@ -590,6 +664,24 @@
   45% {
     transform: translateY(-4px) scaleY(1.08);
     filter: saturate(1.3);
+  }
+}
+
+@keyframes burstBloom {
+  0% {
+    opacity: 0;
+    transform: scale(0.2);
+  }
+  22% {
+    opacity: 0.95;
+  }
+  70% {
+    opacity: 0.55;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.2);
   }
 }
 
