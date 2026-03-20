@@ -1,0 +1,91 @@
+<div class="dashboard">
+  <section class="top card-dark">
+    <h2>{{ welcomeTitle }}</h2>
+    <p>{{ welcomeSubtext }}</p>
+    <div class="hero-status" *ngIf="isLoading || errorMessage">
+      <span class="loading" *ngIf="isLoading">Loading latest data...</span>
+      <span class="error" *ngIf="errorMessage">{{ errorMessage }}</span>
+    </div>
+  </section>
+
+  <section class="rewards-grid">
+    <div class="card-dark panel">
+      <h3>Investor Benefits</h3>
+
+      <div class="flex-box-list">
+        <div class="flex-box">
+          <label>Investment</label>
+          <strong>{{ investment }}</strong>
+        </div>
+
+        <div class="flex-box">
+          <label>Winning Amount - Investor Benefit</label>
+          <strong>{{ winningAmountInvestorBenefit }}</strong>
+        </div>
+
+        <div class="flex-box">
+          <label>Monthly Interest - Investor Benefit</label>
+          <strong>{{ monthlyInterestInvestorBenefit }}</strong>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-dark panel">
+      <h3>Leader Rewards</h3>
+
+      <div class="flex-box-list">
+        <div class="flex-box">
+          <label>Referral Rewards (5% / 2.5%)</label>
+          <strong>{{ referralRewardsLeader }}</strong>
+        </div>
+
+        <div class="flex-box">
+          <label>Incentive Rewards (Monthly 2%)</label>
+          <strong>{{ incentiveRewardsLeader }}</strong>
+        </div>
+
+        <div class="flex-box">
+          <label>Redeem Rewards (2% Points) Wallet</label>
+          <strong>{{ redeemRewardsWalletLeader }}</strong>
+        </div>
+
+        <div class="flex-box">
+          <label>Premium Reward (Object Reward)</label>
+          <strong>{{ premiumRewardLeader }}</strong>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="btn-gold" type="button" (click)="openRewardsPopup()">
+          Redeem Reward / Premium Reward
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <section class="card-dark notify">
+    <h3>Next Spin Wheel Notification</h3>
+    <p>{{ nextSpinNotification }}</p>
+  </section>
+
+  <div class="popup-backdrop" *ngIf="showRewardsPopup" (click)="closeRewardsPopup()">
+    <div class="popup" (click)="$event.stopPropagation()" role="dialog" aria-modal="true" aria-label="Rewards details">
+      <div class="popup-head">
+        <h4>Rewards Details</h4>
+        <button class="btn-close" type="button" (click)="closeRewardsPopup()">X</button>
+      </div>
+
+      <div class="flex-box-list popup-box-list">
+        <div class="flex-box">
+          <label>Redeem Rewards (2% Points) Wallet</label>
+          <strong>{{ redeemRewardsWalletLeader }}</strong>
+        </div>
+
+        <div class="flex-box">
+          <label>Premium Reward (Object Reward)</label>
+          <strong>{{ premiumRewardLeader }}</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

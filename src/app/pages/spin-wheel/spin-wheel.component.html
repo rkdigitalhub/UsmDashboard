@@ -1,0 +1,89 @@
+<div class="page spin-page">
+
+  <div class="spin-stage">
+    <div class="card wheel-panel">
+      <div class="wheel-shell">
+        <div class="pointer"></div>
+
+        <div class="wheel-rim-bulbs" aria-hidden="true">
+          <span
+            class="rim-bulb"
+            *ngFor="let bulb of rimBulbs"
+            [style.transform]="getRimBulbTransform(bulb)"></span>
+        </div>
+
+        <div
+          class="wheel"
+          [style.background]="wheelGradient"
+          [style.transform]="'rotate(' + wheelAngle + 'deg)'">
+          <div class="wheel-dividers" [style.background]="wheelDividerGradient" aria-hidden="true"></div>
+
+          <div
+            class="wheel-label"
+            *ngFor="let item of users; let i = index"
+            [style.transform]="getLabelTransform(i)">
+            {{ item.name }}
+          </div>
+        </div>
+
+        <button
+          class="wheel-center"
+          type="button"
+          (click)="roll()"
+          [disabled]="!canRoll"
+          [attr.aria-label]="isRolling ? 'Rolling…' : 'Spin the wheel'">
+          <span class="center-spin-label">{{ isRolling ? '•••' : 'SPIN' }}</span>
+        </button>
+      </div>
+
+      <div class="winner" *ngIf="winner as selected">
+        Winner: <strong>{{ selected.name }}</strong>
+      </div>
+
+      <div class="lot-panel" [class.rolling]="isRolling">
+        <div class="lot-grid">
+          <div class="lot-box" [class.fixed]="i < 3" *ngFor="let item of lotSlots; let i = index">
+            <div class="lot-reel" [class.spinning]="isRolling && i >= 3">
+              {{ item }}
+            </div>
+          </div>
+        </div>
+
+        <div class="winner" *ngIf="winner as selected">
+          User ID: <strong>{{ selected.id }}</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="winner-popup-backdrop" *ngIf="showWinnerPopup && winner as selected">
+    <div class="winner-popup" role="dialog" aria-modal="true" aria-label="Winner announcement">
+      <div class="cash-rain" aria-hidden="true">
+        <span
+          class="cash-note"
+          *ngFor="let drop of cashDrops; let i = index"
+          [class.coin-note]="i % 3 === 0"
+          [style.left]="drop.left"
+          [style.animationDelay]="drop.delay"
+          [style.animationDuration]="drop.duration"
+          [style.--drift]="drop.drift"
+          [style.--tilt]="drop.rotate"></span>
+      </div>
+
+      <p class="popup-overline">Congratulations</p>
+      <h2>{{ selected.name }}</h2>
+      <p class="popup-id">{{ selected.id }}</p>
+
+      <div class="cracker-row" aria-hidden="true">
+        <span class="cracker"></span>
+        <span class="cracker"></span>
+        <span class="cracker"></span>
+        <span class="cracker"></span>
+        <span class="cracker"></span>
+        <span class="cracker"></span>
+      </div>
+
+      <button class="btn-gold" type="button" (click)="closeWinnerPopup()">Close</button>
+    </div>
+  </div>
+</div>

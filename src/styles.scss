@@ -1,1 +1,25 @@
-/* You can add global styles to this file, and also import other style files */
+body{
+background:#0b0b0b;
+color:white;
+font-family: 'Inter', sans-serif;
+}
+
+.gold{
+color:#d4af37;
+}
+
+.card-dark{
+background:#111;
+border:1px solid rgba(212,175,55,0.2);
+border-radius:12px;
+box-shadow:0 0 20px rgba(212,175,55,0.1);
+}
+
+.btn-gold{
+background:linear-gradient(45deg,#d4af37,#f5c542);
+border:none;
+padding:10px 30px;
+border-radius:30px;
+color:black;
+font-weight:600;
+}

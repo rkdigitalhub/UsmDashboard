@@ -1,0 +1,62 @@
+<div class="page teams-page">
+  <h1>Teams</h1>
+
+  <div class="teams-layout">
+    <section class="card teams-col">
+      <h2>My Subscribed Teams</h2>
+      <p class="count">Subscribed: <strong>{{ myTeams.length }}</strong></p>
+
+      <div class="team-list" *ngIf="myTeams.length; else noMyTeams">
+        <button class="team-chip active" type="button" *ngFor="let team of myTeams" (click)="openTeamDetails(team)">
+          {{ team.name }}
+        </button>
+      </div>
+
+      <ng-template #noMyTeams>
+        <p class="empty">No active team subscriptions yet.</p>
+      </ng-template>
+    </section>
+
+    <section class="card teams-col">
+      <h2>Other Teams</h2>
+
+      <div class="team-list" *ngIf="availableTeams.length; else noTeams">
+        <div class="team-row" *ngFor="let team of availableTeams">
+          <span>{{ team.name }}</span>
+          <button class="btn-subscribe" type="button" (click)="subscribeTeam(team)">Subscribe</button>
+        </div>
+      </div>
+
+      <ng-template #noTeams>
+        <p class="empty">No more teams available to subscribe.</p>
+      </ng-template>
+    </section>
+  </div>
+
+  <div class="popup-backdrop" *ngIf="showPopup && selectedTeam as team" (click)="closePopup()">
+    <div class="popup" (click)="$event.stopPropagation()" role="dialog" aria-modal="true" aria-label="Team details">
+      <div class="popup-head">
+        <h3>{{ team.name }} - Group Details</h3>
+        <button class="btn-close" type="button" (click)="closePopup()">X</button>
+      </div>
+
+      <p class="loading" *ngIf="groupLoading">Loading table data...</p>
+      <p class="error" *ngIf="groupError && !groupLoading">{{ groupError }}</p>
+
+      <div class="table-wrap" *ngIf="!groupLoading && groupRows.length">
+        <table>
+          <thead>
+            <tr>
+              <th *ngFor="let header of groupHeaders">{{ header }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let row of groupRows">
+              <td *ngFor="let cell of row">{{ cell }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

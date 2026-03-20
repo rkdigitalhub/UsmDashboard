@@ -1,0 +1,161 @@
+.teams-page {
+  min-height: calc(100vh - 140px);
+  padding: 24px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 16px;
+  border: 1px solid rgba(212, 175, 55, 0.18);
+}
+
+.teams-page h1 {
+  margin: 0 0 16px;
+  color: #ffde44;
+}
+
+.teams-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.card {
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.teams-col h2 {
+  margin: 0 0 8px;
+  color: #ffd978;
+  font-size: 18px;
+}
+
+.count {
+  margin: 0 0 10px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.team-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.team-chip {
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  border-radius: 10px;
+  background: rgba(255, 222, 68, 0.08);
+  color: #fff;
+  padding: 10px 12px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.team-chip.active:hover {
+  background: rgba(255, 222, 68, 0.18);
+}
+
+.team-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  border-radius: 10px;
+  padding: 10px 12px;
+  color: #fff;
+}
+
+.btn-subscribe {
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #9f4a1b 0%, #ffde44 100%);
+  color: #171717;
+  font-weight: 600;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.empty {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.popup-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: grid;
+  place-items: center;
+  z-index: 100;
+  padding: 18px;
+}
+
+.popup {
+  width: min(900px, 100%);
+  max-height: min(80vh, 700px);
+  overflow: auto;
+  background: #171717;
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  border-radius: 12px;
+  padding: 14px;
+}
+
+.popup-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.popup-head h3 {
+  margin: 0;
+  color: #ffde44;
+}
+
+.btn-close {
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  border-radius: 8px;
+  background: transparent;
+  color: #ffd978;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+}
+
+.loading,
+.error {
+  margin: 10px 0;
+  color: #f0d58a;
+}
+
+.error {
+  color: #ffb1b1;
+}
+
+.table-wrap {
+  overflow: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  border: 1px solid rgba(212, 175, 55, 0.25);
+  padding: 8px;
+  color: #f7f7f7;
+  font-size: 13px;
+}
+
+th {
+  background: rgba(255, 222, 68, 0.1);
+  color: #ffde44;
+}
+
+@media (max-width: 900px) {
+  .teams-layout {
+    grid-template-columns: 1fr;
+  }
+}

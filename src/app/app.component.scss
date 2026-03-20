@@ -1,0 +1,76 @@
+:root {
+  --sidebar-width: 220px;
+  --header-height: 72px;
+}
+
+.app-container{
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)), url(../assets/bg.png) no-repeat center center fixed;
+  background-blend-mode: inherit;
+}
+
+.app-layout{
+  display: flex;
+  flex: 1;
+  align-items: stretch;
+  min-height: 100vh;
+}
+
+.sidebar-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 75;
+  background: rgba(0, 0, 0, 0.45);
+}
+
+.main{
+  flex: 1;
+  overflow: auto;
+  padding: 32px 24px;
+  box-sizing: border-box;
+}
+
+.main.with-layout {
+  margin-left: var(--sidebar-width, 220px);
+  padding-top: calc(var(--header-height, 72px) + 20px);
+}
+
+@media (max-width: 980px) {
+  .main {
+    padding: 16px 12px;
+  }
+
+  .main.with-layout {
+    margin-left: 0;
+    padding-top: calc(var(--header-height, 72px) + 12px);
+  }
+}
+
+.loading-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.spinner {
+  width: 64px;
+  height: 64px;
+  border: 8px solid rgba(255, 255, 255, 0.25);
+  border-top-color: rgba(212, 175, 55, 1);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

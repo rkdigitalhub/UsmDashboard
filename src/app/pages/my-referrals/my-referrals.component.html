@@ -1,0 +1,28 @@
+<div class="page referrals-page">
+  <div class="page-head">
+    <h1>My Referrals</h1>
+    <button class="btn-gold" type="button" (click)="loadReferrals()" [disabled]="isLoading">
+      {{ isLoading ? 'Refreshing...' : 'Refresh' }}
+    </button>
+  </div>
+
+  <p class="subtext">Referral data is loaded from direct.php and shown in the table below.</p>
+
+  <div class="info loading" *ngIf="isLoading">Fetching latest referrals...</div>
+  <div class="info error" *ngIf="!isLoading && errorMessage">{{ errorMessage }}</div>
+
+  <div class="table-wrap" *ngIf="!isLoading && rows.length">
+    <table>
+      <thead>
+        <tr>
+          <th *ngFor="let header of headers">{{ header }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of rows">
+          <td *ngFor="let cell of row">{{ cell }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

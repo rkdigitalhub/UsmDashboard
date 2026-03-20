@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-labelledby="title desc">
+  <title id="title">Spin Wheel</title>
+  <desc id="desc">Golden spin wheel icon for sidebar navigation.</desc>
+  <defs>
+    <linearGradient id="rim" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ffe79a" />
+      <stop offset="100%" stop-color="#b3761b" />
+    </linearGradient>
+  </defs>
+  <circle cx="60" cy="60" r="54" fill="#221200" stroke="url(#rim)" stroke-width="8" />
+  <path d="M60 10 A50 50 0 0 1 103 35 L60 60 Z" fill="#ffde44" />
+  <path d="M103 35 A50 50 0 0 1 110 60 L60 60 Z" fill="#f3b63b" />
+  <path d="M110 60 A50 50 0 0 1 103 85 L60 60 Z" fill="#d28f22" />
+  <path d="M103 85 A50 50 0 0 1 60 110 L60 60 Z" fill="#ffcf62" />
+  <path d="M60 110 A50 50 0 0 1 17 85 L60 60 Z" fill="#c9831f" />
+  <path d="M17 85 A50 50 0 0 1 10 60 L60 60 Z" fill="#edb53d" />
+  <path d="M10 60 A50 50 0 0 1 17 35 L60 60 Z" fill="#b97a1f" />
+  <path d="M17 35 A50 50 0 0 1 60 10 L60 60 Z" fill="#ffd978" />
+  <circle cx="60" cy="60" r="8" fill="#fff2bd" stroke="#7d4f12" stroke-width="2" />
+  <path d="M60 0 L68 14 H52 Z" fill="#ffde44" stroke="#7d4f12" stroke-width="2" />
+</svg>
