@@ -52,14 +52,42 @@ export class ReportsComponent {
   readonly rows: ReportRow[] = this.baseRows.map((row) => this.scaleRow(row));
 
   private scaleRow(row: ReportRow): ReportRow {
+    if (row.isNoteRow) {
+      return {
+        ...row,
+        investment: this.scaleAmount(row.investment),
+        profitFrom25: this.scaleEmbeddedAmount(row.profitFrom25),
+        settlement: this.scaleAmount(row.settlement),
+        interest: this.scaleEmbeddedAmount(row.interest),
+        total: this.scaleAmount(row.total)
+      };
+    }
+
+    const profitFrom25 = this.calculateAmountFromInvestment(row.profitFrom25, row.investment);
+    const interest = this.calculateAmountFromInvestment(row.interest, row.investment);
+    const settlement = this.fixedInvestmentAmount + profitFrom25;
+    const total = settlement + interest;
+
     return {
       ...row,
-      investment: this.scaleAmount(row.investment),
-      profitFrom25: this.scaleEmbeddedAmount(row.profitFrom25),
-      settlement: this.scaleAmount(row.settlement),
-      interest: this.scaleEmbeddedAmount(row.interest),
-      total: this.scaleAmount(row.total)
+      investment: this.fixedInvestmentAmount.toString(),
+      profitFrom25: profitFrom25.toString(),
+      settlement: settlement.toString(),
+      interest: interest.toString(),
+      total: total.toString()
     };
+  }
+
+  private calculateAmountFromInvestment(value: string, sourceInvestment: string): number {
+    const numericValue = Number(value);
+    const numericInvestment = Number(sourceInvestment);
+
+    if (!Number.isFinite(numericValue) || !Number.isFinite(numericInvestment) || numericInvestment === 0) {
+      return 0;
+    }
+
+    const rate = numericValue / numericInvestment;
+    return Math.round(this.fixedInvestmentAmount * rate);
   }
 
   private scaleAmount(value: string): string {
