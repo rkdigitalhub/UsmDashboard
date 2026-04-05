@@ -1,7 +1,7 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
+import { ApiService } from '../../core/api/api.service';
 
 import {
   type AdminTrendPoint,
@@ -22,16 +22,16 @@ interface AdminDashboardAnalyticsResponse {
 
 @Injectable({ providedIn: 'root' })
 export class AdminAnalyticsService {
-  private readonly dashboardApiUrl = '/api/admin/dashboard-analytics';
-  private readonly fallbackApiUrl = 'assets/admin-dashboard-analytics.json';
+  private readonly dashboardApiUrl = 'admin/dashboard-analytics';
+  private readonly fallbackApiUrl = 'admin-dashboard-analytics.json';
 
-  constructor(private readonly http: HttpClient) {}
+  constructor(private readonly api: ApiService) {}
 
   getDashboardAnalytics(): Observable<AdminDashboardAnalytics> {
-    return this.http.get<AdminDashboardAnalyticsResponse>(this.dashboardApiUrl).pipe(
+    return this.api.get<AdminDashboardAnalyticsResponse>(this.dashboardApiUrl).pipe(
       map((response) => this.mapResponse(response, 'api')),
       catchError(() =>
-        this.http.get<AdminDashboardAnalyticsResponse>(this.fallbackApiUrl).pipe(
+        this.api.getAsset<AdminDashboardAnalyticsResponse>(this.fallbackApiUrl).pipe(
           map((response) => this.mapResponse(response, 'demo')),
           catchError(() => of(this.getFallbackAnalytics()))
         )

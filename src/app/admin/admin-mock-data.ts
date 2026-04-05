@@ -172,8 +172,8 @@ export interface AdminDashboardTask {
 
 export const adminMetrics: AdminMetric[] = [
   { label: 'Total Members', value: '1,245', today: '12 today', icon: 'groups' },
-  { label: 'Total Collection', value: '₹33,00,000', today: '₹35,000 today', icon: 'payments' },
-  { label: 'Total Payout', value: '₹5,40,000', today: '₹0.00 today', icon: 'trophy' },
+  { label: 'Total Collection', value: '33,00,000 INR', today: '35,000 INR today', icon: 'payments' },
+  { label: 'Total Payout', value: '5,40,000 INR', today: '0.00 INR today', icon: 'trophy' },
   { label: 'Active Groups', value: '15', suffix: 'Groups', today: 'Live portfolio', icon: 'cluster' }
 ];
 
@@ -215,10 +215,10 @@ export const adminRecentMembers: AdminRecentMemberRow[] = [
 ];
 
 export const adminRecentWinners: AdminRecentWinnerRow[] = [
-  { userId: 'USM73301', name: 'Santhosh', group: 'The Sparts', date: 'April 5, 2026', prize: '₹20,000', time: '16:00' },
-  { userId: 'USM73501', name: 'Kirubakaran R', group: 'The Universe', date: 'April 5, 2026', prize: '₹20,000', time: '18:00' },
-  { userId: 'USM72355', name: 'Karthick R', group: 'The Spartans', date: 'April 5, 2026', prize: '₹20,000', time: '19:00' },
-  { userId: 'USM25950', name: 'Akash', group: 'Clove Groups', date: 'April 5, 2026', prize: '₹20,000', time: '12:00' }
+  { userId: 'USM73301', name: 'Santhosh', group: 'The Sparts', date: 'April 5, 2026', prize: '20,000 INR', time: '16:00' },
+  { userId: 'USM73501', name: 'Kirubakaran R', group: 'The Universe', date: 'April 5, 2026', prize: '20,000 INR', time: '18:00' },
+  { userId: 'USM72355', name: 'Karthick R', group: 'The Spartans', date: 'April 5, 2026', prize: '20,000 INR', time: '19:00' },
+  { userId: 'USM25950', name: 'Akash', group: 'Clove Groups', date: 'April 5, 2026', prize: '20,000 INR', time: '12:00' }
 ];
 
 export const adminGroupProgress: AdminSummaryBreakdown[] = [
@@ -248,12 +248,12 @@ export const adminGroups: AdminGroupRow[] = [
 ];
 
 export const adminMembers: AdminMemberRow[] = [
-  { id: 1, userId: 'USM61533', name: 'Kalaiselvi', mobile: '9043888904', username: 'USM61533', password: '5RZOAHG', sponsor: 'USM90001', packageAmount: '500000 Rs', joiningDate: '2026-02-20 00:00:00', team: 'THE RAISING STARS', address: '14 Market Road', city: 'Chennai', pincode: '600042', email: 'kalaiselvi@usm.test', status: 'Active', bankName: 'Federal Bank', branch: 'Kallakurichi', accountNumber: '112245786530', ifscCode: 'FDRL0001122', upiId: 'kalaiselvi@upi' },
-  { id: 2, userId: 'USM80560', name: 'Santhoshni', mobile: '7904131633', username: 'USM80560', password: '0UJZAPF', sponsor: 'USM90001', packageAmount: '500000 Rs', joiningDate: '2026-02-20 00:00:00', team: 'THE RAISING STARS', address: '22 Lake View Street', city: 'Coimbatore', pincode: '641018', email: 'santhoshni@usm.test', status: 'Active', bankName: 'KVB', branch: 'Padi', accountNumber: '552344119900', ifscCode: 'KVBL0007788', upiId: 'santhoshni@okicici' },
-  { id: 3, userId: 'USM58501', name: 'Karthick R', mobile: '8122705680', username: 'USM58501', password: 'NKXVG4L', sponsor: 'USM15374', packageAmount: '500000 Rs', joiningDate: '2026-02-19 00:00:00', team: 'THE SPARTANS', address: '9 Temple Street', city: 'Dharmapuri', pincode: '636701', email: 'karthickr@usm.test', status: 'Address review', bankName: 'ICICI Bank', branch: 'Pennagaram', accountNumber: '542300112245', ifscCode: 'ICIC0005432', upiId: 'karthickr@oksbi' },
-  { id: 4, userId: 'USM15374', name: 'Karnan V', mobile: '8122705680', username: 'USM15374', password: 'M5ULTSK', sponsor: 'USM62680', packageAmount: '500000 Rs', joiningDate: '2026-02-19 00:00:00', team: 'THE SPARTANS', address: '44 Bazaar Lane', city: 'Salem', pincode: '636004', email: 'karnanv@usm.test', status: 'Active', bankName: 'Canara Bank', branch: 'Salem Town', accountNumber: '662245781233', ifscCode: 'CNRB0004567', upiId: 'karnan@upi' },
-  { id: 5, userId: 'USM55557', name: 'S.venkateshkumar', mobile: '8825759083', username: 'USM55557', password: '2CEHQKG', sponsor: 'USM11352', packageAmount: '500000 Rs', joiningDate: '2026-02-19 00:00:00', team: 'THE UNIVERSE', address: '5 Station Road', city: 'Madurai', pincode: '625001', email: 'venkateshkumar@usm.test', status: 'Bank review', bankName: 'Indian Bank', branch: 'Velachery', accountNumber: '152334009871', ifscCode: 'IDIB000VLC', upiId: 'venkatesh@ibl' },
-  { id: 6, userId: 'USM15560', name: 'Renugadevi', mobile: '8220075609', username: 'USM15560', password: 'QIN739H', sponsor: 'USM11352', packageAmount: '500000 Rs', joiningDate: '2026-02-19 00:00:00', team: 'THE UNIVERSE', address: '18 Anna Nagar', city: 'Trichy', pincode: '620018', email: 'renugadevi@usm.test', status: 'Active', bankName: 'State Bank of India', branch: 'Cantonment', accountNumber: '881245009876', ifscCode: 'SBIN0003344', upiId: 'renuga@oksbi' }
+  { id: 1, userId: 'USM61533', name: 'Kalaiselvi', mobile: '9043888904', username: 'USM61533', password: '5RZOAHG', sponsor: 'USM90001', packageAmount: '500000 INR', joiningDate: '2026-02-20 00:00:00', team: 'THE RAISING STARS', address: '14 Market Road', city: 'Chennai', pincode: '600042', email: 'kalaiselvi@usm.test', status: 'Active', bankName: 'Federal Bank', branch: 'Kallakurichi', accountNumber: '112245786530', ifscCode: 'FDRL0001122', upiId: 'kalaiselvi@upi' },
+  { id: 2, userId: 'USM80560', name: 'Santhoshni', mobile: '7904131633', username: 'USM80560', password: '0UJZAPF', sponsor: 'USM90001', packageAmount: '500000 INR', joiningDate: '2026-02-20 00:00:00', team: 'THE RAISING STARS', address: '22 Lake View Street', city: 'Coimbatore', pincode: '641018', email: 'santhoshni@usm.test', status: 'Active', bankName: 'KVB', branch: 'Padi', accountNumber: '552344119900', ifscCode: 'KVBL0007788', upiId: 'santhoshni@okicici' },
+  { id: 3, userId: 'USM58501', name: 'Karthick R', mobile: '8122705680', username: 'USM58501', password: 'NKXVG4L', sponsor: 'USM15374', packageAmount: '500000 INR', joiningDate: '2026-02-19 00:00:00', team: 'THE SPARTANS', address: '9 Temple Street', city: 'Dharmapuri', pincode: '636701', email: 'karthickr@usm.test', status: 'Address review', bankName: 'ICICI Bank', branch: 'Pennagaram', accountNumber: '542300112245', ifscCode: 'ICIC0005432', upiId: 'karthickr@oksbi' },
+  { id: 4, userId: 'USM15374', name: 'Karnan V', mobile: '8122705680', username: 'USM15374', password: 'M5ULTSK', sponsor: 'USM62680', packageAmount: '500000 INR', joiningDate: '2026-02-19 00:00:00', team: 'THE SPARTANS', address: '44 Bazaar Lane', city: 'Salem', pincode: '636004', email: 'karnanv@usm.test', status: 'Active', bankName: 'Canara Bank', branch: 'Salem Town', accountNumber: '662245781233', ifscCode: 'CNRB0004567', upiId: 'karnan@upi' },
+  { id: 5, userId: 'USM55557', name: 'S.venkateshkumar', mobile: '8825759083', username: 'USM55557', password: '2CEHQKG', sponsor: 'USM11352', packageAmount: '500000 INR', joiningDate: '2026-02-19 00:00:00', team: 'THE UNIVERSE', address: '5 Station Road', city: 'Madurai', pincode: '625001', email: 'venkateshkumar@usm.test', status: 'Bank review', bankName: 'Indian Bank', branch: 'Velachery', accountNumber: '152334009871', ifscCode: 'IDIB000VLC', upiId: 'venkatesh@ibl' },
+  { id: 6, userId: 'USM15560', name: 'Renugadevi', mobile: '8220075609', username: 'USM15560', password: 'QIN739H', sponsor: 'USM11352', packageAmount: '500000 INR', joiningDate: '2026-02-19 00:00:00', team: 'THE UNIVERSE', address: '18 Anna Nagar', city: 'Trichy', pincode: '620018', email: 'renugadevi@usm.test', status: 'Active', bankName: 'State Bank of India', branch: 'Cantonment', accountNumber: '881245009876', ifscCode: 'SBIN0003344', upiId: 'renuga@oksbi' }
 ];
 
 export const adminBankPayments: AdminPaymentRow[] = [
@@ -269,14 +269,14 @@ export const adminHandCashPayments: AdminCashRow[] = [
 ];
 
 export const adminWinners: AdminWinnerRow[] = [
-  { id: 1, group: 'THE SPARTANS', userId: 'USM58501', name: 'Karthick R', month: '2026-03', prize: '₹20,000', settlementMode: 'Bank transfer', status: 'Released' },
-  { id: 2, group: 'THE UNIVERSE', userId: 'USM73355', name: 'KIRUBAKARAN R', month: '2026-04', prize: '₹20,000', settlementMode: 'UPI', status: 'Awaiting release' }
+  { id: 1, group: 'THE SPARTANS', userId: 'USM58501', name: 'Karthick R', month: '2026-03', prize: '20,000 INR', settlementMode: 'Bank transfer', status: 'Released' },
+  { id: 2, group: 'THE UNIVERSE', userId: 'USM73355', name: 'KIRUBAKARAN R', month: '2026-04', prize: '20,000 INR', settlementMode: 'UPI', status: 'Awaiting release' }
 ];
 
 export const adminPaymentRequests: AdminPaymentRequestRow[] = [
-  { id: 1, userId: 'USM61533', name: 'Kalaiselvi', team: 'THE RAISING STARS', channel: 'UPI', reference: 'UPI-88219', requestedOn: '2026-04-01 10:12', amount: '₹25,000', status: 'Matched' },
-  { id: 2, userId: 'USM58501', name: 'Karthick R', team: 'THE SPARTANS', channel: 'Bank Transfer', reference: 'BNK-532119', requestedOn: '2026-04-02 15:45', amount: '₹25,000', status: 'Pending confirmation' },
-  { id: 3, userId: 'USM55557', name: 'S.venkateshkumar', team: 'THE UNIVERSE', channel: 'UPI', reference: 'UPI-99218', requestedOn: '2026-04-04 09:20', amount: '₹25,000', status: 'Flagged' }
+  { id: 1, userId: 'USM61533', name: 'Kalaiselvi', team: 'THE RAISING STARS', channel: 'UPI', reference: 'UPI-88219', requestedOn: '2026-04-01 10:12', amount: '25,000 INR', status: 'Matched' },
+  { id: 2, userId: 'USM58501', name: 'Karthick R', team: 'THE SPARTANS', channel: 'Bank Transfer', reference: 'BNK-532119', requestedOn: '2026-04-02 15:45', amount: '25,000 INR', status: 'Pending confirmation' },
+  { id: 3, userId: 'USM55557', name: 'S.venkateshkumar', team: 'THE UNIVERSE', channel: 'UPI', reference: 'UPI-99218', requestedOn: '2026-04-04 09:20', amount: '25,000 INR', status: 'Flagged' }
 ];
 
 export const adminBankProfiles: AdminBankProfileRow[] = adminMembers.map((member) => ({

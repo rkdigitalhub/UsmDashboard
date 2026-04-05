@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { ColDef, RowClassRules } from 'ag-grid-community';
+import { DataGridComponent } from '../../../shared/components/data-grid/data-grid.component';
 import { memberIcons } from '../../member-icons';
 
 interface ReportRow {
@@ -16,13 +18,23 @@ interface ReportRow {
 @Component({
   standalone: true,
   selector: 'app-reports',
-  imports: [CommonModule, FontAwesomeModule],
+  imports: [CommonModule, FontAwesomeModule, DataGridComponent],
   templateUrl: './reports.component.html',
   styleUrls: ['./reports.component.scss']
 })
 export class ReportsComponent {
   readonly reportsIcon = memberIcons.reports;
-  readonly headers = ['ROUNDS', 'INVESTMENT', 'PROFIT FROM (25%)', 'SETTLEMENT', 'INTEREST', 'TOTAL'];
+  readonly columnDefs: ColDef<ReportRow>[] = [
+    { field: 'round', headerName: 'Rounds', minWidth: 100 },
+    { field: 'investment', headerName: 'Investment', minWidth: 140 },
+    { field: 'profitFrom25', headerName: 'Profit From (25%)', minWidth: 180 },
+    { field: 'settlement', headerName: 'Settlement', minWidth: 140 },
+    { field: 'interest', headerName: 'Interest', minWidth: 160 },
+    { field: 'total', headerName: 'Total', minWidth: 140 }
+  ];
+  readonly rowClassRules: RowClassRules<ReportRow> = {
+    'usm-grid-note-row': (params) => Boolean(params.data?.isNoteRow)
+  };
 
   readonly rows: ReportRow[] = [
     { round: '1', investment: '250000', profitFrom25: '62500', settlement: '312500', interest: '0', total: '312500' },

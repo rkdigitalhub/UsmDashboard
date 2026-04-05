@@ -1,21 +1,39 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { ColDef } from 'ag-grid-community';
 import { type AdminMemberRow, type AdminWinnerRow } from '../../admin-mock-data';
 import { adminUiIcons } from '../../admin-icons';
 import { AdminConsoleStateService } from '../../services/admin-console-state.service';
+import { DataGridComponent } from '../../../shared/components/data-grid/data-grid.component';
+import { createActionColumn, createStatusColumn } from '../../../shared/components/data-grid/grid-helpers';
 
 @Component({
   standalone: true,
   selector: 'app-admin-winners',
-  imports: [CommonModule, FormsModule, FontAwesomeModule],
+  imports: [CommonModule, FormsModule, FontAwesomeModule, MatFormFieldModule, MatSelectModule, DataGridComponent],
   templateUrl: './admin-winners.component.html'
 })
 export class AdminWinnersComponent {
   readonly editIcon = adminUiIcons.edit;
   readonly releaseIcon = adminUiIcons.release;
   readonly deleteIcon = adminUiIcons.delete;
+  readonly winnerColumnDefs: ColDef<AdminWinnerRow>[] = [
+    { field: 'group', headerName: 'Group', minWidth: 170 },
+    { field: 'userId', headerName: 'User ID', minWidth: 130 },
+    { field: 'name', headerName: 'Name', minWidth: 170 },
+    { field: 'month', headerName: 'Month', minWidth: 130 },
+    { field: 'prize', headerName: 'Prize', minWidth: 130 },
+    createStatusColumn('status', 'Status', ['Released']),
+    createActionColumn<AdminWinnerRow>([
+      { label: 'Edit', onClick: (row) => this.editWinner(row) },
+      { label: 'Release', kind: 'success', onClick: (row) => this.releaseWinner(row.id) },
+      { label: 'Delete', kind: 'danger', onClick: (row) => this.deleteWinner(row.id) }
+    ])
+  ];
   winners: AdminWinnerRow[] = [];
   members: AdminMemberRow[] = [];
   editingWinnerId: number | null = null;
@@ -96,7 +114,7 @@ export class AdminWinnersComponent {
       userId: '',
       name: '',
       month: '2026-05',
-      prize: '₹20,000',
+      prize: '20,000 INR',
       settlementMode: 'Bank transfer',
       status: 'Awaiting release'
     };

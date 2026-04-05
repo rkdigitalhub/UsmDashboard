@@ -1,22 +1,6 @@
 <div class="admin-content-stack">
-  <section class="admin-workspace-grid">
-    <article class="admin-card admin-page-hero-card">
-      <div class="admin-panel-header">
-        <h2>Hand Cash Management</h2>
-        <span class="admin-pill warning">Field collection</span>
-      </div>
-    </article>
-
-    <article class="admin-note-card">
-      <div class="admin-panel-header">
-        <h2>Collection Controls</h2>
-      </div>
-      <div class="admin-list">
-        <div class="admin-list-item"><div><h3>Assign collector</h3></div></div>
-        <div class="admin-list-item"><div><h3>Post verified receipts</h3></div></div>
-      </div>
-      <div class="admin-status-message" *ngIf="statusMessage">{{ statusMessage }}</div>
-    </article>
+  <section class="admin-note-card" *ngIf="statusMessage">
+    <div class="admin-status-message">{{ statusMessage }}</div>
   </section>
 
   <section class="admin-table-card">
@@ -27,37 +11,6 @@
       </div>
     </div>
 
-    <div class="admin-table-wrap">
-      <table class="admin-table">
-        <thead>
-          <tr>
-            <th>S.N.</th>
-            <th>User ID</th>
-            <th>Name</th>
-            <th>Team</th>
-            <th>Collector</th>
-            <th>Received On</th>
-            <th>Receipt No</th>
-            <th>Amount</th>
-            <th>Status</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let payment of payments">
-            <td data-label="S.N.">{{ payment.id }}</td>
-            <td data-label="User ID">{{ payment.userId }}</td>
-            <td data-label="Name">{{ payment.userName }}</td>
-            <td data-label="Team">{{ payment.team }}</td>
-            <td data-label="Collector">{{ payment.collector }}</td>
-            <td data-label="Received On">{{ payment.receivedOn }}</td>
-            <td data-label="Receipt No">{{ payment.receiptNo }}</td>
-            <td data-label="Amount">₹{{ payment.amount }}</td>
-            <td data-label="Status"><span class="admin-pill" [class.success]="payment.status === 'Received' || payment.status === 'Posted'">{{ payment.status }}</span></td>
-            <td data-label="Actions" class="admin-actions-cell"><div class="admin-inline-actions"><button class="admin-icon-button admin-icon-button-success" type="button" title="Verify receipt" aria-label="Verify receipt" (click)="updatePaymentStatus(payment.id, 'Received')"><fa-icon [icon]="verifyIcon"></fa-icon></button><button class="admin-icon-button" type="button" title="Post receipt" aria-label="Post receipt" (click)="updatePaymentStatus(payment.id, 'Posted')"><fa-icon [icon]="postIcon"></fa-icon></button></div></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    <app-data-grid [columnDefs]="paymentColumnDefs" [rowData]="payments" [enableExport]="true" exportFileName="admin-hand-cash-payments" height="420px"></app-data-grid>
   </section>
 </div>

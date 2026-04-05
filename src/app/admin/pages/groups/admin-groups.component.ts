@@ -1,20 +1,36 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { ColDef } from 'ag-grid-community';
 import { type AdminGroupRow } from '../../admin-mock-data';
 import { adminUiIcons } from '../../admin-icons';
 import { AdminConsoleStateService } from '../../services/admin-console-state.service';
+import { DataGridComponent } from '../../../shared/components/data-grid/data-grid.component';
+import { createActionColumn, createStatusColumn } from '../../../shared/components/data-grid/grid-helpers';
 
 @Component({
   standalone: true,
   selector: 'app-admin-groups',
-  imports: [CommonModule, FormsModule, FontAwesomeModule],
+  imports: [CommonModule, FormsModule, FontAwesomeModule, MatFormFieldModule, MatSelectModule, DataGridComponent],
   templateUrl: './admin-groups.component.html'
 })
 export class AdminGroupsComponent {
   readonly editIcon = adminUiIcons.edit;
   readonly deleteIcon = adminUiIcons.delete;
+  readonly groupColumnDefs: ColDef<AdminGroupRow>[] = [
+    { field: 'groupName', headerName: 'Team', minWidth: 180 },
+    { field: 'planAmount', headerName: 'Plan Value', minWidth: 130, valueFormatter: (params) => `${params.value ?? '--'} INR` },
+    { headerName: 'Members', minWidth: 120, valueGetter: (params) => `${params.data?.joinedMembers ?? 0}/${params.data?.totalMembers ?? 0}` },
+    { headerName: 'Next Spin', minWidth: 180, valueGetter: (params) => `${params.data?.spinDate ?? ''} ${params.data?.spinTime ?? ''}`.trim() },
+    createStatusColumn('status', 'Status', ['Live']),
+    createActionColumn<AdminGroupRow>([
+      { label: 'Edit', onClick: (row) => this.editGroup(row) },
+      { label: 'Delete', kind: 'danger', onClick: (row) => this.removeGroup(row.id) }
+    ])
+  ];
   groups: AdminGroupRow[] = [];
   editingGroupId: number | null = null;
   statusMessage = '';

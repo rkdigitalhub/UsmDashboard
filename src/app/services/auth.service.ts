@@ -1,7 +1,7 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map, shareReplay, tap } from 'rxjs/operators';
+import { ApiService } from '../core/api/api.service';
 
 export interface AppUser {
 	userId: string;
@@ -33,7 +33,7 @@ export class AuthService {
 	private readonly currentUserState = signal<SafeAppUser | null>(this.restoreCurrentUser());
 	private users$?: Observable<AppUser[]>;
 
-	constructor(private readonly http: HttpClient) {}
+	constructor(private readonly api: ApiService) {}
 
 	login(userId: string, password: string): Observable<LoginResult> {
 		const normalizedId = userId.trim().toUpperCase();
@@ -54,7 +54,7 @@ export class AuthService {
 
 	getUsers(): Observable<AppUser[]> {
 		if (!this.users$) {
-			this.users$ = this.http.get<AppUser[]>('assets/mock-users.json').pipe(shareReplay(1));
+			this.users$ = this.api.getAsset<AppUser[]>('mock-users.json').pipe(shareReplay(1));
 		}
 
 		return this.users$;

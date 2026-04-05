@@ -1,7 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { ColDef } from 'ag-grid-community';
 import { AuthService, AppUser } from '../../../services/auth.service';
+import { DataGridComponent } from '../../../shared/components/data-grid/data-grid.component';
 import { memberIcons } from '../../member-icons';
 
 interface Team {
@@ -17,7 +19,7 @@ interface Team {
 @Component({
   standalone: true,
   selector: 'app-schemes',
-  imports: [CommonModule, FontAwesomeModule],
+  imports: [CommonModule, FontAwesomeModule, DataGridComponent],
   templateUrl: './schemes.component.html',
   styleUrls: ['./schemes.component.scss']
 })
@@ -39,8 +41,12 @@ export class SchemesComponent implements OnInit {
   subscribeMessage = '';
   private pendingApprovalTeamIds = new Set<number>();
 
-  groupHeaders: string[] = [];
-  groupRows: string[][] = [];
+  readonly groupColumnDefs: ColDef[] = [
+    { field: 'userId', headerName: 'User ID', minWidth: 140 },
+    { field: 'name', headerName: 'Name', minWidth: 180 },
+    { field: 'location', headerName: 'Location', minWidth: 180 }
+  ];
+  groupRows: Array<{ userId: string; name: string; location: string }> = [];
   groupLoading = false;
   groupError = '';
 
@@ -113,7 +119,6 @@ export class SchemesComponent implements OnInit {
   private loadGroupData(): void {
     this.groupLoading = true;
     this.groupError = '';
-    this.groupHeaders = [];
     this.groupRows = [];
 
     this.authService.getUsers().subscribe({
@@ -142,16 +147,11 @@ export class SchemesComponent implements OnInit {
   }
 
   private mapGroupTableFromUsers(users: AppUser[]): void {
-    this.groupHeaders = ['User ID', 'Name', 'Location', 'Bank', 'Branch', 'Investment', 'Tenure'];
-    this.groupRows = users.map((user) => [
-      user.userId,
-      user.name,
-      user.location,
-      user.bankName || '--',
-      user.branch || '--',
-      user.schemeAmount.toString(),
-      `${user.tenureMonths} months`
-    ]);
+    this.groupRows = users.map((user) => ({
+      userId: user.userId,
+      name: user.name,
+      location: user.location || '--'
+    }));
 
     if (!this.groupRows.length) {
       this.groupError = 'No rows found in group data.';

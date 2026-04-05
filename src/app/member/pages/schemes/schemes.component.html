@@ -66,20 +66,12 @@
       <p class="loading" *ngIf="groupLoading">Loading table data...</p>
       <p class="error" *ngIf="groupError && !groupLoading">{{ groupError }}</p>
 
-      <div class="table-wrap" *ngIf="!groupLoading && groupRows.length">
-        <table>
-          <thead>
-            <tr>
-              <th *ngFor="let header of groupHeaders">{{ header }}</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let row of groupRows">
-              <td *ngFor="let cell of row">{{ cell }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      <app-data-grid
+        *ngIf="!groupLoading && groupRows.length"
+        [columnDefs]="groupColumnDefs"
+        [rowData]="groupRows"
+        height="320px"
+      ></app-data-grid>
     </div>
   </div>
 

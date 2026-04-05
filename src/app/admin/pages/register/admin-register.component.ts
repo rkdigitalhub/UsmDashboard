@@ -1,13 +1,15 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
 import { type AdminGroupRow } from '../../admin-mock-data';
 import { AdminConsoleStateService } from '../../services/admin-console-state.service';
 
 @Component({
   standalone: true,
   selector: 'app-admin-register',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, MatFormFieldModule, MatSelectModule],
   templateUrl: './admin-register.component.html'
 })
 export class AdminRegisterComponent {
@@ -33,7 +35,7 @@ export class AdminRegisterComponent {
       username: this.memberForm.username,
       password: this.memberForm.password,
       sponsor: this.memberForm.sponsor,
-      packageAmount: `${this.memberForm.planAmount} Rs`,
+      packageAmount: `${this.memberForm.planAmount} INR`,
       joiningDate: `${this.memberForm.joiningDate} 00:00:00`,
       team: this.memberForm.team,
       address: this.memberForm.address,

@@ -2,19 +2,34 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { ColDef } from 'ag-grid-community';
 import { type AdminBankProfileRow } from '../../admin-mock-data';
 import { adminUiIcons } from '../../admin-icons';
 import { AdminConsoleStateService } from '../../services/admin-console-state.service';
+import { DataGridComponent } from '../../../shared/components/data-grid/data-grid.component';
+import { createActionColumn } from '../../../shared/components/data-grid/grid-helpers';
 
 @Component({
   standalone: true,
   selector: 'app-admin-bank',
-  imports: [CommonModule, FormsModule, FontAwesomeModule],
+  imports: [CommonModule, FormsModule, FontAwesomeModule, DataGridComponent],
   templateUrl: './admin-bank.component.html'
 })
 export class AdminBankComponent {
   readonly editIcon = adminUiIcons.edit;
   readonly refreshIcon = adminUiIcons.refresh;
+  readonly profileColumnDefs: ColDef<AdminBankProfileRow>[] = [
+    { field: 'userId', headerName: 'User ID', minWidth: 130 },
+    { field: 'name', headerName: 'Name', minWidth: 160 },
+    { field: 'team', headerName: 'Team', minWidth: 160 },
+    { field: 'bankName', headerName: 'Bank Name', minWidth: 180 },
+    { field: 'branch', headerName: 'Branch', minWidth: 150 },
+    { field: 'accountNumber', headerName: 'Account Number', minWidth: 180 },
+    { field: 'ifscCode', headerName: 'IFSC', minWidth: 130 },
+    createActionColumn<AdminBankProfileRow>([
+      { label: 'Edit', onClick: (row) => this.editProfile(row) }
+    ])
+  ];
   profiles: AdminBankProfileRow[] = [];
   selectedUserId = '';
   statusMessage = '';

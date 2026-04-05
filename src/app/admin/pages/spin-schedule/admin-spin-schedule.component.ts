@@ -1,20 +1,37 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { ColDef } from 'ag-grid-community';
 import { type AdminGroupRow, type AdminSpinScheduleRow } from '../../admin-mock-data';
 import { adminUiIcons } from '../../admin-icons';
 import { AdminConsoleStateService } from '../../services/admin-console-state.service';
+import { DataGridComponent } from '../../../shared/components/data-grid/data-grid.component';
+import { createActionColumn, createStatusColumn } from '../../../shared/components/data-grid/grid-helpers';
 
 @Component({
   standalone: true,
   selector: 'app-admin-spin-schedule',
-  imports: [CommonModule, FormsModule, FontAwesomeModule],
+  imports: [CommonModule, FormsModule, FontAwesomeModule, MatFormFieldModule, MatSelectModule, DataGridComponent],
   templateUrl: './admin-spin-schedule.component.html'
 })
 export class AdminSpinScheduleComponent {
   readonly editIcon = adminUiIcons.edit;
   readonly deleteIcon = adminUiIcons.delete;
+  readonly scheduleColumnDefs: ColDef<AdminSpinScheduleRow>[] = [
+    { field: 'team', headerName: 'Team', minWidth: 170 },
+    { field: 'month', headerName: 'Month', minWidth: 140 },
+    { field: 'round', headerName: 'Round', minWidth: 110 },
+    { field: 'date', headerName: 'Date', minWidth: 130 },
+    { field: 'time', headerName: 'Time', minWidth: 120 },
+    createStatusColumn('status', 'Status', ['Scheduled']),
+    createActionColumn<AdminSpinScheduleRow>([
+      { label: 'Edit', onClick: (row) => this.editSchedule(row) },
+      { label: 'Delete', kind: 'danger', onClick: (row) => this.deleteSchedule(row.id) }
+    ])
+  ];
   schedules: AdminSpinScheduleRow[] = [];
   groups: AdminGroupRow[] = [];
   editingScheduleId: number | null = null;

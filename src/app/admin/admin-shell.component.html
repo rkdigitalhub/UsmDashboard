@@ -1,7 +1,14 @@
 <div class="admin-shell" [class.sidebar-open]="sidebarOpen" [class.sidebar-collapsed]="sidebarCollapsed">
   <aside class="admin-sidebar">
     <div class="admin-brand admin-brand-premium">
-      <img src="assets/usm_final.png" alt="USM Logo">
+      <div class="admin-brand-lockup">
+        <img src="assets/usm_final.png" alt="USM Logo">
+        <!-- <div class="admin-brand-copy">
+          <span class="admin-brand-eyebrow">USM Corporate Console</span>
+          <strong class="admin-brand-wordmark">Operations Suite</strong>
+          <span class="admin-brand-subtitle">Finance, compliance, and member operations</span>
+        </div> -->
+      </div>
       <button
         class="admin-sidebar-toggle"
         type="button"
@@ -11,6 +18,21 @@
         <fa-icon [icon]="sidebarCollapsed ? collapseRightIcon : collapseLeftIcon"></fa-icon>
       </button>
     </div>
+
+    <!-- <div class="admin-sidebar-summary">
+      <div>
+        <span>Access</span>
+        <strong>Admin</strong>
+      </div>
+      <div>
+        <span>Section</span>
+        <strong>{{ currentSectionTitle }}</strong>
+      </div>
+      <div>
+        <span>Status</span>
+        <strong>Secure</strong>
+      </div>
+    </div> -->
 
     <div *ngFor="let section of navSections">
       <div class="admin-nav-section">{{ section.title }}</div>
@@ -25,9 +47,13 @@
       </a>
     </div>
 
-    <div class="admin-sidebar-actions">
+    <!-- <div class="admin-sidebar-actions">
+      <div class="admin-sidebar-footnote">
+        <span>Current Workspace</span>
+        <strong>{{ currentPageTitle }}</strong>
+      </div>
       <button class="admin-signout" type="button" (click)="signOut()">Sign Out</button>
-    </div>
+    </div> -->
   </aside>
 
   <button
@@ -39,15 +65,18 @@
 
   <main class="admin-main">
     <header class="admin-topbar">
-      <div class="admin-topbar-leading">
-        <button class="admin-mobile-toggle" type="button" (click)="toggleSidebar()"><fa-icon [icon]="mobileMenuIcon"></fa-icon></button>
-        <div class="admin-topbar-title">
-          <p>{{ currentSectionTitle }}</p>
-          <h1>{{ currentPageTitle }}</h1>
+      <div class="admin-operations-hub">
+        <div class="admin-topbar-leading">
+          <button class="admin-mobile-toggle" type="button" (click)="toggleSidebar()"><fa-icon [icon]="mobileMenuIcon"></fa-icon></button>
+          <div class="admin-topbar-title">
+            <p>{{ currentSectionTitle }}</p>
+            <h1>{{ currentPageTitle }}</h1>
+          </div>
         </div>
       </div>
 
       <div class="admin-topbar-meta">
+        <div class="admin-user-pill">Corporate Admin</div>
         <div class="admin-date-pill">{{ currentDateLabel }}</div>
         <div class="admin-profile-menu">
           <button class="admin-profile-pill admin-profile-trigger" type="button" (click)="toggleProfileMenu($event)" [attr.aria-expanded]="profileMenuOpen">

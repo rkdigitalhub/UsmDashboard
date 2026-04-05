@@ -1,21 +1,8 @@
 <div class="admin-content-stack">
-  <section class="admin-workspace-grid">
-    <article class="admin-card admin-page-hero-card">
-      <div class="admin-panel-header">
-        <h2>Bank Profile Administration</h2>
-        <span class="admin-pill warning">Admin only</span>
-      </div>
-
-      <div class="admin-key-figure-grid">
-        <div class="admin-key-figure"><span>Editable fields</span><strong>Bank, branch, account, IFSC, UPI</strong></div>
-        <div class="admin-key-figure"><span>Update owner</span><strong>Admin only</strong></div>
-        <div class="admin-key-figure"><span>Use case</span><strong>Payout and identity validation</strong></div>
-      </div>
-    </article>
-
-    <article class="admin-note-card">
+  <section class="admin-note-card">
       <div class="admin-panel-header">
         <h2>Edit Bank Profile</h2>
+        <span class="admin-pill">Payout details</span>
       </div>
       <div class="admin-form-grid" *ngIf="selectedUserId">
         <div class="admin-field"><label>User ID</label><input [(ngModel)]="bankForm.userId" [ngModelOptions]="{ standalone: true }" type="text" readonly></div>
@@ -32,7 +19,6 @@
         <button class="admin-button-secondary" type="button" (click)="applyBulkTemplate()">Bulk Update Template</button>
       </div>
       <div class="admin-status-message" *ngIf="statusMessage">{{ statusMessage }}</div>
-    </article>
   </section>
 
   <section class="admin-table-card">
@@ -45,39 +31,6 @@
       </div>
     </div>
 
-    <div class="admin-table-wrap">
-      <table class="admin-table">
-        <thead>
-          <tr>
-            <th>S.N.</th>
-            <th>User ID</th>
-            <th>Name</th>
-            <th>Team</th>
-            <th>Address</th>
-            <th>Bank Name</th>
-            <th>Branch</th>
-            <th>Account Number</th>
-            <th>IFSC</th>
-            <th>UPI ID</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let profile of profiles; let index = index">
-            <td data-label="S.N.">{{ index + 1 }}</td>
-            <td data-label="User ID">{{ profile.userId }}</td>
-            <td data-label="Name">{{ profile.name }}</td>
-            <td data-label="Team">{{ profile.team }}</td>
-            <td data-label="Address">{{ profile.address }}</td>
-            <td data-label="Bank">{{ profile.bankName }}</td>
-            <td data-label="Branch">{{ profile.branch }}</td>
-            <td data-label="Account Number">{{ profile.accountNumber }}</td>
-            <td data-label="IFSC">{{ profile.ifscCode }}</td>
-            <td data-label="UPI ID">{{ profile.upiId }}</td>
-            <td data-label="Actions" class="admin-actions-cell"><div class="admin-inline-actions"><button class="admin-icon-button" type="button" title="Edit bank profile" aria-label="Edit bank profile" (click)="editProfile(profile)"><fa-icon [icon]="editIcon"></fa-icon></button></div></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    <app-data-grid [columnDefs]="profileColumnDefs" [rowData]="profiles" [enableExport]="true" exportFileName="admin-bank-profiles" height="420px"></app-data-grid>
   </section>
 </div>

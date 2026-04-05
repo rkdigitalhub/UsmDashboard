@@ -1,23 +1,39 @@
-import { NgFor, NgIf } from '@angular/common';
+import { NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { ColDef } from 'ag-grid-community';
 import { AuthService, AppUser, SafeAppUser } from '../../../services/auth.service';
+import { DataGridComponent } from '../../../shared/components/data-grid/data-grid.component';
 import { memberIcons } from '../../member-icons';
+
+interface ReferralRow {
+  userId: string;
+  name: string;
+  mobile: string;
+  city: string;
+  scheme: string;
+}
 
 @Component({
   standalone: true,
   selector: 'app-my-referrals',
-  imports: [NgIf, NgFor, FontAwesomeModule],
+  imports: [NgIf, FontAwesomeModule, DataGridComponent],
   templateUrl: './my-referrals.component.html',
   styleUrls: ['./my-referrals.component.scss']
 })
 export class MyReferralsComponent implements OnInit {
   readonly referralsIcon = memberIcons.referrals;
   readonly refreshIcon = memberIcons.refresh;
+  readonly referralColumnDefs: ColDef<ReferralRow>[] = [
+    { field: 'userId', headerName: 'User ID', minWidth: 140 },
+    { field: 'name', headerName: 'Name', minWidth: 180 },
+    { field: 'mobile', headerName: 'Mobile', minWidth: 150 },
+    { field: 'city', headerName: 'City', minWidth: 160 },
+    { field: 'scheme', headerName: 'Scheme', minWidth: 170 }
+  ];
   isLoading = false;
   errorMessage = '';
-  headers: string[] = [];
-  rows: string[][] = [];
+  rows: ReferralRow[] = [];
 
   constructor(private readonly authService: AuthService) {}
 
@@ -28,7 +44,6 @@ export class MyReferralsComponent implements OnInit {
   loadReferrals(): void {
     const currentUser = this.authService.getCurrentUser();
     if (!currentUser) {
-      this.headers = [];
       this.rows = [];
       this.errorMessage = 'Logged in user information is unavailable.';
       return;
@@ -51,7 +66,6 @@ export class MyReferralsComponent implements OnInit {
   }
 
   private mapReferralsFromUsers(currentUser: SafeAppUser, users: AppUser[]): void {
-    this.headers = ['User ID', 'Name', 'Mobile', 'City', 'Scheme'];
     this.rows = this.buildReferralRows(currentUser, users);
 
     if (!this.rows.length) {
@@ -59,7 +73,7 @@ export class MyReferralsComponent implements OnInit {
     }
   }
 
-  private buildReferralRows(currentUser: SafeAppUser, users: AppUser[]): string[][] {
+  private buildReferralRows(currentUser: SafeAppUser, users: AppUser[]): ReferralRow[] {
     const otherUsers = users.filter((user) => user.userId !== currentUser.userId);
     if (!otherUsers.length) {
       return [];
@@ -71,13 +85,13 @@ export class MyReferralsComponent implements OnInit {
     return Array.from({ length: referralCount }, (_, offset) => {
       const user = otherUsers[(startIndex + offset) % otherUsers.length];
 
-      return [
-        user.userId,
-        user.name,
-        user.mobile ?? '--',
-        user.location || '--',
-        user.schemeName || '--'
-      ];
+      return {
+        userId: user.userId,
+        name: user.name,
+        mobile: user.mobile ?? '--',
+        city: user.location || '--',
+        scheme: user.schemeName || '--'
+      };
     });
   }
 }

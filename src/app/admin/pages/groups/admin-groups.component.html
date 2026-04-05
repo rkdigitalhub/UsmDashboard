@@ -33,12 +33,14 @@
         </div>
         <div class="admin-field">
           <label>Status</label>
-          <select [(ngModel)]="teamForm.status" [ngModelOptions]="{ standalone: true }">
-            <option>Open</option>
-            <option>Live</option>
-            <option>Filling</option>
-            <option>Closed</option>
-          </select>
+          <mat-form-field appearance="outline" class="admin-material-field">
+            <mat-select [(ngModel)]="teamForm.status" [ngModelOptions]="{ standalone: true }" panelClass="admin-select-panel">
+              <mat-option value="Open">Open</mat-option>
+              <mat-option value="Live">Live</mat-option>
+              <mat-option value="Filling">Filling</mat-option>
+              <mat-option value="Closed">Closed</mat-option>
+            </mat-select>
+          </mat-form-field>
         </div>
         <div class="admin-field admin-full-span">
           <label>Team Name</label>
@@ -88,62 +90,9 @@
   <section class="admin-table-card">
     <div class="admin-table-toolbar">
       <h2>Team Portfolio</h2>
-      <button class="admin-button" type="button">Create Team</button>
     </div>
 
-    <div class="admin-table-wrap">
-      <table class="admin-table">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Created On</th>
-            <th>Team</th>
-            <th>Plan Value</th>
-            <th>Tenure</th>
-            <th>Capacity</th>
-            <th>Joined</th>
-            <th>Vacancy</th>
-            <th>Rounds Completed</th>
-            <th>Next Spin</th>
-            <th>Status</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let group of groups">
-            <td data-label="#">{{ group.id }}</td>
-            <td data-label="Created On">{{ group.date }}</td>
-            <td data-label="Team">{{ group.groupName }}</td>
-            <td data-label="Plan Value">₹{{ group.planAmount }}</td>
-            <td data-label="Tenure">{{ group.tenureMonths }} months</td>
-            <td data-label="Capacity">{{ group.totalMembers }}</td>
-            <td data-label="Joined">{{ group.joinedMembers }}</td>
-            <td data-label="Vacancy">{{ group.vacancy }}</td>
-            <td data-label="Rounds Completed">{{ group.roundCompleted }}</td>
-            <td data-label="Next Spin">{{ group.spinDate }} {{ group.spinTime }}</td>
-            <td data-label="Status"><span class="admin-pill" [class.success]="group.status === 'Live'">{{ group.status }}</span></td>
-            <td data-label="Actions" class="admin-actions-cell">
-              <div class="admin-inline-actions">
-                <button class="admin-icon-button" type="button" title="Edit team" aria-label="Edit team" (click)="editGroup(group)">
-                  <fa-icon [icon]="editIcon"></fa-icon>
-                </button>
-                <button class="admin-icon-button admin-icon-button-danger" type="button" title="Delete team" aria-label="Delete team" (click)="removeGroup(group.id)">
-                  <fa-icon [icon]="deleteIcon"></fa-icon>
-                </button>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    <app-data-grid [columnDefs]="groupColumnDefs" [rowData]="groups" [enableExport]="true" exportFileName="admin-groups" height="360px"></app-data-grid>
 
-    <div class="admin-table-footer">
-      <span>Showing 1 to {{ groups.length }} of {{ groups.length }} teams</span>
-      <div class="admin-pagination">
-        <span>Previous</span>
-        <span class="admin-pill warning">1</span>
-        <span>Next</span>
-      </div>
-    </div>
   </section>
 </div>

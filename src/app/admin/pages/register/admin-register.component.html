@@ -1,10 +1,14 @@
 <div class="admin-content-stack">
-  <section class="admin-workspace-grid">
-    <article class="admin-form-card">
+  <section class="admin-form-card">
+    <div class="admin-panel-header">
       <h2>User Onboarding</h2>
+      <span class="admin-pill">Required fields only</span>
+    </div>
 
-      <form (ngSubmit)="$event.preventDefault()">
-        <div class="admin-form-grid">
+    <p>Create a new member account, assign the active team, and capture the primary contact details.</p>
+
+    <form (ngSubmit)="$event.preventDefault()">
+      <div class="admin-form-grid">
           <div class="admin-field">
             <label>Next User ID</label>
             <input [(ngModel)]="memberForm.userId" [ngModelOptions]="{ standalone: true }" type="text" readonly>
@@ -17,9 +21,11 @@
 
           <div class="admin-field">
             <label>Team Assignment</label>
-            <select [(ngModel)]="memberForm.team" [ngModelOptions]="{ standalone: true }">
-              <option *ngFor="let group of groups" [ngValue]="group.groupName">{{ group.groupName }}</option>
-            </select>
+            <mat-form-field appearance="outline" class="admin-material-field">
+              <mat-select [(ngModel)]="memberForm.team" [ngModelOptions]="{ standalone: true }" panelClass="admin-select-panel">
+                <mat-option *ngFor="let group of groups" [value]="group.groupName">{{ group.groupName }}</mat-option>
+              </mat-select>
+            </mat-form-field>
           </div>
 
           <div class="admin-field">
@@ -66,25 +72,13 @@
             <label>Temporary Password</label>
             <input [(ngModel)]="memberForm.password" [ngModelOptions]="{ standalone: true }" type="text">
           </div>
-        </div>
-
-        <div class="admin-toolbar-actions">
-          <button class="admin-button" type="button" (click)="createMember()">Create User and Assign Team</button>
-          <button class="admin-button-secondary" type="button" (click)="resetForm()">Clear Form</button>
-        </div>
-        <div class="admin-status-message" *ngIf="statusMessage">{{ statusMessage }}</div>
-      </form>
-    </article>
-
-    <article class="admin-note-card">
-      <div class="admin-panel-header">
-        <h2>Onboarding Rules</h2>
       </div>
-      <div class="admin-list">
-        <div class="admin-list-item"><div><h3>Create the user record</h3></div></div>
-        <div class="admin-list-item"><div><h3>Assign an active team</h3></div></div>
-        <div class="admin-list-item"><div><h3>Capture address details</h3></div></div>
+
+      <div class="admin-toolbar-actions">
+        <button class="admin-button" type="button" (click)="createMember()">Create User and Assign Team</button>
+        <button class="admin-button-secondary" type="button" (click)="resetForm()">Clear Form</button>
       </div>
-    </article>
+      <div class="admin-status-message" *ngIf="statusMessage">{{ statusMessage }}</div>
+    </form>
   </section>
 </div>

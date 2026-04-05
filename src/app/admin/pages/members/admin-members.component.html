@@ -2,14 +2,14 @@
   <section class="admin-workspace-grid">
     <article class="admin-card admin-page-hero-card">
       <div class="admin-panel-header">
-        <h2>User Directory and Profile Control</h2>
-        <span class="admin-pill warning">Admin update rights</span>
+        <h2>Member Directory</h2>
+        <span class="admin-pill">Core roster only</span>
       </div>
 
       <div class="admin-key-figure-grid">
-        <div class="admin-key-figure"><span>Usernames</span><strong>Editable by admin</strong></div>
-        <div class="admin-key-figure"><span>Address details</span><strong>Editable by admin</strong></div>
-        <div class="admin-key-figure"><span>Team assignment</span><strong>Controlled per roster</strong></div>
+        <div class="admin-key-figure"><span>Total users</span><strong>{{ members.length }} profiles</strong></div>
+        <div class="admin-key-figure"><span>Active groups</span><strong>{{ groups.length }} teams</strong></div>
+        <div class="admin-key-figure"><span>Current selection</span><strong>{{ selectedUserId || 'No user selected' }}</strong></div>
       </div>
     </article>
 
@@ -40,9 +40,11 @@
         </div>
         <div class="admin-field">
           <label>Team</label>
-          <select [(ngModel)]="memberForm.team" [ngModelOptions]="{ standalone: true }">
-            <option *ngFor="let group of groups" [ngValue]="group.groupName">{{ group.groupName }}</option>
-          </select>
+          <mat-form-field appearance="outline" class="admin-material-field">
+            <mat-select [(ngModel)]="memberForm.team" [ngModelOptions]="{ standalone: true }" panelClass="admin-select-panel">
+              <mat-option *ngFor="let group of groups" [value]="group.groupName">{{ group.groupName }}</mat-option>
+            </mat-select>
+          </mat-form-field>
         </div>
         <div class="admin-field">
           <label>Status</label>
@@ -72,57 +74,8 @@
   <section class="admin-table-card">
     <div class="admin-table-toolbar">
       <h2>User Master</h2>
-      <div class="admin-toolbar-actions">
-        <span class="admin-pill">Identity, roster, and address control</span>
-      </div>
     </div>
 
-    <div class="admin-table-wrap">
-      <table class="admin-table">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>User ID</th>
-            <th>Name</th>
-            <th>Mobile</th>
-            <th>Username</th>
-            <th>Email</th>
-            <th>Sponsor</th>
-            <th>Package</th>
-            <th>Joining Date</th>
-            <th>Team</th>
-            <th>Address</th>
-            <th>Status</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let member of members">
-            <td data-label="#">{{ member.id }}</td>
-            <td data-label="User ID">{{ member.userId }}</td>
-            <td data-label="Name">{{ member.name }}</td>
-            <td data-label="Mobile">{{ member.mobile }}</td>
-            <td data-label="Username">{{ member.username }}</td>
-            <td data-label="Email">{{ member.email }}</td>
-            <td data-label="Sponsor">{{ member.sponsor }}</td>
-            <td data-label="Package">{{ member.packageAmount }}</td>
-            <td data-label="Joining Date">{{ member.joiningDate }}</td>
-            <td data-label="Team">{{ member.team }}</td>
-            <td data-label="Address">{{ member.address }}, {{ member.city }} - {{ member.pincode }}</td>
-            <td data-label="Status"><span class="admin-pill" [class.success]="member.status === 'Active'">{{ member.status }}</span></td>
-            <td data-label="Actions" class="admin-actions-cell">
-              <div class="admin-inline-actions">
-                <button class="admin-icon-button" type="button" title="Edit user" aria-label="Edit user" (click)="editMember(member)">
-                  <fa-icon [icon]="editIcon"></fa-icon>
-                </button>
-                <button class="admin-icon-button admin-icon-button-danger" type="button" title="Delete user" aria-label="Delete user" (click)="deleteMember(member.userId)">
-                  <fa-icon [icon]="deleteIcon"></fa-icon>
-                </button>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    <app-data-grid [columnDefs]="memberColumnDefs" [rowData]="members" [enableExport]="true" exportFileName="admin-members" height="420px"></app-data-grid>
   </section>
 </div>

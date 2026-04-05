@@ -3,6 +3,7 @@ import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild } from '@ang
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { type IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { RouterLink } from '@angular/router';
+import { ColDef } from 'ag-grid-community';
 import { Chart, type TooltipItem, registerables } from 'chart.js';
 import {
   adminDashboardTasks,
@@ -18,13 +19,15 @@ import {
 } from '../../admin-mock-data';
 import { adminMenuIcons, adminUiIcons } from '../../admin-icons';
 import { AdminAnalyticsService } from '../../services/admin-analytics.service';
+import { DataGridComponent } from '../../../shared/components/data-grid/data-grid.component';
+import { createStatusColumn } from '../../../shared/components/data-grid/grid-helpers';
 
 Chart.register(...registerables);
 
 @Component({
   standalone: true,
   selector: 'app-admin-dashboard',
-  imports: [CommonModule, RouterLink, FontAwesomeModule],
+  imports: [CommonModule, RouterLink, FontAwesomeModule, DataGridComponent],
   templateUrl: './admin-dashboard.component.html'
 })
 export class AdminDashboardComponent implements AfterViewInit, OnDestroy {
@@ -42,6 +45,28 @@ export class AdminDashboardComponent implements AfterViewInit, OnDestroy {
   readonly openIcon = adminUiIcons.open;
   readonly exportIcon = adminUiIcons.export;
   readonly manageIcon = adminUiIcons.schedule;
+  readonly spinScheduleColumnDefs: ColDef[] = [
+    { field: 'team', headerName: 'Team', minWidth: 180 },
+    { field: 'month', headerName: 'Month', minWidth: 140 },
+    { field: 'date', headerName: 'Date', minWidth: 130 },
+    { field: 'time', headerName: 'Time', minWidth: 120 },
+    createStatusColumn('status', 'Status', ['Scheduled'])
+  ];
+  readonly paymentQueueColumnDefs: ColDef[] = [
+    { field: 'userId', headerName: 'User ID', minWidth: 130 },
+    { field: 'name', headerName: 'Name', minWidth: 160 },
+    { field: 'channel', headerName: 'Channel', minWidth: 130 },
+    { field: 'team', headerName: 'Team', minWidth: 170 },
+    createStatusColumn('status', 'Status', ['Matched'])
+  ];
+  readonly recentMemberColumnDefs: ColDef[] = [
+    { field: 'userId', headerName: 'User ID', minWidth: 130 },
+    { field: 'name', headerName: 'Name', minWidth: 160 },
+    { field: 'team', headerName: 'Team', minWidth: 170 },
+    { field: 'joinDate', headerName: 'Join Date', minWidth: 140 },
+    { field: 'mobile', headerName: 'Mobile', minWidth: 140 },
+    createStatusColumn('status', 'Status', ['Active'])
+  ];
   statusMessage = '';
 
   revenueTrend: AdminTrendPoint[] = [];
@@ -154,7 +179,7 @@ export class AdminDashboardComponent implements AfterViewInit, OnDestroy {
             titleColor: '#fff1cd',
             bodyColor: 'rgba(255, 241, 205, 0.84)',
             callbacks: {
-              label: (tooltipItem: TooltipItem<'line'>) => `Revenue: Rs ${tooltipItem.parsed.y} lakh`
+              label: (tooltipItem: TooltipItem<'line'>) => `Revenue: ${tooltipItem.parsed.y} lakh INR`
             }
           }
         },
@@ -169,7 +194,7 @@ export class AdminDashboardComponent implements AfterViewInit, OnDestroy {
             beginAtZero: true,
             ticks: {
               color: 'rgba(244, 232, 201, 0.58)',
-              callback: (value) => `Rs ${value}L`
+              callback: (value) => `${value}L INR`
             },
             grid: {
               color: 'rgba(255, 220, 157, 0.08)'

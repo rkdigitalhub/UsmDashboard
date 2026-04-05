@@ -1,28 +1,6 @@
 <div class="admin-content-stack">
   <section class="admin-workspace-grid">
-    <article class="admin-card admin-page-hero-card">
-      <div class="admin-panel-header">
-        <h2>Admin Business Model</h2>
-        <span class="admin-pill">20 users x 20 months</span>
-      </div>
-
-      <div class="admin-rule-grid">
-        <div class="admin-rule-item">
-          <strong>Team structure</strong>
-          <span>500000 value, 20 users, 20 monthly rounds</span>
-        </div>
-        <div class="admin-rule-item">
-          <strong>Spin visibility</strong>
-          <span>Members access the wheel only on the admin-configured slot</span>
-        </div>
-        <div class="admin-rule-item">
-          <strong>Admin authority</strong>
-          <span>Only admin updates bank profiles, usernames, and address details</span>
-        </div>
-      </div>
-    </article>
-
-    <article class="admin-note-card">
+    <article class="admin-note-card admin-page-hero-card">
       <div class="admin-panel-header">
         <h2>Quick Actions</h2>
       </div>
@@ -33,6 +11,28 @@
         </a>
       </div>
       <div class="admin-status-message" *ngIf="statusMessage">{{ statusMessage }}</div>
+    </article>
+
+    <article class="admin-card admin-page-hero-card">
+      <div class="admin-panel-header">
+        <h2>Live Monitoring</h2>
+        <span class="admin-pill">Admin snapshot</span>
+      </div>
+
+      <div class="admin-key-figure-grid">
+        <div class="admin-key-figure">
+          <span>Scheduled slots</span>
+          <strong>{{ spinSchedules.length }} active windows</strong>
+        </div>
+        <div class="admin-key-figure">
+          <span>Payment exceptions</span>
+          <strong>{{ paymentQueue.length }} items pending</strong>
+        </div>
+        <div class="admin-key-figure">
+          <span>Recent onboarding</span>
+          <strong>{{ recentMembers.length }} new users</strong>
+        </div>
+      </div>
     </article>
   </section>
 
@@ -84,28 +84,7 @@
         <span class="admin-panel-meta">{{ nextSpinSummary }}</span>
       </div>
 
-      <div class="admin-table-wrap">
-        <table class="admin-table admin-table-compact">
-          <thead>
-            <tr>
-              <th>Team</th>
-              <th>Month</th>
-              <th>Date</th>
-              <th>Time</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let schedule of spinSchedules">
-              <td data-label="Team">{{ schedule.team }}</td>
-              <td data-label="Month">{{ schedule.month }}</td>
-              <td data-label="Date">{{ schedule.date }}</td>
-              <td data-label="Time">{{ schedule.time }}</td>
-              <td data-label="Status"><span class="admin-pill" [class.success]="schedule.status === 'Scheduled'">{{ schedule.status }}</span></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      <app-data-grid [columnDefs]="spinScheduleColumnDefs" [rowData]="spinSchedules" [enableExport]="true" exportFileName="admin-dashboard-spin-schedules" height="290px"></app-data-grid>
     </article>
 
     <article class="admin-table-card admin-premium-panel">
@@ -114,150 +93,16 @@
         <span class="admin-panel-meta">Receipt matching queue</span>
       </div>
 
-      <div class="admin-table-wrap">
-        <table class="admin-table admin-table-compact">
-          <thead>
-            <tr>
-              <th>User ID</th>
-              <th>Name</th>
-              <th>Channel</th>
-              <th>Team</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let payment of paymentQueue">
-              <td data-label="User ID">{{ payment.userId }}</td>
-              <td data-label="Name">{{ payment.name }}</td>
-              <td data-label="Channel">{{ payment.channel }}</td>
-              <td data-label="Team">{{ payment.team }}</td>
-              <td data-label="Status"><span class="admin-pill" [class.success]="payment.status === 'Matched'">{{ payment.status }}</span></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      <app-data-grid [columnDefs]="paymentQueueColumnDefs" [rowData]="paymentQueue" [enableExport]="true" exportFileName="admin-dashboard-payment-queue" height="290px"></app-data-grid>
     </article>
   </section>
 
-  <section class="admin-two-column-grid admin-two-column-grid-balanced">
-    <article class="admin-table-card admin-premium-panel">
-      <div class="admin-panel-header">
-        <h2>Recent User Onboarding</h2>
-        <button class="admin-icon-button admin-icon-button-inline" type="button" title="Open onboarding" aria-label="Open onboarding" routerLink="/admin/register"><fa-icon [icon]="openIcon"></fa-icon></button>
-      </div>
+  <section class="admin-table-card admin-premium-panel">
+    <div class="admin-panel-header">
+      <h2>Recent User Onboarding</h2>
+      <button class="admin-icon-button admin-icon-button-inline" type="button" title="Open onboarding" aria-label="Open onboarding" routerLink="/admin/register"><fa-icon [icon]="openIcon"></fa-icon></button>
+    </div>
 
-      <div class="admin-table-wrap">
-        <table class="admin-table admin-table-compact">
-          <thead>
-            <tr>
-              <th>User ID</th>
-              <th>Name</th>
-              <th>Team</th>
-              <th>Join Date</th>
-              <th>Mobile</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let member of recentMembers">
-              <td data-label="User ID">{{ member.userId }}</td>
-              <td data-label="Name">{{ member.name }}</td>
-              <td data-label="Team">{{ member.team }}</td>
-              <td data-label="Join Date">{{ member.joinDate }}</td>
-              <td data-label="Mobile">{{ member.mobile }}</td>
-              <td data-label="Status"><span class="admin-pill" [class.success]="member.status === 'Active'">{{ member.status }}</span></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </article>
-
-    <article class="admin-table-card admin-premium-panel">
-      <div class="admin-panel-header">
-        <h2>Round Winners</h2>
-        <button class="admin-icon-button admin-icon-button-inline" type="button" title="Open winner registry" aria-label="Open winner registry" routerLink="/admin/set-round-winner"><fa-icon [icon]="openIcon"></fa-icon></button>
-      </div>
-
-      <div class="admin-table-wrap">
-        <table class="admin-table admin-table-compact">
-          <thead>
-            <tr>
-              <th>User ID</th>
-              <th>Name</th>
-              <th>Group</th>
-              <th>Date</th>
-              <th>Prize</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let winner of recentWinners">
-              <td data-label="User ID">{{ winner.userId }}</td>
-              <td data-label="Name">{{ winner.name }}</td>
-              <td data-label="Group">{{ winner.group }}</td>
-              <td data-label="Date">{{ winner.date }}</td>
-              <td data-label="Prize">{{ winner.prize }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </article>
-  </section>
-
-  <section class="admin-dashboard-footer-grid">
-    <article class="admin-summary-card admin-premium-panel">
-      <div class="admin-panel-header">
-        <h2>Payment Summary</h2>
-        <button class="admin-icon-button admin-icon-button-inline" type="button" title="Export payment summary" aria-label="Export payment summary" (click)="exportSummary()"><fa-icon [icon]="exportIcon"></fa-icon></button>
-      </div>
-
-      <div class="admin-summary-split">
-        <div>
-          <span class="admin-summary-label">Total Paid</span>
-          <strong>₹37,25,000</strong>
-        </div>
-        <div>
-          <span class="admin-summary-label">Total ROI</span>
-          <strong>₹6,59,000</strong>
-        </div>
-      </div>
-    </article>
-
-    <article class="admin-summary-card admin-premium-panel">
-      <div class="admin-panel-header">
-        <h2>Group Summary</h2>
-      </div>
-
-      <div class="admin-group-breakdown">
-        <div class="admin-ring-chart">
-          <span>15</span>
-          <small>Groups</small>
-        </div>
-
-        <div class="admin-breakdown-list">
-          <div class="admin-breakdown-row" *ngFor="let item of groupProgress" [class.blue]="item.tone === 'blue'" [class.muted]="item.tone === 'muted'">
-            <span>{{ item.value }} {{ item.label }}</span>
-            <strong>{{ item.percent }}</strong>
-          </div>
-        </div>
-      </div>
-    </article>
-
-    <article class="admin-summary-card admin-premium-panel admin-summary-date-card">
-      <div class="admin-panel-header">
-        <h2>Live Team Slot</h2>
-        <button class="admin-icon-button admin-icon-button-inline" type="button" title="Manage schedule" aria-label="Manage schedule" routerLink="/admin/spin-schedule"><fa-icon [icon]="manageIcon"></fa-icon></button>
-      </div>
-
-      <div class="admin-date-card-content">
-        <div class="admin-ring-chart admin-ring-chart-small">
-          <span>6</span>
-          <small>Groups</small>
-        </div>
-        <div>
-          <strong class="admin-date-card-title">{{ nextSpinSummary }}</strong>
-          <button class="admin-icon-button admin-icon-button-inline admin-icon-button-spaced" type="button" title="Manage teams" aria-label="Manage teams" routerLink="/admin/groups"><fa-icon [icon]="openIcon"></fa-icon></button>
-        </div>
-      </div>
-    </article>
+    <app-data-grid [columnDefs]="recentMemberColumnDefs" [rowData]="recentMembers" [enableExport]="true" exportFileName="admin-dashboard-recent-members" height="320px"></app-data-grid>
   </section>
 </div>

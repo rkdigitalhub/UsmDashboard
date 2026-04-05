@@ -1,20 +1,37 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { ColDef } from 'ag-grid-community';
 import { type AdminGroupRow, type AdminMemberRow } from '../../admin-mock-data';
 import { adminUiIcons } from '../../admin-icons';
 import { AdminConsoleStateService } from '../../services/admin-console-state.service';
+import { DataGridComponent } from '../../../shared/components/data-grid/data-grid.component';
+import { createActionColumn, createStatusColumn } from '../../../shared/components/data-grid/grid-helpers';
 
 @Component({
   standalone: true,
   selector: 'app-admin-members',
-  imports: [CommonModule, FormsModule, FontAwesomeModule],
+  imports: [CommonModule, FormsModule, FontAwesomeModule, MatFormFieldModule, MatSelectModule, DataGridComponent],
   templateUrl: './admin-members.component.html'
 })
 export class AdminMembersComponent {
   readonly editIcon = adminUiIcons.edit;
   readonly deleteIcon = adminUiIcons.delete;
+  readonly memberColumnDefs: ColDef<AdminMemberRow>[] = [
+    { field: 'userId', headerName: 'User ID', minWidth: 130 },
+    { field: 'name', headerName: 'Name', minWidth: 170 },
+    { field: 'mobile', headerName: 'Mobile', minWidth: 140 },
+    { field: 'joiningDate', headerName: 'Joining Date', minWidth: 170 },
+    { field: 'team', headerName: 'Team', minWidth: 170 },
+    createStatusColumn('status', 'Status', ['Active']),
+    createActionColumn<AdminMemberRow>([
+      { label: 'Edit', onClick: (row) => this.editMember(row) },
+      { label: 'Delete', kind: 'danger', onClick: (row) => this.deleteMember(row.userId) }
+    ])
+  ];
   members: AdminMemberRow[] = [];
   groups: AdminGroupRow[] = [];
   selectedUserId = '';
@@ -74,7 +91,7 @@ export class AdminMembersComponent {
       username: '',
       password: '',
       sponsor: '',
-      packageAmount: '500000 Rs',
+      packageAmount: '500000 INR',
       joiningDate: '2026-04-05 00:00:00',
       team: '',
       address: '',
