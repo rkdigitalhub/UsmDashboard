@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { type AdminGroupRow } from '../admin-mock-data';
-import { AdminConsoleStateService } from '../services/admin-console-state.service';
+import { type AdminGroupRow } from '../../admin-mock-data';
+import { AdminConsoleStateService } from '../../services/admin-console-state.service';
 
 @Component({
   standalone: true,

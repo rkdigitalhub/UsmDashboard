@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { type AdminCashRow } from '../admin-mock-data';
-import { adminUiIcons } from '../admin-icons';
-import { AdminConsoleStateService } from '../services/admin-console-state.service';
+import { type AdminCashRow } from '../../admin-mock-data';
+import { adminUiIcons } from '../../admin-icons';
+import { AdminConsoleStateService } from '../../services/admin-console-state.service';
 
 @Component({
   standalone: true,

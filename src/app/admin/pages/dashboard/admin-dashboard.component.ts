@@ -15,9 +15,9 @@ import {
   adminSpinSchedules,
   type AdminMetric,
   type AdminTrendPoint
-} from '../admin-mock-data';
-import { adminMenuIcons, adminUiIcons } from '../admin-icons';
-import { AdminAnalyticsService } from '../services/admin-analytics.service';
+} from '../../admin-mock-data';
+import { adminMenuIcons, adminUiIcons } from '../../admin-icons';
+import { AdminAnalyticsService } from '../../services/admin-analytics.service';
 
 Chart.register(...registerables);
 

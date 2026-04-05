@@ -2,9 +2,9 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { type AdminGroupRow, type AdminMemberRow } from '../admin-mock-data';
-import { adminUiIcons } from '../admin-icons';
-import { AdminConsoleStateService } from '../services/admin-console-state.service';
+import { type AdminGroupRow, type AdminMemberRow } from '../../admin-mock-data';
+import { adminUiIcons } from '../../admin-icons';
+import { AdminConsoleStateService } from '../../services/admin-console-state.service';
 
 @Component({
   standalone: true,

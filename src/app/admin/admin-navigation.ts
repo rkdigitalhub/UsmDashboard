@@ -24,7 +24,7 @@ interface AdminRouteDefinition {
 }
 
 const placeholderPageLoader = () =>
-  import('./pages/admin-placeholder-page.component').then((module) => module.AdminPlaceholderPageComponent);
+  import('./pages/placeholder-page/admin-placeholder-page.component').then((module) => module.AdminPlaceholderPageComponent);
 
 const adminRouteDefinitions: AdminRouteDefinition[] = [
   {
@@ -32,21 +32,21 @@ const adminRouteDefinitions: AdminRouteDefinition[] = [
     label: 'Dashboard',
     section: 'Operations Hub',
     icon: 'dashboard',
-    loadComponent: () => import('./pages/admin-dashboard.component').then((module) => module.AdminDashboardComponent)
+    loadComponent: () => import('./pages/dashboard/admin-dashboard.component').then((module) => module.AdminDashboardComponent)
   },
   {
     path: 'groups',
     label: 'Team Setup',
     section: 'Operations Hub',
     icon: 'groups',
-    loadComponent: () => import('./pages/admin-groups.component').then((module) => module.AdminGroupsComponent)
+    loadComponent: () => import('./pages/groups/admin-groups.component').then((module) => module.AdminGroupsComponent)
   },
   {
     path: 'spin-schedule',
     label: 'Spin Schedule',
     section: 'Operations Hub',
     icon: 'schedule',
-    loadComponent: () => import('./pages/admin-spin-schedule.component').then((module) => module.AdminSpinScheduleComponent)
+    loadComponent: () => import('./pages/spin-schedule/admin-spin-schedule.component').then((module) => module.AdminSpinScheduleComponent)
   },
   {
     path: 'reports',
@@ -60,42 +60,42 @@ const adminRouteDefinitions: AdminRouteDefinition[] = [
     label: 'User Onboarding',
     section: 'Member Control',
     icon: 'register',
-    loadComponent: () => import('./pages/admin-register.component').then((module) => module.AdminRegisterComponent)
+    loadComponent: () => import('./pages/register/admin-register.component').then((module) => module.AdminRegisterComponent)
   },
   {
     path: 'members',
     label: 'User Directory',
     section: 'Member Control',
     icon: 'members',
-    loadComponent: () => import('./pages/admin-members.component').then((module) => module.AdminMembersComponent)
+    loadComponent: () => import('./pages/members/admin-members.component').then((module) => module.AdminMembersComponent)
   },
   {
     path: 'set-round-winner',
     label: 'Winner Control',
     section: 'Member Control',
     icon: 'winners',
-    loadComponent: () => import('./pages/admin-winners.component').then((module) => module.AdminWinnersComponent)
+    loadComponent: () => import('./pages/winners/admin-winners.component').then((module) => module.AdminWinnersComponent)
   },
   {
     path: 'payments',
     label: 'Payment Operations',
     section: 'Finance Desk',
     icon: 'payments',
-    loadComponent: () => import('./pages/admin-payments.component').then((module) => module.AdminPaymentsComponent)
+    loadComponent: () => import('./pages/payments/admin-payments.component').then((module) => module.AdminPaymentsComponent)
   },
   {
     path: 'bank',
     label: 'Bank Profiles',
     section: 'Finance Desk',
     icon: 'bank',
-    loadComponent: () => import('./pages/admin-bank.component').then((module) => module.AdminBankComponent)
+    loadComponent: () => import('./pages/bank/admin-bank.component').then((module) => module.AdminBankComponent)
   },
   {
     path: 'hand-cash',
     label: 'Hand Cash',
     section: 'Finance Desk',
     icon: 'cash',
-    loadComponent: () => import('./pages/admin-hand-cash.component').then((module) => module.AdminHandCashComponent)
+    loadComponent: () => import('./pages/hand-cash/admin-hand-cash.component').then((module) => module.AdminHandCashComponent)
   }
 ];
 
