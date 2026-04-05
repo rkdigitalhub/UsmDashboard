@@ -19,9 +19,11 @@ interface ReportRow {
   styleUrls: ['./reports.component.scss']
 })
 export class ReportsComponent {
+  private readonly fixedInvestmentAmount = 500000;
+  private readonly baseInvestmentAmount = 250000;
   readonly headers = ['ROUNDS', 'INVESTMENT', 'PROFIT FROM (25%)', 'SETTLEMENT', 'INTEREST', 'TOTAL'];
 
-  readonly rows: ReportRow[] = [
+  private readonly baseRows: ReportRow[] = [
     { round: '1', investment: '250000', profitFrom25: '62500', settlement: '312500', interest: '0', total: '312500' },
     { round: '2', investment: '250000', profitFrom25: '67500', settlement: '317500', interest: '5000', total: '322500' },
     { round: '3', investment: '250000', profitFrom25: '72500', settlement: '322500', interest: '10000', total: '332500' },
@@ -46,4 +48,30 @@ export class ReportsComponent {
     { round: '19', investment: '250000', profitFrom25: '175000', settlement: '425000', interest: '150000', total: '575000' },
     { round: '20', investment: '250000', profitFrom25: '180000', settlement: '430000', interest: '162500', total: '592500' }
   ];
+
+  readonly rows: ReportRow[] = this.baseRows.map((row) => this.scaleRow(row));
+
+  private scaleRow(row: ReportRow): ReportRow {
+    return {
+      ...row,
+      investment: this.scaleAmount(row.investment),
+      profitFrom25: this.scaleEmbeddedAmount(row.profitFrom25),
+      settlement: this.scaleAmount(row.settlement),
+      interest: this.scaleEmbeddedAmount(row.interest),
+      total: this.scaleAmount(row.total)
+    };
+  }
+
+  private scaleAmount(value: string): string {
+    if (!/^\d+$/.test(value)) {
+      return value;
+    }
+
+    const scale = this.fixedInvestmentAmount / this.baseInvestmentAmount;
+    return Math.round(Number(value) * scale).toString();
+  }
+
+  private scaleEmbeddedAmount(value: string): string {
+    return value.replace(/(\d+)$/u, (match) => this.scaleAmount(match));
+  }
 }
