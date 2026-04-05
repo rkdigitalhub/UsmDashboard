@@ -5,7 +5,7 @@
   </button>
 
   <div class="logo">
-    <img src="assets/USM_Logo.png" alt="USM Logo" />
+    <img src="assets/usm_final.png" alt="USM Logo" />
   </div>
 
   <nav>
@@ -39,12 +39,11 @@
       <span class="menu-label">Settings</span>
     </a>
 
-    <a routerLink="/spin-wheel" routerLinkActive="active" [attr.title]="isCollapsed ? 'Spin Wheel' : null" (click)="onNavItemClick()">
+    <a routerLink="/spin-wheel" routerLinkActive="active" [attr.title]="isCollapsed ? 'Spin Wheel' : null" (click)="onSpinWheelClick()">
       <span class="menu-icon icon-wheel" aria-hidden="true">
         <img src="assets/spin-wheel-menu.svg" alt="" />
       </span>
       <span class="menu-label">Spin Wheel</span>
     </a>
   </nav>
-
 </div>

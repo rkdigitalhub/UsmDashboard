@@ -9,7 +9,7 @@
   </section>
 
   <section class="rewards-grid">
-    <div class="card-dark panel">
+    <div class="card-dark panel rewards-panel investor-panel">
       <h3>Investor Benefits</h3>
 
       <div class="flex-box-list">
@@ -19,73 +19,68 @@
         </div>
 
         <div class="flex-box">
-          <label>Winning Amount - Investor Benefit</label>
+          <label>Winning Amount</label>
           <strong>{{ winningAmountInvestorBenefit }}</strong>
         </div>
 
         <div class="flex-box">
-          <label>Monthly Interest - Investor Benefit</label>
+          <label>Monthly Interest</label>
           <strong>{{ monthlyInterestInvestorBenefit }}</strong>
         </div>
       </div>
     </div>
 
-    <div class="card-dark panel">
+    <div class="card-dark panel rewards-panel leader-panel">
       <h3>Leader Rewards</h3>
 
       <div class="flex-box-list">
-        <div class="flex-box">
-          <label>Referral Rewards (2.5%)</label>
+        <div class="flex-box incentive-box">
+          <label>Referral Rewards</label>
           <strong>{{ referralRewardsLeader }}</strong>
+
+          <div class="incentive-timeline" aria-label="Referral reward slab details">
+            <span class="incentive-pill">First 15 days: <b>5%</b></span>
+            <span class="incentive-pill">After 15 days: <b>2.5%</b></span>
+          </div>
         </div>
 
-        <div class="flex-box">
-          <label>Incentive Rewards (Monthly 2%)</label>
+        <div class="flex-box incentive-box">
+          <label>Incentive Rewards</label>
           <strong>{{ incentiveRewardsLeader }}</strong>
+
+          <div class="incentive-timeline" aria-label="Incentive reward slab details">
+            <span class="incentive-pill">First 15 days: <b>2%</b></span>
+            <span class="incentive-pill">After 15 days: <b>1%</b></span>
+          </div>
         </div>
 
-        <div class="flex-box">
-          <label>Redeem Rewards (2% Points) Wallet</label>
+        <div class="flex-box incentive-box">
+          <label>Redeem Rewards</label>
           <strong>{{ redeemRewardsWalletLeader }}</strong>
+
+          <div class="incentive-timeline" aria-label="Redeem reward slab details">
+            <span class="incentive-pill">First 15 days: <b>2%</b></span>
+            <span class="incentive-pill">After 15 days: <b>1%</b></span>
+          </div>
         </div>
 
         <div class="flex-box">
-          <label>Premium Reward (Object Reward)</label>
+          <label>Premium Reward</label>
           <strong>{{ premiumRewardLeader }}</strong>
         </div>
       </div>
 
       <div class="actions">
-        <button class="btn-gold" type="button" (click)="openRewardsPopup()">
-          Redeem Reward / Premium Reward
+        <button class="btn-gold" type="button" [disabled]="true" aria-disabled="true">
+          Redeem Reward
         </button>
       </div>
     </div>
   </section>
 
   <section class="card-dark notify">
-    <h3>Next Spin Wheel Notification</h3>
-    <p>{{ nextSpinNotification }}</p>
+    <h3>Next Spin Wheel</h3>
+    <p>{{ nextSpinTeamName }} - {{ nextSpinDateText }}</p>
+    <p class="countdown-line">Remaining: <strong>{{ nextSpinCountdown }}</strong></p>
   </section>
-
-  <div class="popup-backdrop" *ngIf="showRewardsPopup" (click)="closeRewardsPopup()">
-    <div class="popup" (click)="$event.stopPropagation()" role="dialog" aria-modal="true" aria-label="Rewards details">
-      <div class="popup-head">
-        <h4>Rewards Details</h4>
-        <button class="btn-close" type="button" (click)="closeRewardsPopup()">X</button>
-      </div>
-
-      <div class="flex-box-list popup-box-list">
-        <div class="flex-box">
-          <label>Redeem Rewards (2% Points) Wallet</label>
-          <strong>{{ redeemRewardsWalletLeader }}</strong>
-        </div>
-
-        <div class="flex-box">
-          <label>Premium Reward (Object Reward)</label>
-          <strong>{{ premiumRewardLeader }}</strong>
-        </div>
-      </div>
-    </div>
-  </div>
 </div>

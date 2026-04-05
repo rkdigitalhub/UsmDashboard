@@ -1,6 +1,9 @@
 import { NgFor, NgIf } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ApiService } from '../../services/api.service';
+import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
+import { LayoutUiService } from '../../services/layout-ui.service';
+import { SpinScheduleService } from '../../services/spin-schedule.service';
 
 interface User {
   id: string;
@@ -23,8 +26,21 @@ interface CashDrop {
   styleUrls: ['./spin-wheel.component.scss']
 })
 export class SpinWheelComponent implements OnDestroy, OnInit {
+  accessBlocked = false;
+  showAccessBlockedPopup = false;
+  accessBlockedWaitTime = '';
+  accessBlockedDateText = '';
+  currentUserId = '';
+  private accessBlockedTimerId: number | null = null;
+  private hasAutoStartedSpin = false;
+  private autoStartSpinAfterEntryCountdown = false;
 
-  constructor(private readonly apiService: ApiService) {}
+  constructor(
+    private readonly router: Router,
+    private readonly layoutUi: LayoutUiService,
+    private readonly authService: AuthService,
+    private readonly spinScheduleService: SpinScheduleService
+  ) {}
   users: User[] = [];
   usersLoading = true;
   usersError = '';
@@ -37,17 +53,22 @@ export class SpinWheelComponent implements OnDestroy, OnInit {
 
   wheelAngle = 0;
   isRolling = false;
+  isSpinPreparing = false;
   showWinnerPopup = false;
+  showSpinStartNotice = false;
 
   lotSlots: string[] = ['U', 'S', 'M', '0', '0', '0', '0', '0'];
+  private targetLotDigits: string[] | null = null;
   private lotIntervalId: number | null = null;
   private audioContext: AudioContext | null = null;
   private spinSoundTimerId: number | null = null;
+  private spinStartNoticeTimerId: number | null = null;
   private entrySpinnerTimerId: number | null = null;
   private entryCountdownTimerId: number | null = null;
   private spinAmbientOscillator: OscillatorNode | null = null;
   private spinAmbientGain: GainNode | null = null;
   private spinTickCount = 0;
+  private previousBodyOverflowY: string | null = null;
   private readonly spinDurationMs = 30000;
   private readonly spinSlowPhaseStartMs = 25000;
   private readonly entrySpinnerDurationMs = 1400;
@@ -78,8 +99,35 @@ export class SpinWheelComponent implements OnDestroy, OnInit {
     { left: '98%', delay: '1.1s', duration: '2.9s', drift: '15px', rotate: '8deg' }
   ];
 
+  private readonly staticUsers: User[] = [
+    { id: 'USM78250', name: 'Biruntha' },
+    { id: 'USM71295', name: 'Manikandan' },
+    { id: 'USM79580', name: 'Mozhi K' },
+    { id: 'USM71504', name: 'SIVA KUMAR R' },
+    { id: 'USM74058', name: 'Sindhuja siva' },
+    { id: 'USM75340', name: 'Sonika.k' },
+    { id: 'USM75213', name: 'Sashvath.k' },
+    { id: 'USM75114', name: 'Sivaranjini' },
+    { id: 'USM71079', name: 'M SHANKAR' },
+    { id: 'USM74008', name: 'Santhosh T' },
+    { id: 'USM73832', name: 'Tamilarasi c' },
+    { id: 'USM77163', name: 'Pasuvaraj' },
+    { id: 'USM76253', name: 'MANIVANNAN' },
+    { id: 'USM77092', name: 'Maheshwari R' },
+    { id: 'USM78438', name: 'SOUNDHAR RAJAN C' },
+    { id: 'USM73690', name: 'Vidhya N' },
+    { id: 'USM77335', name: 'KIRUBAKARAN R' },
+    { id: 'USM76268', name: 'DHANASEKARAN G' },
+    { id: 'USM73347', name: 'ESHWARAN G' },
+    { id: 'USM71135', name: 'HEMAVARSHINI' }
+  ];
+
+  private readonly previousWinnerIds = new Set<string>([]);
+
+  readonly winnerStars = Array.from({ length: 10 }, (_, i) => i);
+
   get canRoll(): boolean {
-    return !this.isRolling;
+    return !this.accessBlocked && !this.isRolling && !this.isSpinPreparing;
   }
 
   get sliceAngle(): number {
@@ -113,83 +161,130 @@ export class SpinWheelComponent implements OnDestroy, OnInit {
     return `repeating-conic-gradient(from 0deg, rgba(255, 217, 120, 0.32) 0deg 1deg, transparent 1deg ${segment}deg)`;
   }
 
+  isPreviousWinner(user: User): boolean {
+    return this.previousWinnerIds.has(user.id.trim().toUpperCase());
+  }
+
   ngOnInit(): void {
+    this.applySpinPageBodyOverflowLock();
+    this.currentUserId = this.authService.getCurrentUser()?.userId.trim().toUpperCase() ?? '';
     this.loadGroupUsers();
+    this.checkSpinAvailability();
+    if (this.accessBlocked) {
+      this.showEntryOverlay = false;
+      this.showEntrySpinner = false;
+      this.startAccessBlockedCountdown();
+      return;
+    }
     this.startEntrySequence();
+  }
+
+  private checkSpinAvailability(): void {
+    const spinSchedule = this.spinScheduleService.getSpinSchedule(this.authService.getCurrentUser());
+    this.accessBlocked = !spinSchedule.isAvailable;
+
+    if (!this.accessBlocked) {
+      this.accessBlockedWaitTime = '';
+      this.accessBlockedDateText = spinSchedule.dateText;
+      this.showAccessBlockedPopup = false;
+      if (this.message.startsWith('Spin wheel unlocks in')) {
+        this.message = '';
+      }
+      return;
+    }
+
+    this.accessBlockedWaitTime = spinSchedule.remainingText;
+    this.accessBlockedDateText = spinSchedule.dateText;
+    this.showAccessBlockedPopup = true;
+    this.message = `Exclusive spin access unlocking soon. Unlocks in ${spinSchedule.remainingText}.`;
+  }
+
+  private startAccessBlockedCountdown(): void {
+    if (this.accessBlockedTimerId !== null) {
+      window.clearInterval(this.accessBlockedTimerId);
+      this.accessBlockedTimerId = null;
+    }
+
+    this.accessBlockedTimerId = window.setInterval(() => {
+      const wasBlocked = this.accessBlocked;
+      this.checkSpinAvailability();
+
+      if (wasBlocked && !this.accessBlocked) {
+        this.showAccessBlockedPopup = false;
+        if (this.accessBlockedTimerId !== null) {
+          window.clearInterval(this.accessBlockedTimerId);
+          this.accessBlockedTimerId = null;
+        }
+
+        if (!this.hasAutoStartedSpin) {
+          this.hasAutoStartedSpin = true;
+          this.autoStartSpinAfterEntryCountdown = true;
+          this.startEntrySequence();
+        }
+      }
+    }, 1000);
+  }
+
+  private applySpinPageBodyOverflowLock(): void {
+    if (typeof document === 'undefined') {
+      return;
+    }
+
+    this.previousBodyOverflowY = document.body.style.overflowY;
+    document.body.style.overflowY = 'hidden';
   }
 
   private loadGroupUsers(): void {
     this.usersLoading = true;
     this.usersError = '';
-    this.apiService.getGroupPage().subscribe({
-      next: (html) => {
-        this.usersLoading = false;
-        this.users = this.parseUsersFromHtml(html);
-        if (!this.users.length) {
-          this.usersError = 'No participants found.';
-        }
-      },
-      error: () => {
-        this.usersLoading = false;
-        this.usersError = 'Failed to load participants.';
-      }
-    });
-  }
-
-  /**
-   * Parses the raw HTML from group.php and extracts User objects.
-   * Looks for a <table> whose headers contain an ID column and a Name column.
-   * Falls back to positional heuristics so it works even if header text changes.
-   */
-  private parseUsersFromHtml(html: string): User[] {
-    const doc = new DOMParser().parseFromString(html, 'text/html');
-    const tables = Array.from(doc.querySelectorAll('table'));
-    if (!tables.length) {
-      return [];
+    this.users = this.staticUsers.map((user) => ({ ...user }));
+    this.usersLoading = false;
+    if (!this.users.length) {
+      this.usersError = 'No participants found.';
     }
-
-    // Pick the largest table (most rows) as the participant table.
-    const table = tables.reduce((best, t) =>
-      t.querySelectorAll('tbody tr, tr').length > best.querySelectorAll('tbody tr, tr').length ? t : best
-    );
-
-    const headerCells = Array.from(table.querySelectorAll('thead th, thead td, tr:first-child th, tr:first-child td'))
-      .map((el) => el.textContent?.trim().toLowerCase() ?? '');
-
-    const idKeywords   = ['user id', 'userid', 'member id', 'memberid', 'id'];
-    const nameKeywords = ['name', 'full name', 'member name', 'username'];
-
-    let idCol   = headerCells.findIndex((h) => idKeywords.some((k)   => h.includes(k)));
-    let nameCol = headerCells.findIndex((h) => nameKeywords.some((k) => h.includes(k)));
-
-    // Positional fallback: first column is ID, second is name.
-    if (idCol   < 0) { idCol   = 0; }
-    if (nameCol < 0) { nameCol = 1; }
-
-    const dataRows = Array.from(table.querySelectorAll('tbody tr'));
-    const rows     = dataRows.length ? dataRows : Array.from(table.querySelectorAll('tr')).slice(1);
-
-    const users: User[] = [];
-    rows.forEach((tr) => {
-      const cells = Array.from(tr.querySelectorAll('td'));
-      const id   = cells[idCol]?.textContent?.trim()   ?? '';
-      const name = cells[nameCol]?.textContent?.trim() ?? '';
-      if (id && name) {
-        users.push({ id, name });
-      }
-    });
-    return users;
   }
 
   roll(): void {
+    this.checkSpinAvailability();
+
+    if (this.accessBlocked) {
+      this.showAccessBlockedPopup = true;
+      this.showWinnerPopup = false;
+      return;
+    }
+
     if (!this.canRoll) {
       this.message = 'Roll is already in progress.';
+      return;
+    }
+
+    this.isSpinPreparing = true;
+    this.showSpinStartNotice = true;
+    this.layoutUi.setSidebarCollapsed(true);
+    void this.enterFullscreen();
+
+    if (this.spinStartNoticeTimerId !== null) {
+      window.clearTimeout(this.spinStartNoticeTimerId);
+      this.spinStartNoticeTimerId = null;
+    }
+
+    this.spinStartNoticeTimerId = window.setTimeout(() => {
+      this.showSpinStartNotice = false;
+      this.isSpinPreparing = false;
+      this.startSpin();
+      this.spinStartNoticeTimerId = null;
+    }, 1000);
+  }
+
+  private startSpin(): void {
+    if (this.isRolling) {
       return;
     }
 
     this.showWinnerPopup = false;
     this.isRolling = true;
     this.winner = null;
+    this.targetLotDigits = null;
     this.message = 'Fetching winner from server...';
     const spinStartTime = Date.now();
     this.startLotShuffle(spinStartTime);
@@ -216,6 +311,7 @@ export class SpinWheelComponent implements OnDestroy, OnInit {
         if (delta < 0) { delta += 360; }
 
         this.wheelAngle += fullRotations + delta;
+        this.targetLotDigits = chosenWinner.id.replace(/\D/g, '').slice(-5).padStart(5, '0').split('');
         this.message = 'Rolling wheel and lot...';
 
         window.setTimeout(() => {
@@ -237,6 +333,16 @@ export class SpinWheelComponent implements OnDestroy, OnInit {
   }
 
   ngOnDestroy(): void {
+    if (typeof document !== 'undefined' && this.previousBodyOverflowY !== null) {
+      document.body.style.overflowY = this.previousBodyOverflowY;
+      this.previousBodyOverflowY = null;
+    }
+
+    if (this.spinStartNoticeTimerId !== null) {
+      window.clearTimeout(this.spinStartNoticeTimerId);
+      this.spinStartNoticeTimerId = null;
+    }
+
     if (this.entrySpinnerTimerId !== null) {
       window.clearTimeout(this.entrySpinnerTimerId);
       this.entrySpinnerTimerId = null;
@@ -245,6 +351,11 @@ export class SpinWheelComponent implements OnDestroy, OnInit {
     if (this.entryCountdownTimerId !== null) {
       window.clearInterval(this.entryCountdownTimerId);
       this.entryCountdownTimerId = null;
+    }
+
+    if (this.accessBlockedTimerId !== null) {
+      window.clearInterval(this.accessBlockedTimerId);
+      this.accessBlockedTimerId = null;
     }
 
     this.stopSpinSound();
@@ -256,6 +367,57 @@ export class SpinWheelComponent implements OnDestroy, OnInit {
 
   closeWinnerPopup(): void {
     this.showWinnerPopup = false;
+    this.layoutUi.setSidebarCollapsed(false);
+    void this.exitFullscreen();
+  }
+
+  closeAccessBlockedPopup(): void {
+    this.showAccessBlockedPopup = false;
+    void this.router.navigate(['/dashboard']);
+  }
+
+  private async enterFullscreen(): Promise<void> {
+    if (typeof document === 'undefined') {
+      return;
+    }
+
+    if (document.fullscreenElement) {
+      return;
+    }
+
+    const root = document.documentElement as HTMLElement & {
+      webkitRequestFullscreen?: () => Promise<void>;
+    };
+
+    try {
+      if (root.requestFullscreen) {
+        await root.requestFullscreen();
+      } else if (root.webkitRequestFullscreen) {
+        await root.webkitRequestFullscreen();
+      }
+    } catch {
+      // Fullscreen can fail due to browser policies; spin should continue anyway.
+    }
+  }
+
+  private async exitFullscreen(): Promise<void> {
+    if (typeof document === 'undefined') {
+      return;
+    }
+
+    const doc = document as Document & {
+      webkitExitFullscreen?: () => Promise<void>;
+    };
+
+    try {
+      if (doc.fullscreenElement && doc.exitFullscreen) {
+        await doc.exitFullscreen();
+      } else if (doc.webkitExitFullscreen) {
+        await doc.webkitExitFullscreen();
+      }
+    } catch {
+      // Ignore fullscreen exit failures.
+    }
   }
 
   getLabelTransform(index: number): string {
@@ -263,6 +425,44 @@ export class SpinWheelComponent implements OnDestroy, OnInit {
     const radius = 144;
     // Position at segment center and rotate tangentially for cleaner wheel-style alignment.
     return `translate(-50%, -50%) rotate(${angle}deg) translateY(-${radius}px) rotate(90deg)`;
+  }
+
+  get isCurrentUserWinner(): boolean {
+    return !!this.winner && !!this.currentUserId && this.winner.id.trim().toUpperCase() === this.currentUserId;
+  }
+
+  get winnerPopupTitle(): string {
+    return this.isCurrentUserWinner ? 'Jackpot Moment' : 'Congratulations';
+  }
+
+  get winnerPopupMessage(): string {
+    return this.isCurrentUserWinner
+      ? 'The wheel stopped on your name. This celebration is all yours.'
+      : 'The wheel has chosen this round\'s lucky winner.';
+  }
+
+  get accessBlockedScheduledTimeText(): string {
+    return this.getScheduleParts().time;
+  }
+
+  get accessBlockedScheduledDateText(): string {
+    return this.getScheduleParts().date;
+  }
+
+  private getScheduleParts(): { date: string; time: string } {
+    const segments = this.accessBlockedDateText.split(',').map((segment) => segment.trim()).filter(Boolean);
+
+    if (segments.length >= 3) {
+      return {
+        date: `${segments[0]}, ${segments[1]}`,
+        time: segments[2]
+      };
+    }
+
+    return {
+      date: this.accessBlockedDateText,
+      time: this.accessBlockedDateText
+    };
   }
 
   getRimBulbTransform(index: number): string {
@@ -280,15 +480,26 @@ export class SpinWheelComponent implements OnDestroy, OnInit {
     this.lotIntervalId = window.setInterval(() => {
       const elapsedTime = Date.now() - spinStartTime;
 
-      // In the last 5 seconds, only update every 6 iterations (slower effect)
+      // Progressive deceleration: noticeably slower in the final 5s.
       const isLastPhase = elapsedTime > this.spinSlowPhaseStartMs;
-      if (isLastPhase && iteration % 6 !== 0) {
+      const isFinalTwoSeconds = elapsedTime > this.spinDurationMs - 2000;
+      const isFinalHalfSecond = elapsedTime > this.spinDurationMs - 500;
+
+      const updateEvery = isLastPhase
+        ? isFinalHalfSecond
+          ? 24
+          : isFinalTwoSeconds
+            ? 14
+            : 8
+        : 2;
+
+      if (iteration % updateEvery !== 0) {
         iteration++;
         return;
       }
 
       iteration++;
-      
+
       // Create rotating digits with varying speeds for each position.
       // Base speed must NOT be an integer multiple of 10 — otherwise digit stays fixed at 0.
       const digits = Array.from({ length: 5 }, (_, index) => {
@@ -297,7 +508,21 @@ export class SpinWheelComponent implements OnDestroy, OnInit {
         const rotationOffset = Math.floor((iteration * speed) % 10);
         return rotationOffset.toString();
       });
-      
+
+      // During the final phase, progressively lock digits to the winner ID
+      // so the displayed lot converges smoothly before the spin stops.
+      if (isLastPhase && this.targetLotDigits !== null) {
+        const phaseDuration = this.spinDurationMs - this.spinSlowPhaseStartMs;
+        const phaseElapsed = Math.max(0, elapsedTime - this.spinSlowPhaseStartMs);
+        const phaseProgress = Math.min(phaseElapsed / phaseDuration, 1);
+        const lockCount = Math.min(5, Math.floor(phaseProgress * 6));
+
+        for (let i = 0; i < lockCount; i++) {
+          const digitIndex = 4 - i; // lock from right to left
+          digits[digitIndex] = this.targetLotDigits[digitIndex];
+        }
+      }
+
       this.lotSlots = ['U', 'S', 'M', ...digits];
 
       // Stop when spin duration completes
@@ -320,7 +545,7 @@ export class SpinWheelComponent implements OnDestroy, OnInit {
 
   private fetchWinnerFromServer(): Promise<User> {
     // TODO: replace with real server call after API integration.
-    const defaultWinner: User = { id: 'USM15374', name: 'Karnan V' };
+    const defaultWinner: User = { id: 'USM77335', name: 'KIRUBAKARAN R' };
     return new Promise((resolve, reject) => {
       const target = this.users.find((u) => u.id === defaultWinner.id) ?? defaultWinner;
       if (!this.users.length) {
@@ -611,6 +836,11 @@ export class SpinWheelComponent implements OnDestroy, OnInit {
       if (this.entryCountdownTimerId !== null) {
         window.clearInterval(this.entryCountdownTimerId);
         this.entryCountdownTimerId = null;
+      }
+
+      if (this.autoStartSpinAfterEntryCountdown) {
+        this.autoStartSpinAfterEntryCountdown = false;
+        this.roll();
       }
     }, this.entryCountdownStepMs);
   }

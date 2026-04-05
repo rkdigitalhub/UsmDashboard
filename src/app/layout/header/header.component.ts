@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
+import { AuthService } from '../../services/auth.service';
 import { LayoutUiService } from '../../services/layout-ui.service';
 
 @Component({
@@ -13,7 +14,7 @@ import { LayoutUiService } from '../../services/layout-ui.service';
 export class HeaderComponent implements OnInit {
   pageTitle = 'Dashboard';
 
-  constructor(private router: Router, private layoutUi: LayoutUiService) {}
+  constructor(private router: Router, private layoutUi: LayoutUiService, private authService: AuthService) {}
 
   ngOnInit(): void {
     this.updateTitle(this.router.url);
@@ -42,6 +43,7 @@ export class HeaderComponent implements OnInit {
   }
 
   logout() {
+    this.authService.logout();
     this.router.navigate(['/']);
   }
 

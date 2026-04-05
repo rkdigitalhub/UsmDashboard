@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ApiService } from '../../services/api.service';
+import { AuthService, SafeAppUser } from '../../services/auth.service';
 
 interface UserProfile {
   name: string;
@@ -29,6 +29,8 @@ interface BankDetails {
   styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent implements OnInit {
+  currentUserId = '';
+
   profile: UserProfile = {
     name: '',
     address: '',
@@ -48,145 +50,89 @@ export class ProfileComponent implements OnInit {
   };
 
   savedMessage = '';
+  private messageTimeoutId: ReturnType<typeof setTimeout> | null = null;
 
-  constructor(private apiService: ApiService) {
-    const saved = localStorage.getItem('userProfile');
-    if (saved) {
-      try {
-        this.profile = JSON.parse(saved);
-      } catch {
-        this.profile = this.profile;
-      }
-    }
-
-    const savedBank = localStorage.getItem('userBankDetails');
-    if (savedBank) {
-      try {
-        this.bankDetails = JSON.parse(savedBank);
-      } catch {
-        this.bankDetails = this.bankDetails;
-      }
-    }
-  }
+  constructor(private readonly authService: AuthService) {}
 
   ngOnInit(): void {
-    this.loadServerProfile();
-    this.loadServerBankDetails();
+    this.loadCurrentUserProfile();
   }
 
-  loadServerProfile() {
-    this.apiService.getProfilePage().subscribe({
-      next: (htmlText) => {
-        this.mapProfileFromHtml(htmlText);
-      },
-      error: (err) => {
-        console.error('Failed loading profile.php', err);
-      }
-    });
-  }
+  private loadCurrentUserProfile(): void {
+    const currentUser = this.authService.getCurrentUser();
 
-  loadServerBankDetails() {
-    this.apiService.getBankPage().subscribe({
-      next: (htmlText) => {
-        this.mapBankDetailsFromHtml(htmlText);
-      },
-      error: (err) => {
-        console.error('Failed loading bank.php', err);
-      }
-    });
-  }
+    if (!currentUser) {
+      return;
+    }
 
-  private mapProfileFromHtml(html: string) {
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(html, 'text/html');
+    this.currentUserId = currentUser.userId;
 
-    const extractByName = (name: string) => {
-      const el = doc.querySelector(`[name="${name}"]`) as HTMLInputElement | null;
-      return el ? el.value : '';
+    this.profile = {
+      name: currentUser.name,
+      address: '',
+      city: currentUser.location,
+      mobile: currentUser.mobile ?? '',
+      email: '',
+      pincode: ''
     };
 
-    // Fallback: if profile page contains text fields not using known names,
-    // adjust selectors accordingly.
-    const name = extractByName('name');
-    if (name) {
-      this.profile.name = name;
+    this.bankDetails = {
+      accountHolder: currentUser.name,
+      bankName: currentUser.bankName,
+      accountNumber: '',
+      ifscCode: '',
+      branch: currentUser.branch,
+      upiId: ''
+    };
+
+    this.mergeSavedProfile(currentUser);
+  }
+
+  private mergeSavedProfile(currentUser: SafeAppUser): void {
+    const savedProfileKey = this.getUserProfileStorageKey(currentUser.userId);
+    const savedBankKey = this.getUserBankStorageKey(currentUser.userId);
+
+    const savedProfile = localStorage.getItem(savedProfileKey);
+    if (savedProfile) {
+      try {
+        this.profile = { ...this.profile, ...JSON.parse(savedProfile) as Partial<UserProfile> };
+      } catch {
+        localStorage.removeItem(savedProfileKey);
+      }
     }
 
-    const address = extractByName('address');
-    if (address) {
-      this.profile.address = address;
-    }
-
-    const city = extractByName('city');
-    if (city) {
-      this.profile.city = city;
-    }
-
-    const mobile = extractByName('mobile');
-    if (mobile) {
-      this.profile.mobile = mobile;
-    }
-
-    const email = extractByName('email');
-    if (email) {
-      this.profile.email = email;
-    }
-
-    const pincode = extractByName('pincode');
-    if (pincode) {
-      this.profile.pincode = pincode;
+    const savedBank = localStorage.getItem(savedBankKey);
+    if (savedBank) {
+      try {
+        this.bankDetails = { ...this.bankDetails, ...JSON.parse(savedBank) as Partial<BankDetails> };
+      } catch {
+        localStorage.removeItem(savedBankKey);
+      }
     }
   }
 
-  private mapBankDetailsFromHtml(html: string) {
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(html, 'text/html');
+  private getUserProfileStorageKey(userId: string): string {
+    return `userProfile:${userId}`;
+  }
 
-    const extractByNames = (names: string[]) => {
-      for (const name of names) {
-        const el = doc.querySelector(`[name="${name}"]`) as HTMLInputElement | HTMLTextAreaElement | null;
-        if (el && el.value) {
-          return el.value;
-        }
-      }
-      return '';
-    };
-
-    const accountHolder = extractByNames(['account_holder', 'holder_name', 'acc_holder', 'name']);
-    if (accountHolder) {
-      this.bankDetails.accountHolder = accountHolder;
-    }
-
-    const bankName = extractByNames(['bank_name', 'bank', 'bname']);
-    if (bankName) {
-      this.bankDetails.bankName = bankName;
-    }
-
-    const accountNumber = extractByNames(['account_no', 'account_number', 'acc_no']);
-    if (accountNumber) {
-      this.bankDetails.accountNumber = accountNumber;
-    }
-
-    const ifscCode = extractByNames(['ifsc', 'ifsc_code', 'ifsccode']);
-    if (ifscCode) {
-      this.bankDetails.ifscCode = ifscCode;
-    }
-
-    const branch = extractByNames(['branch', 'bank_branch']);
-    if (branch) {
-      this.bankDetails.branch = branch;
-    }
-
-    const upiId = extractByNames(['upi', 'upi_id', 'upiid']);
-    if (upiId) {
-      this.bankDetails.upiId = upiId;
-    }
+  private getUserBankStorageKey(userId: string): string {
+    return `userBankDetails:${userId}`;
   }
 
   saveProfile() {
-    localStorage.setItem('userProfile', JSON.stringify(this.profile));
-    localStorage.setItem('userBankDetails', JSON.stringify(this.bankDetails));
-    this.savedMessage = 'Profile and bank details saved successfully.';
-    setTimeout(() => (this.savedMessage = ''), 3000);
+    if (!this.currentUserId) {
+      return;
+    }
+
+    this.savedMessage = 'Profile updates will be available soon once security system is upgraded. Your current details stay safely as they are for now.';
+
+    if (this.messageTimeoutId) {
+      clearTimeout(this.messageTimeoutId);
+    }
+
+    this.messageTimeoutId = setTimeout(() => {
+      this.savedMessage = '';
+      this.messageTimeoutId = null;
+    }, 3500);
   }
 }

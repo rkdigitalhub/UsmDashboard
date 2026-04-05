@@ -3,16 +3,16 @@
 <div class="login-card">
 
 <div class="logo">
-    <img src="./../../../assets/USM_Logo.png" alt="USM Logo">
+  <img src="assets/usm_final.png" alt="USM Logo">
 </div>
 
 <form (ngSubmit)="login()">
 
   <input
     type="text"
-    placeholder="User ID (USMxxxx)"
+    placeholder="User ID (USM7xxxx)"
     [(ngModel)]="userId"
-    (ngModelChange)="clearError()"
+    (ngModelChange)="clearMessages()"
     name="userId"
     maxlength="8"
   />
@@ -21,12 +21,17 @@
     type="password"
     placeholder="Password"
     [(ngModel)]="password"
-    (ngModelChange)="clearError()"
+    (ngModelChange)="clearMessages()"
     name="password"
-    maxlength="15"
+    maxlength="8"
   />
 
+  <button class="text-link" type="button" (click)="requestPasswordHelp()">
+    Forgot Password?
+  </button>
+
   <div class="error" *ngIf="errorMessage">{{ errorMessage }}</div>
+  <div class="info" *ngIf="infoMessage">{{ infoMessage }}</div>
 
   <button class="btn-gold" [disabled]="!canLogin">LOGIN</button>
 

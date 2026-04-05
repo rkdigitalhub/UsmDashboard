@@ -50,7 +50,7 @@
       </div>
 
       <ng-template #noTeams>
-        <p class="empty">No more teams available to subscribe.</p>
+        <p class="empty">No other active teams yet</p>
       </ng-template>
     </section>
   </div>
@@ -93,6 +93,8 @@
         <p><strong>Team name:</strong> {{ team.name }}</p>
         <p><strong>Total people subscribed:</strong> {{ team.subscribedCount }} out of 20</p>
         <p><strong>Starting date:</strong> {{ team.startingDate }}</p>
+        <p><strong>Investment amount:</strong> {{ team.investmentAmount }}</p>
+        <p><strong>Tenure:</strong> {{ team.tenureMonths }} months</p>
       </div>
 
       <div class="subscribe-actions">

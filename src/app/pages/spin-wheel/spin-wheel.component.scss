@@ -1,11 +1,10 @@
 .spin-page {
   min-height: calc(100vh - 140px);
-  padding: 24px;
   background: transparent;
   border-radius: 0;
   border: none;
   position: relative;
-  overflow: visible;
+  overflow-x: hidden;
 }
 
 .users-load-error {
@@ -66,70 +65,15 @@
   }
 }
 
-.spin-page::before {
-  position: absolute;
-  inset: 0;
-  background-image:
-    radial-gradient(1px 1px at 15% 20%, rgba(255, 215, 0, 0.7), transparent),
-    radial-gradient(1px 1px at 35% 65%, rgba(255, 215, 0, 0.5), transparent),
-    radial-gradient(1px 1px at 55% 30%, rgba(255, 215, 0, 0.6), transparent),
-    radial-gradient(1px 1px at 75% 80%, rgba(255, 215, 0, 0.4), transparent),
-    radial-gradient(1px 1px at 90% 45%, rgba(255, 215, 0, 0.5), transparent),
-    radial-gradient(1px 1px at 10% 85%, rgba(255, 215, 0, 0.4), transparent),
-    radial-gradient(1px 1px at 62% 55%, rgba(255, 215, 0, 0.3), transparent),
-    radial-gradient(1px 1px at 45% 10%, rgba(255, 215, 0, 0.5), transparent);
-  pointer-events: none;
-  animation: twinkleBg 6s ease-in-out infinite;
-}
-
-@keyframes twinkleBg {
-  0%, 100% { opacity: 0.4; }
-  50% { opacity: 1; }
-}
-
-.spin-head h1 {
-  margin: 0 0 8px;
-  color: #ffde44;
-}
-
-.spin-head p {
-  margin: 0 0 20px;
-  color: rgba(255, 255, 255, 0.72);
-}
-
 .spin-stage {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 32px;
-  margin-bottom: 32px;
-}
-
-.card {
-  background: transparent;
-  border: none;
-  border-radius: 0;
-  padding: 0;
-}
-
-.section-label {
-  margin: 0 0 12px;
-  text-align: center;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: rgba(255, 222, 68, 0.92);
-  font-size: 12px;
-}
-
-.center-roll {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
 }
 
 .btn-gold {
-  background: linear-gradient(90deg, #9f4a1b 0%, #ffde44 100%);
+  background: linear-gradient(90deg, #9f4a1b 0%, #d4af37 100%);
   color: #161616;
   border: none;
   border-radius: 8px;
@@ -141,19 +85,6 @@
 .btn-gold:disabled {
   opacity: 0.55;
   cursor: not-allowed;
-}
-
-.msg {
-  margin: 0;
-  padding: 10px;
-  border-radius: 8px;
-  background: rgba(255, 222, 68, 0.12);
-  color: #ffde44;
-}
-
-.msg.warn {
-  background: rgba(255, 124, 124, 0.12);
-  color: #ffafaf;
 }
 
 .wheel-panel {
@@ -300,6 +231,13 @@
   z-index: 3;
 }
 
+.wheel-label.previous-winner {
+  opacity: 0.6;
+  color: rgba(255, 217, 120, 0.58);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
+  filter: blur(0.8px) saturate(0.45);
+}
+
 .wheel-center {
   position: absolute;
   top: 50%;
@@ -350,16 +288,6 @@
   user-select: none;
   pointer-events: none;
   line-height: 1;
-}
-
-.winner {
-  margin-top: 12px;
-  color: #fff;
-  text-align: center;
-}
-
-.winner strong {
-  color: #ffde44;
 }
 
 .lot-panel {
@@ -449,7 +377,7 @@
   min-height: 288px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   gap: 6px;
   border-radius: 20px;
@@ -460,8 +388,28 @@
   box-shadow: 0 24px 56px rgba(0, 0, 0, 0.45);
   text-align: center;
   color: #fff;
-  padding: 20px 10px 16px;
+  padding: 20px 16px 20px;
   overflow: hidden;
+}
+
+.winner-result-popup {
+  padding-bottom: 88px;
+}
+
+.winner-popup.current-user-win {
+  width: min(390px, 100%);
+  min-height: 360px;
+  border-color: rgba(255, 231, 150, 0.68);
+  background:
+    radial-gradient(circle at 50% 8%, rgba(255, 230, 152, 0.34) 0%, rgba(36, 18, 3, 0.94) 52%, rgba(12, 8, 2, 0.98) 100%),
+    linear-gradient(145deg, rgba(87, 45, 8, 0.42) 0%, rgba(17, 10, 2, 0.9) 55%, rgba(50, 22, 3, 0.76) 100%);
+  box-shadow:
+    0 30px 70px rgba(0, 0, 0, 0.52),
+    0 0 45px rgba(255, 198, 84, 0.2);
+}
+
+.winner-result-popup.current-user-win {
+  padding-bottom: 104px;
 }
 
 .winner-popup::before {
@@ -474,6 +422,86 @@
   z-index: 1;
 }
 
+.winner-spotlight {
+  position: absolute;
+  inset: -8% 12% 24%;
+  background:
+    radial-gradient(circle at 50% 16%, rgba(255, 240, 186, 0.42) 0%, rgba(255, 212, 104, 0.2) 26%, transparent 58%),
+    linear-gradient(180deg, rgba(255, 232, 166, 0.18) 0%, rgba(255, 204, 90, 0.08) 34%, transparent 80%);
+  clip-path: polygon(50% 0%, 76% 100%, 24% 100%);
+  opacity: 0.95;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.winner-crown {
+  position: relative;
+  width: 78px;
+  height: 44px;
+  margin-top: 6px;
+  z-index: 5;
+}
+
+.winner-crown::before,
+.winner-crown::after,
+.winner-crown span {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  background: linear-gradient(180deg, #fff2b8 0%, #ffd978 40%, #d4911e 100%);
+  border: 1px solid rgba(255, 226, 138, 0.78);
+  box-shadow: 0 0 14px rgba(255, 209, 99, 0.28);
+}
+
+.winner-crown::before {
+  left: 0;
+  width: 22px;
+  height: 30px;
+  clip-path: polygon(0 100%, 50% 0, 100% 100%);
+}
+
+.winner-crown::after {
+  right: 0;
+  width: 22px;
+  height: 30px;
+  clip-path: polygon(0 100%, 50% 0, 100% 100%);
+}
+
+.winner-crown span {
+  left: 50%;
+  transform: translateX(-50%);
+  width: 32px;
+  height: 40px;
+  clip-path: polygon(0 100%, 50% 0, 100% 100%);
+}
+
+.winner-crown {
+  background: linear-gradient(180deg, rgba(255, 224, 134, 0.98) 0%, rgba(212, 145, 30, 0.95) 100%);
+  border-radius: 0 0 14px 14px;
+  border: 1px solid rgba(255, 224, 134, 0.72);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.22);
+}
+
+.winner-starfield {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.winner-star {
+  position: absolute;
+  left: var(--star-left);
+  top: var(--star-top);
+  width: 14px;
+  height: 14px;
+  background: radial-gradient(circle, #fff6c8 0%, #ffd978 52%, rgba(255, 217, 120, 0) 72%);
+  clip-path: polygon(50% 0%, 61% 37%, 100% 50%, 61% 63%, 50% 100%, 39% 63%, 0% 50%, 39% 37%);
+  filter: drop-shadow(0 0 8px rgba(255, 214, 129, 0.65));
+  opacity: 0.85;
+  animation: winnerStarPulse 1.9s ease-in-out infinite;
+}
+
 .popup-overline {
   margin: 0;
   text-transform: uppercase;
@@ -484,14 +512,69 @@
 
 .winner-popup h2 {
   margin: 8px 0 6px;
-  color: #ffde44;
+  color: #d4af37;
   font-size: 22px;
 }
 
 .popup-id {
   margin: 0 0 10px;
-  font-size: 13px;
+  font-size: 16px;
+  font-weight: 700;
   color: rgba(255, 255, 255, 0.9);
+}
+
+.popup-schedule-label {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.popup-schedule-value {
+  margin: 0;
+  line-height: 1.4;
+  color: #d4af37;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.winner-message {
+  margin: 0;
+  max-width: 29ch;
+  color: rgba(255, 245, 215, 0.94);
+  font-size: 0.94rem;
+  line-height: 1.45;
+}
+
+.winner-hero-copy {
+  position: relative;
+  z-index: 5;
+  width: min(290px, 100%);
+  margin-top: 6px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 224, 134, 0.26);
+  background: rgba(255, 221, 128, 0.08);
+  box-shadow: inset 0 0 18px rgba(255, 217, 120, 0.05);
+}
+
+.winner-highlight,
+.winner-subcopy {
+  margin: 0;
+}
+
+.winner-highlight {
+  color: #fff1bd;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+.winner-subcopy {
+  margin-top: 8px;
+  color: rgba(255, 239, 198, 0.84);
+  font-size: 0.9rem;
+  line-height: 1.4;
 }
 
 .burst-layer {
@@ -585,7 +668,7 @@
   width: 10px;
   height: 56px;
   border-radius: 8px;
-  background: linear-gradient(180deg, #ffde44 0%, #ef7f1a 100%);
+  background: linear-gradient(180deg, #d4af37 0%, #ef7f1a 100%);
   box-shadow: 0 0 10px rgba(255, 176, 64, 0.55);
   animation: crackerPop 0.8s ease-in-out infinite;
 }
@@ -609,6 +692,24 @@
 .winner-popup > :not(.cash-rain):not(.cracker-row):not(.burst-layer) {
   position: relative;
   z-index: 4;
+}
+
+.popup-actions {
+  position: relative;
+  z-index: 5;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: auto;
+  padding-top: 18px;
+}
+
+.winner-result-popup .popup-actions {
+  padding-top: 22px;
+}
+
+.winner-result-popup.current-user-win .popup-actions {
+  padding-top: 26px;
 }
 
 .cash-note {
@@ -713,44 +814,42 @@
   }
 }
 
+@keyframes winnerStarPulse {
+  0%,
+  100% {
+    transform: scale(0.72);
+    opacity: 0.45;
+  }
+  50% {
+    transform: scale(1.15);
+    opacity: 1;
+  }
+}
+
 @media (max-width: 980px) {
   .spin-page {
     padding: 14px;
     overflow-x: hidden;
+    overflow-y: hidden;
   }
 
   .spin-stage {
     gap: 12px;
   }
 
-  .card,
-  .center-roll {
-    width: min(100%, 460px);
-    box-sizing: border-box;
-  }
-
   .wheel-panel,
   .lot-panel {
     width: 100%;
+    box-sizing: border-box;
   }
 
   .wheel-shell {
     margin: 0 auto;
   }
 
-  .center-roll {
-    order: 2;
-    width: 100%;
-  }
-
   .lot-panel {
     order: 3;
     min-height: 0;
-  }
-
-  .msg {
-    width: 100%;
-    text-align: center;
   }
 
   .lot-grid {
@@ -767,6 +866,10 @@
 }
 
 @media (max-width: 620px) {
+  .winner-popup-backdrop {
+    padding: 14px;
+  }
+
   .wheel-shell {
     left: 50%;
     transform: translateX(-50%) scale(0.72);
@@ -774,11 +877,95 @@
   }
 
   .winner-popup {
-    padding: 24px 14px 18px;
+    min-height: 0;
+    gap: 4px;
+    padding: 18px 12px 16px;
+  }
+
+  .winner-result-popup {
+    padding-bottom: 70px;
+  }
+
+  .winner-result-popup.current-user-win {
+    width: min(350px, 100%);
+    padding-bottom: 84px;
   }
 
   .winner-popup h2 {
-    font-size: 26px;
+    margin: 6px 0 4px;
+    font-size: 22px;
+  }
+
+  .popup-id {
+    margin-bottom: 8px;
+    font-size: 14px;
+  }
+
+  .winner-message {
+    max-width: 24ch;
+    font-size: 0.88rem;
+    line-height: 1.35;
+  }
+
+  .winner-hero-copy {
+    width: min(260px, 100%);
+    margin-top: 4px;
+    padding: 10px 12px;
+  }
+
+  .winner-highlight,
+  .winner-subcopy {
+    line-height: 1.3;
+  }
+
+  .winner-subcopy {
+    margin-top: 6px;
+    font-size: 0.84rem;
+  }
+
+  .winner-crown {
+    width: 64px;
+    height: 36px;
+    margin-top: 2px;
+  }
+
+  .winner-crown::before,
+  .winner-crown::after {
+    width: 18px;
+    height: 24px;
+  }
+
+  .winner-crown span {
+    width: 26px;
+    height: 32px;
+  }
+
+  .winner-star {
+    width: 11px;
+    height: 11px;
+  }
+
+  .cracker-row {
+    bottom: 10px;
+    gap: 4px;
+  }
+
+  .cracker {
+    width: 8px;
+    height: 44px;
+  }
+
+  .winner-result-popup .popup-actions {
+    padding-top: 16px;
+  }
+
+  .winner-result-popup.current-user-win .popup-actions {
+    padding-top: 20px;
+  }
+
+  .popup-actions .btn-gold {
+    min-width: 112px;
+    padding: 9px 12px;
   }
 
   .lot-grid {
@@ -798,9 +985,41 @@
     padding: 10px;
   }
 
+  .winner-popup-backdrop {
+    padding: 10px;
+  }
+
   .wheel-shell {
     left: 50%;
     transform: translateX(-50%) scale(0.56);
+  }
+
+  .winner-popup {
+    width: min(300px, 100%);
+    padding-inline: 10px;
+  }
+
+  .winner-result-popup {
+    padding-bottom: 64px;
+  }
+
+  .winner-result-popup.current-user-win {
+    width: min(312px, 100%);
+    padding-bottom: 76px;
+  }
+
+  .winner-popup h2 {
+    font-size: 20px;
+  }
+
+  .winner-message {
+    max-width: 22ch;
+    font-size: 0.84rem;
+  }
+
+  .winner-hero-copy {
+    width: 100%;
+    padding: 9px 10px;
   }
 
   .card {

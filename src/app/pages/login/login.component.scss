@@ -101,6 +101,38 @@ form{
   margin-right: auto;
 }
 
+.info {
+  color: #f8e8a6;
+  background: rgba(212, 175, 55, 0.12);
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  border-radius: 10px;
+  padding: 10px 12px;
+  margin: 10px 0 0;
+  width: 100%;
+  max-width: 30ch;
+  text-align: left;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.text-link {
+  align-self: flex-end;
+  margin: -4px 0 6px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  color: #d4af37;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.text-link:hover {
+  color: #f5c542;
+  text-decoration: underline;
+}
+
 .login-card{
 
 width:320px;

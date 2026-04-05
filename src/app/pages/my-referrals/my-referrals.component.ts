@@ -1,6 +1,6 @@
 import { NgFor, NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from '../../services/api.service';
+import { AuthService, AppUser, SafeAppUser } from '../../services/auth.service';
 
 @Component({
   standalone: true,
@@ -15,80 +15,65 @@ export class MyReferralsComponent implements OnInit {
   headers: string[] = [];
   rows: string[][] = [];
 
-  constructor(private apiService: ApiService) {}
+  constructor(private readonly authService: AuthService) {}
 
   ngOnInit(): void {
     this.loadReferrals();
   }
 
   loadReferrals(): void {
+    const currentUser = this.authService.getCurrentUser();
+    if (!currentUser) {
+      this.headers = [];
+      this.rows = [];
+      this.errorMessage = 'Logged in user information is unavailable.';
+      return;
+    }
+
     this.isLoading = true;
     this.errorMessage = '';
 
-    this.apiService.getDirectReferralsPage().subscribe({
-      next: (htmlText) => {
+    this.authService.getUsers().subscribe({
+      next: (users) => {
         this.isLoading = false;
-        this.mapReferralsFromHtml(htmlText);
+        this.mapReferralsFromUsers(currentUser, users);
       },
       error: (err) => {
         this.isLoading = false;
         this.errorMessage = 'Unable to load referrals right now.';
-        console.error('Direct referrals API error', err);
+        console.error('Referrals data error', err);
       }
     });
   }
 
-  private mapReferralsFromHtml(html: string): void {
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(html, 'text/html');
-    const tables = Array.from(doc.querySelectorAll('table'));
-
-    if (!tables.length) {
-      this.errorMessage = 'No referral table found in API response.';
-      this.headers = [];
-      this.rows = [];
-      return;
-    }
-
-    const picked = this.pickBestTable(tables);
-    const headers = Array.from(picked.querySelectorAll('thead th'))
-      .map((th) => th.textContent?.trim() ?? '')
-      .filter(Boolean);
-
-    const bodyRows = Array.from(picked.querySelectorAll('tbody tr'));
-    const rows = bodyRows
-      .map((tr) => Array.from(tr.querySelectorAll('td')).map((td) => td.textContent?.trim() ?? ''))
-      .filter((cells) => cells.some((cell) => cell.length > 0));
-
-    if (!headers.length && rows.length) {
-      this.headers = rows[0].map((_, index) => `Column ${index + 1}`);
-    } else {
-      this.headers = headers;
-    }
-
-    this.rows = rows;
+  private mapReferralsFromUsers(currentUser: SafeAppUser, users: AppUser[]): void {
+    this.headers = ['User ID', 'Name', 'Mobile', 'City', 'Scheme'];
+    this.rows = this.buildReferralRows(currentUser, users);
 
     if (!this.rows.length) {
       this.errorMessage = 'No referral records available.';
     }
   }
 
-  private pickBestTable(tables: HTMLTableElement[]): HTMLTableElement {
-    const keywords = ['referral', 'direct', 'sponsor', 'member', 'name', 'mobile', 'id'];
-    let bestTable = tables[0];
-    let bestScore = -1;
-
-    for (const table of tables) {
-      const tableText = (table.textContent || '').toLowerCase();
-      const rowCount = table.querySelectorAll('tbody tr').length;
-      const score = keywords.reduce((acc, key) => acc + (tableText.includes(key) ? 1 : 0), 0) + rowCount;
-
-      if (score > bestScore) {
-        bestScore = score;
-        bestTable = table;
-      }
+  private buildReferralRows(currentUser: SafeAppUser, users: AppUser[]): string[][] {
+    const otherUsers = users.filter((user) => user.userId !== currentUser.userId);
+    if (!otherUsers.length) {
+      return [];
     }
 
-    return bestTable;
+    const startIndex = (Number(currentUser.userId.replace(/\D/g, '')) || 0) % otherUsers.length;
+    const referralCount = Math.min(5, otherUsers.length);
+
+    return Array.from({ length: referralCount }, (_, offset) => {
+      const user = otherUsers[(startIndex + offset) % otherUsers.length];
+
+      return [
+        user.userId,
+        user.name,
+        user.mobile ?? '--',
+        user.location || '--',
+        user.schemeName || '--'
+      ];
+    });
   }
 }

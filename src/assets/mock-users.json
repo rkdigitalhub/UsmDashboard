@@ -1,0 +1,223 @@
+[
+  {
+    "userId": "USM78250",
+    "name": "Biruntha",
+    "password": "Bri8K2qP",
+    "location": "Kallakurichi",
+    "bankName": "Federal bank",
+    "branch": "Kallakurichi",
+    "schemeAmount": 500000,
+    "schemeName": "THE UNIVERSE",
+    "tenureMonths": 20
+  },
+  {
+    "userId": "USM71295",
+    "name": "Manikandan",
+    "password": "Mn7L4zQ2",
+    "location": "Coimbatore",
+    "bankName": "Indian bank",
+    "branch": "Udumalpet",
+    "schemeAmount": 500000,
+    "schemeName": "THE UNIVERSE",
+    "tenureMonths": 20
+  },
+  {
+    "userId": "USM79580",
+    "name": "Mozhi K",
+    "password": "Ka5R8mXs",
+    "mobile": "+916383459521",
+    "location": "Dharmapuri",
+    "bankName": "",
+    "branch": "",
+    "schemeAmount": 500000,
+    "schemeName": "THE UNIVERSE",
+    "tenureMonths": 20
+  },
+  {
+    "userId": "USM71504",
+    "name": "SIVA KUMAR R",
+    "password": "Sv4N2pLd",
+    "location": "Dharmapuri",
+    "bankName": "Lakshmi Vilas Bank",
+    "branch": "Pennagaram",
+    "schemeAmount": 500000,
+    "schemeName": "THE UNIVERSE",
+    "tenureMonths": 20
+  },
+  {
+    "userId": "USM74058",
+    "name": "Sindhuja siva",
+    "password": "Si9T6vQa",
+    "location": "Kallakurichi",
+    "bankName": "HDFC BANK LTD",
+    "branch": "Viluppuram",
+    "schemeAmount": 500000,
+    "schemeName": "THE UNIVERSE",
+    "tenureMonths": 20
+  },
+  {
+    "userId": "USM75340",
+    "name": "Sonika.k",
+    "password": "So3W7kLm",
+    "location": "Korattur, Chennai",
+    "bankName": "KVB",
+    "branch": "Padi",
+    "schemeAmount": 500000,
+    "schemeName": "THE UNIVERSE",
+    "tenureMonths": 20
+  },
+  {
+    "userId": "USM75213",
+    "name": "Sashvath.k",
+    "password": "Sa8Y2nPr",
+    "location": "Chennai",
+    "bankName": "KVB",
+    "branch": "Padi",
+    "schemeAmount": 500000,
+    "schemeName": "THE UNIVERSE",
+    "tenureMonths": 20
+  },
+  {
+    "userId": "USM75114",
+    "name": "Sivaranjini",
+    "password": "Si6Q4xTu",
+    "location": "Dharmapuri",
+    "bankName": "Indian bank",
+    "branch": "Pennagaram",
+    "schemeAmount": 500000,
+    "schemeName": "THE UNIVERSE",
+    "tenureMonths": 20
+  },
+  {
+    "userId": "USM71079",
+    "name": "M SHANKAR",
+    "password": "Ms5J8cVe",
+    "location": "Dharmapuri",
+    "bankName": "Canara bank",
+    "branch": "Pennagaram",
+    "schemeAmount": 500000,
+    "schemeName": "THE UNIVERSE",
+    "tenureMonths": 20
+  },
+  {
+    "userId": "USM74008",
+    "name": "Santhosh T",
+    "password": "St2R9mKw",
+    "location": "Salem",
+    "bankName": "HDFC bank",
+    "branch": "Mettur Puthusamballi",
+    "schemeAmount": 500000,
+    "schemeName": "THE UNIVERSE",
+    "tenureMonths": 20
+  },
+  {
+    "userId": "USM73832",
+    "name": "Tamilarasi c",
+    "password": "Ta7P3dNx",
+    "location": "Dharmapuri",
+    "bankName": "SBI",
+    "branch": "Nethaji road, Dharmapuri",
+    "schemeAmount": 500000,
+    "schemeName": "THE UNIVERSE",
+    "tenureMonths": 20
+  },
+  {
+    "userId": "USM77163",
+    "name": "Pasuvaraj",
+    "password": "Pa4L6sQh",
+    "location": "Kallakurichi",
+    "bankName": "Federal bank",
+    "branch": "Kallakurichi",
+    "schemeAmount": 500000,
+    "schemeName": "THE UNIVERSE",
+    "tenureMonths": 20
+  },
+  {
+    "userId": "USM76253",
+    "name": "MANIVANNAN",
+    "password": "Ma8V2kZp",
+    "location": "Salem",
+    "bankName": "HDFC",
+    "branch": "Dharmapuri",
+    "schemeAmount": 500000,
+    "schemeName": "THE UNIVERSE",
+    "tenureMonths": 20
+  },
+  {
+    "userId": "USM77092",
+    "name": "Maheshwari R",
+    "password": "Mh3X7nLc",
+    "location": "Tanjavur",
+    "bankName": "City union bank",
+    "branch": "Kurichi",
+    "schemeAmount": 500000,
+    "schemeName": "THE UNIVERSE",
+    "tenureMonths": 20
+  },
+  {
+    "userId": "USM78438",
+    "name": "SOUNDHAR RAJAN C",
+    "password": "So5C9tRb",
+    "location": "Krishnagiri",
+    "bankName": "Tamil Nadu Grama Bank",
+    "branch": "Krishnagiri",
+    "schemeAmount": 500000,
+    "schemeName": "THE UNIVERSE",
+    "tenureMonths": 20
+  },
+  {
+    "userId": "USM73690",
+    "name": "Vidhya N",
+    "password": "Vi2N8pJm",
+    "location": "Dharmapuri",
+    "bankName": "State Bank of India",
+    "branch": "Dharmapuri",
+    "schemeAmount": 500000,
+    "schemeName": "THE UNIVERSE",
+    "tenureMonths": 20
+  },
+  {
+    "userId": "USM77335",
+    "name": "KIRUBAKARAN R",
+    "password": "Ki7D4wQs",
+    "location": "Thanjavur",
+    "bankName": "ICICI Bank",
+    "branch": "Mahaligapuram, Chennai",
+    "schemeAmount": 500000,
+    "schemeName": "THE UNIVERSE",
+    "tenureMonths": 20
+  },
+  {
+    "userId": "USM76268",
+    "name": "DHANASEKARAN G",
+    "password": "Dh6M3xPt",
+    "location": "Salem",
+    "bankName": "ICICI Bank",
+    "branch": "Kothanur",
+    "schemeAmount": 500000,
+    "schemeName": "THE UNIVERSE",
+    "tenureMonths": 20
+  },
+  {
+    "userId": "USM73347",
+    "name": "ESHWARAN G",
+    "password": "Es9K5vLn",
+    "location": "Kallakurichi",
+    "bankName": "State Bank of India",
+    "branch": "Velacheri Main Road",
+    "schemeAmount": 500000,
+    "schemeName": "THE UNIVERSE",
+    "tenureMonths": 20
+  },
+  {
+    "userId": "USM71135",
+    "name": "HEMAVARSHINI",
+    "password": "He4Q8zRc",
+    "location": "Salem",
+    "bankName": "",
+    "branch": "",
+    "schemeAmount": 500000,
+    "schemeName": "THE UNIVERSE",
+    "tenureMonths": 20
+  }
+]

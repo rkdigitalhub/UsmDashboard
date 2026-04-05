@@ -2,7 +2,7 @@ import { NgIf } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ApiService } from '../../services/api.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   standalone: true,
@@ -16,53 +16,52 @@ export class LoginComponent{
   userId = '';
   password = '';
   errorMessage = '';
+  infoMessage = '';
   isSubmitting = false;
 
-  constructor(private router: Router, private apiService: ApiService) {}
+  constructor(private router: Router, private authService: AuthService) {}
 
   get canLogin(): boolean {
-    const hasValidId = /^USM/.test(this.userId) && this.userId.length === 8;
-    const hasValidPassword = this.password.length >= 6;
+    const hasValidId = /^USM\d{5}$/i.test(this.userId.trim());
+    const hasValidPassword = this.password.trim().length === 8;
     return hasValidId && hasValidPassword && !this.isSubmitting;
   }
 
-  clearError() {
+  clearMessages() {
     this.errorMessage = '';
+    this.infoMessage = '';
+  }
+
+  requestPasswordHelp(): void {
+    this.errorMessage = '';
+    this.infoMessage = 'Password help will be available soon once secure recovery is connected. Your login support experience is being prepared.';
   }
 
   login() {
     if (!this.canLogin) {
-      this.errorMessage = 'Please enter a valid User ID (USMxxxx) and a password of at least 6 characters.';
+      this.errorMessage = 'Please enter a valid User ID (USM7xxxx) and the assigned 8-character password.';
+      this.infoMessage = '';
       return;
     }
 
     this.errorMessage = '';
+    this.infoMessage = '';
     this.isSubmitting = true;
 
-    this.apiService.login(this.userId, this.password).subscribe({
+    this.authService.login(this.userId, this.password).subscribe({
       next: (response) => {
         this.isSubmitting = false;
 
-        if (response && response.status && response.status.toLowerCase() === 'success') {
-          this.apiService.getIndex().subscribe({
-            next: (indexResponse) => {
-              console.log('index.php response:', indexResponse);
-              this.router.navigate(['/dashboard']);
-            },
-            error: (indexErr) => {
-              console.error('index.php API error', indexErr);
-              this.router.navigate(['/dashboard']);
-            }
-          });
+        if (response.success) {
+          this.router.navigate(['/dashboard']);
         } else {
-          const serverMessage = response && response.message ? response.message : 'Invalid username or password.';
-          this.errorMessage = serverMessage;
+          this.errorMessage = response.message ?? 'Invalid user ID or password.';
         }
       },
       error: (err) => {
         this.isSubmitting = false;
-        console.error('Login API error', err);
-        this.errorMessage = 'Login failed. Please check your network and try again.';
+        console.error('Static login data error', err);
+        this.errorMessage = 'Login data could not be loaded.';
       }
     });
   }

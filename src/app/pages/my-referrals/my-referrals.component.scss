@@ -16,16 +16,11 @@
 
 .page-head h1 {
   margin: 0;
-  color: #ffde44;
-}
-
-.subtext {
-  margin: 0 0 18px;
-  color: rgba(255, 255, 255, 0.72);
+  color: #d4af37;
 }
 
 .btn-gold {
-  background: linear-gradient(90deg, #9f4a1b 0%, #ffde44 100%);
+  background: linear-gradient(90deg, #9f4a1b 0%, #d4af37 100%);
   color: #161616;
   border: none;
   border-radius: 8px;
@@ -48,7 +43,7 @@
 
 .info.loading {
   background: rgba(255, 222, 68, 0.12);
-  color: #ffde44;
+  color: #d4af37;
 }
 
 .info.error {

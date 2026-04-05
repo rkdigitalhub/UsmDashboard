@@ -1,4 +1,22 @@
 <div class="page">
-  <h1>Reports</h1>
-  <p>Generate and export reports.</p>
+  <h4>Winning breakup for each month</h4>
+  <div class="table-wrap" role="region" aria-label="Reports data table">
+    <table>
+      <thead>
+        <tr>
+          <th *ngFor="let header of headers">{{ header }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of rows" [class.note-row]="row.isNoteRow">
+          <td>{{ row.round }}</td>
+          <td>{{ row.investment }}</td>
+          <td>{{ row.profitFrom25 }}</td>
+          <td>{{ row.settlement }}</td>
+          <td>{{ row.interest }}</td>
+          <td>{{ row.total }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>

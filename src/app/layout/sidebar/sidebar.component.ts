@@ -10,12 +10,14 @@ import { LayoutUiService } from '../../services/layout-ui.service';
   styleUrl: './sidebar.component.scss'
 })
 export class SidebarComponent implements OnInit {
-  isCollapsed = false;
-
   constructor(public layoutUi: LayoutUiService) {}
 
+  get isCollapsed(): boolean {
+    return this.layoutUi.sidebarCollapsed;
+  }
+
   ngOnInit(): void {
-    this.applySidebarWidth();
+    this.layoutUi.setSidebarCollapsed(this.layoutUi.sidebarCollapsed);
   }
 
   toggleSidebar(): void {
@@ -24,8 +26,7 @@ export class SidebarComponent implements OnInit {
       return;
     }
 
-    this.isCollapsed = !this.isCollapsed;
-    this.applySidebarWidth();
+    this.layoutUi.toggleSidebarCollapsed();
   }
 
   onNavItemClick(): void {
@@ -34,8 +35,7 @@ export class SidebarComponent implements OnInit {
     }
   }
 
-  private applySidebarWidth(): void {
-    const width = this.isCollapsed ? '84px' : '220px';
-    document.documentElement.style.setProperty('--sidebar-width', width);
+  onSpinWheelClick(): void {
+    this.onNavItemClick();
   }
 }

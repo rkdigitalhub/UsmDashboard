@@ -1,12 +1,14 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { ApiService } from '../../services/api.service';
+import { Component, OnInit } from '@angular/core';
+import { AuthService, AppUser } from '../../services/auth.service';
 
 interface Team {
   id: number;
   name: string;
   subscribedCount: number;
   startingDate: string;
+  investmentAmount: number;
+  tenureMonths: number;
   luckyDrawSelectedOn?: string;
 }
 
@@ -17,24 +19,10 @@ interface Team {
   templateUrl: './schemes.component.html',
   styleUrls: ['./schemes.component.scss']
 })
-export class SchemesComponent {
-  myTeams: Team[] = [
-    { id: 1, name: 'THE SPARTANS', subscribedCount: 14, startingDate: '05 Apr 2026' },
-    {
-      id: 2,
-      name: 'THE AVENGERS',
-      subscribedCount: 18,
-      startingDate: '12 Apr 2026',
-      luckyDrawSelectedOn: '14 Mar 2026, 08:45 PM'
-    }
-  ];
+export class SchemesComponent implements OnInit {
+  myTeams: Team[] = [];
 
-  availableTeams: Team[] = [
-    { id: 3, name: 'Team Gamma', subscribedCount: 9, startingDate: '20 Apr 2026' },
-    { id: 4, name: 'Team Delta', subscribedCount: 12, startingDate: '24 Apr 2026' },
-    { id: 5, name: 'Team Epsilon', subscribedCount: 16, startingDate: '28 Apr 2026' },
-    { id: 6, name: 'Team Zeta', subscribedCount: 7, startingDate: '02 May 2026' }
-  ];
+  availableTeams: Team[] = [];
 
   showPopup = false;
   selectedTeam: Team | null = null;
@@ -50,7 +38,19 @@ export class SchemesComponent {
   groupLoading = false;
   groupError = '';
 
-  constructor(private apiService: ApiService) {}
+  constructor(private readonly authService: AuthService) {}
+
+  ngOnInit(): void {
+    this.authService.getUsers().subscribe({
+      next: (users) => {
+        this.bindTeams(users);
+      },
+      error: () => {
+        this.bindTeams([]);
+        this.groupError = 'Unable to load team users.';
+      }
+    });
+  }
 
   openSubscribePopup(team: Team): void {
     this.selectedSubscribeTeam = team;
@@ -110,9 +110,9 @@ export class SchemesComponent {
     this.groupHeaders = [];
     this.groupRows = [];
 
-    this.apiService.getGroupPage().subscribe({
-      next: (htmlText) => {
-        this.mapGroupTableFromHtml(htmlText);
+    this.authService.getUsers().subscribe({
+      next: (users) => {
+        this.mapGroupTableFromUsers(users);
         this.groupLoading = false;
       },
       error: () => {
@@ -122,33 +122,30 @@ export class SchemesComponent {
     });
   }
 
-  private mapGroupTableFromHtml(html: string): void {
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(html, 'text/html');
-    const table = doc.querySelector('table');
+  private bindTeams(users: AppUser[]): void {
+    const subscribedCount = users.length;
+    this.myTeams = [{
+      id: 1,
+      name: 'THE UNIVERSE',
+      subscribedCount,
+      startingDate: '05 Apr 2026',
+      investmentAmount: 500000,
+      tenureMonths: 20
+    }];
+    this.availableTeams = [];
+  }
 
-    if (!table) {
-      this.groupError = 'No table found in group data.';
-      return;
-    }
-
-    const headerCells = Array.from(table.querySelectorAll('thead th')).map((cell) => this.cleanText(cell.textContent));
-    if (headerCells.length) {
-      this.groupHeaders = headerCells;
-    }
-
-    const bodyRows = Array.from(table.querySelectorAll('tbody tr'));
-    const rowsSource = bodyRows.length ? bodyRows : Array.from(table.querySelectorAll('tr'));
-
-    const parsedRows = rowsSource
-      .map((row) => Array.from(row.querySelectorAll('td')).map((cell) => this.cleanText(cell.textContent)))
-      .filter((cells) => cells.length > 0);
-
-    if (!this.groupHeaders.length && parsedRows.length) {
-      this.groupHeaders = parsedRows[0].map((_, index) => `Column ${index + 1}`);
-    }
-
-    this.groupRows = parsedRows;
+  private mapGroupTableFromUsers(users: AppUser[]): void {
+    this.groupHeaders = ['User ID', 'Name', 'Location', 'Bank', 'Branch', 'Investment', 'Tenure'];
+    this.groupRows = users.map((user) => [
+      user.userId,
+      user.name,
+      user.location,
+      user.bankName || '--',
+      user.branch || '--',
+      user.schemeAmount.toString(),
+      `${user.tenureMonths} months`
+    ]);
 
     if (!this.groupRows.length) {
       this.groupError = 'No rows found in group data.';
