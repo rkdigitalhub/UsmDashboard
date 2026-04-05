@@ -118,3 +118,19 @@
   padding: 9px 12px;
   cursor: pointer;
 }
+
+@media (max-width: 640px) {
+  .page {
+    padding: 16px;
+  }
+
+  .actions {
+    flex-direction: column;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    width: 100%;
+    justify-content: center;
+  }
+}

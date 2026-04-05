@@ -143,8 +143,8 @@ export class AdminDashboardComponent implements AfterViewInit, OnDestroy {
     }
 
     const gradient = context.createLinearGradient(0, 0, 0, 260);
-    gradient.addColorStop(0, 'rgba(242, 197, 111, 0.34)');
-    gradient.addColorStop(1, 'rgba(242, 197, 111, 0.02)');
+    gradient.addColorStop(0, 'rgba(43, 99, 188, 0.28)');
+    gradient.addColorStop(1, 'rgba(43, 99, 188, 0.03)');
 
     this.revenueChart?.destroy();
     this.revenueChart = new Chart(canvas, {
@@ -154,14 +154,14 @@ export class AdminDashboardComponent implements AfterViewInit, OnDestroy {
         datasets: [
           {
             data: this.revenueTrend.map((point) => point.value),
-            borderColor: '#f2c56f',
+            borderColor: '#0b1323',
             backgroundColor: gradient,
             fill: true,
             tension: 0.34,
             borderWidth: 3,
             pointRadius: 3,
             pointHoverRadius: 5,
-            pointBackgroundColor: '#ffd989',
+            pointBackgroundColor: '#2d62b7',
             pointBorderWidth: 0
           }
         ]
@@ -173,11 +173,11 @@ export class AdminDashboardComponent implements AfterViewInit, OnDestroy {
           legend: { display: false },
           tooltip: {
             displayColors: false,
-            backgroundColor: '#17110d',
-            borderColor: 'rgba(242, 197, 111, 0.18)',
+            backgroundColor: '#0b1323',
+            borderColor: 'rgba(45, 98, 183, 0.22)',
             borderWidth: 1,
-            titleColor: '#fff1cd',
-            bodyColor: 'rgba(255, 241, 205, 0.84)',
+            titleColor: '#ffffff',
+            bodyColor: 'rgba(229, 239, 255, 0.9)',
             callbacks: {
               label: (tooltipItem: TooltipItem<'line'>) => `Revenue: ${tooltipItem.parsed.y} lakh INR`
             }
@@ -187,17 +187,17 @@ export class AdminDashboardComponent implements AfterViewInit, OnDestroy {
           x: {
             grid: { display: false },
             ticks: {
-              color: 'rgba(244, 232, 201, 0.58)'
+              color: 'rgba(54, 85, 138, 0.72)'
             }
           },
           y: {
             beginAtZero: true,
             ticks: {
-              color: 'rgba(244, 232, 201, 0.58)',
+              color: 'rgba(54, 85, 138, 0.72)',
               callback: (value) => `${value}L INR`
             },
             grid: {
-              color: 'rgba(255, 220, 157, 0.08)'
+              color: 'rgba(11, 19, 35, 0.08)'
             }
           }
         }
@@ -221,18 +221,18 @@ export class AdminDashboardComponent implements AfterViewInit, OnDestroy {
           {
             data: this.memberGrowth.map((point) => point.value),
             backgroundColor: [
-              'rgba(246, 208, 107, 0.92)',
-              'rgba(246, 208, 107, 0.9)',
-              'rgba(246, 208, 107, 0.88)',
-              'rgba(246, 208, 107, 0.86)',
-              'rgba(246, 208, 107, 0.84)',
-              'rgba(246, 208, 107, 0.82)',
-              'rgba(246, 208, 107, 0.8)',
-              'rgba(246, 208, 107, 0.78)',
-              'rgba(246, 208, 107, 0.76)',
-              'rgba(246, 208, 107, 0.74)',
-              'rgba(246, 208, 107, 0.72)',
-              'rgba(246, 208, 107, 0.7)'
+              'rgba(11, 19, 35, 0.94)',
+              'rgba(14, 26, 48, 0.92)',
+              'rgba(18, 36, 64, 0.9)',
+              'rgba(21, 43, 78, 0.88)',
+              'rgba(25, 53, 93, 0.86)',
+              'rgba(31, 62, 110, 0.84)',
+              'rgba(37, 74, 128, 0.82)',
+              'rgba(43, 86, 148, 0.8)',
+              'rgba(45, 98, 183, 0.78)',
+              'rgba(63, 113, 196, 0.76)',
+              'rgba(88, 133, 209, 0.74)',
+              'rgba(117, 156, 222, 0.72)'
             ],
             borderRadius: 10,
             borderSkipped: false,
@@ -247,11 +247,11 @@ export class AdminDashboardComponent implements AfterViewInit, OnDestroy {
           legend: { display: false },
           tooltip: {
             displayColors: false,
-            backgroundColor: '#17110d',
-            borderColor: 'rgba(242, 197, 111, 0.18)',
+            backgroundColor: '#0b1323',
+            borderColor: 'rgba(45, 98, 183, 0.22)',
             borderWidth: 1,
-            titleColor: '#fff1cd',
-            bodyColor: 'rgba(255, 241, 205, 0.84)',
+            titleColor: '#ffffff',
+            bodyColor: 'rgba(229, 239, 255, 0.9)',
             callbacks: {
               label: (tooltipItem: TooltipItem<'bar'>) => `Members: ${tooltipItem.parsed.y}`
             }
@@ -261,16 +261,16 @@ export class AdminDashboardComponent implements AfterViewInit, OnDestroy {
           x: {
             grid: { display: false },
             ticks: {
-              color: 'rgba(244, 232, 201, 0.58)'
+              color: 'rgba(54, 85, 138, 0.72)'
             }
           },
           y: {
             beginAtZero: true,
             ticks: {
-              color: 'rgba(244, 232, 201, 0.58)'
+              color: 'rgba(54, 85, 138, 0.72)'
             },
             grid: {
-              color: 'rgba(255, 220, 157, 0.08)'
+              color: 'rgba(11, 19, 35, 0.08)'
             }
           }
         }

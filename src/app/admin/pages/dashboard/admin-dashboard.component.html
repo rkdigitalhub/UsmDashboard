@@ -1,41 +1,4 @@
 <div class="admin-content-stack">
-  <section class="admin-workspace-grid">
-    <article class="admin-note-card admin-page-hero-card">
-      <div class="admin-panel-header">
-        <h2>Quick Actions</h2>
-      </div>
-      <div class="admin-action-grid">
-        <a *ngFor="let task of tasks" class="admin-action-card" [routerLink]="task.route">
-          <strong>{{ task.title }}</strong>
-          <span>{{ task.cta }}</span>
-        </a>
-      </div>
-      <div class="admin-status-message" *ngIf="statusMessage">{{ statusMessage }}</div>
-    </article>
-
-    <article class="admin-card admin-page-hero-card">
-      <div class="admin-panel-header">
-        <h2>Live Monitoring</h2>
-        <span class="admin-pill">Admin snapshot</span>
-      </div>
-
-      <div class="admin-key-figure-grid">
-        <div class="admin-key-figure">
-          <span>Scheduled slots</span>
-          <strong>{{ spinSchedules.length }} active windows</strong>
-        </div>
-        <div class="admin-key-figure">
-          <span>Payment exceptions</span>
-          <strong>{{ paymentQueue.length }} items pending</strong>
-        </div>
-        <div class="admin-key-figure">
-          <span>Recent onboarding</span>
-          <strong>{{ recentMembers.length }} new users</strong>
-        </div>
-      </div>
-    </article>
-  </section>
-
   <section class="admin-kpi-grid">
     <article class="admin-card admin-stat-card admin-stat-card-premium" *ngFor="let metric of metrics">
       <div class="admin-stat-card-top">
@@ -73,6 +36,43 @@
 
       <div class="admin-chart-shell admin-chart-shell-canvas admin-chart-shell-bars">
         <canvas #memberGrowthChartCanvas aria-label="Member growth chart"></canvas>
+      </div>
+    </article>
+  </section>
+
+  <section class="admin-workspace-grid">
+    <article class="admin-note-card admin-page-hero-card">
+      <div class="admin-panel-header">
+        <h2>Quick Actions</h2>
+      </div>
+      <div class="admin-action-grid">
+        <a *ngFor="let task of tasks" class="admin-action-card" [routerLink]="task.route">
+          <strong>{{ task.title }}</strong>
+          <span>{{ task.cta }}</span>
+        </a>
+      </div>
+      <div class="admin-status-message" *ngIf="statusMessage">{{ statusMessage }}</div>
+    </article>
+
+    <article class="admin-card admin-page-hero-card">
+      <div class="admin-panel-header">
+        <h2>Live Monitoring</h2>
+        <span class="admin-pill">Admin snapshot</span>
+      </div>
+
+      <div class="admin-key-figure-grid">
+        <div class="admin-key-figure">
+          <span>Scheduled slots</span>
+          <strong>{{ spinSchedules.length }} active windows</strong>
+        </div>
+        <div class="admin-key-figure">
+          <span>Payment exceptions</span>
+          <strong>{{ paymentQueue.length }} items pending</strong>
+        </div>
+        <div class="admin-key-figure">
+          <span>Recent onboarding</span>
+          <strong>{{ recentMembers.length }} new users</strong>
+        </div>
       </div>
     </article>
   </section>

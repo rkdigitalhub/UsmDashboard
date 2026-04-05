@@ -253,3 +253,33 @@ th {
     grid-template-columns: 1fr;
   }
 }
+
+@media (max-width: 640px) {
+  .teams-page {
+    padding: 16px;
+  }
+
+  .team-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .team-row-actions,
+  .subscribe-actions {
+    flex-wrap: wrap;
+    width: 100%;
+  }
+
+  .btn-subscribe,
+  .btn-ghost,
+  .pending-status,
+  .status-badge.closed {
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .popup {
+    padding: 12px;
+  }
+}
