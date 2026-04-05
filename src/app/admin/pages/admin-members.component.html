@@ -1,0 +1,128 @@
+<div class="admin-content-stack">
+  <section class="admin-workspace-grid">
+    <article class="admin-card admin-page-hero-card">
+      <div class="admin-panel-header">
+        <h2>User Directory and Profile Control</h2>
+        <span class="admin-pill warning">Admin update rights</span>
+      </div>
+
+      <div class="admin-key-figure-grid">
+        <div class="admin-key-figure"><span>Usernames</span><strong>Editable by admin</strong></div>
+        <div class="admin-key-figure"><span>Address details</span><strong>Editable by admin</strong></div>
+        <div class="admin-key-figure"><span>Team assignment</span><strong>Controlled per roster</strong></div>
+      </div>
+    </article>
+
+    <article class="admin-note-card">
+      <div class="admin-panel-header">
+        <h2>Edit User</h2>
+      </div>
+      <div class="admin-form-grid" *ngIf="selectedUserId">
+        <div class="admin-field">
+          <label>User ID</label>
+          <input [(ngModel)]="memberForm.userId" [ngModelOptions]="{ standalone: true }" type="text" readonly>
+        </div>
+        <div class="admin-field">
+          <label>Username</label>
+          <input [(ngModel)]="memberForm.username" [ngModelOptions]="{ standalone: true }" type="text">
+        </div>
+        <div class="admin-field admin-full-span">
+          <label>Name</label>
+          <input [(ngModel)]="memberForm.name" [ngModelOptions]="{ standalone: true }" type="text">
+        </div>
+        <div class="admin-field">
+          <label>Email</label>
+          <input [(ngModel)]="memberForm.email" [ngModelOptions]="{ standalone: true }" type="email">
+        </div>
+        <div class="admin-field">
+          <label>Mobile</label>
+          <input [(ngModel)]="memberForm.mobile" [ngModelOptions]="{ standalone: true }" type="text">
+        </div>
+        <div class="admin-field">
+          <label>Team</label>
+          <select [(ngModel)]="memberForm.team" [ngModelOptions]="{ standalone: true }">
+            <option *ngFor="let group of groups" [ngValue]="group.groupName">{{ group.groupName }}</option>
+          </select>
+        </div>
+        <div class="admin-field">
+          <label>Status</label>
+          <input [(ngModel)]="memberForm.status" [ngModelOptions]="{ standalone: true }" type="text">
+        </div>
+        <div class="admin-field admin-full-span">
+          <label>Address</label>
+          <textarea [(ngModel)]="memberForm.address" [ngModelOptions]="{ standalone: true }"></textarea>
+        </div>
+        <div class="admin-field">
+          <label>City</label>
+          <input [(ngModel)]="memberForm.city" [ngModelOptions]="{ standalone: true }" type="text">
+        </div>
+        <div class="admin-field">
+          <label>Pincode</label>
+          <input [(ngModel)]="memberForm.pincode" [ngModelOptions]="{ standalone: true }" type="text">
+        </div>
+      </div>
+      <div class="admin-toolbar-actions admin-toolbar-actions-compact" *ngIf="selectedUserId">
+        <button class="admin-button" type="button" (click)="saveMember()">Save User</button>
+        <button class="admin-button-secondary" type="button" (click)="editMember(profileOwner)">Reset</button>
+      </div>
+      <div class="admin-status-message" *ngIf="statusMessage">{{ statusMessage }}</div>
+    </article>
+  </section>
+
+  <section class="admin-table-card">
+    <div class="admin-table-toolbar">
+      <h2>User Master</h2>
+      <div class="admin-toolbar-actions">
+        <span class="admin-pill">Identity, roster, and address control</span>
+      </div>
+    </div>
+
+    <div class="admin-table-wrap">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>User ID</th>
+            <th>Name</th>
+            <th>Mobile</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Sponsor</th>
+            <th>Package</th>
+            <th>Joining Date</th>
+            <th>Team</th>
+            <th>Address</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let member of members">
+            <td data-label="#">{{ member.id }}</td>
+            <td data-label="User ID">{{ member.userId }}</td>
+            <td data-label="Name">{{ member.name }}</td>
+            <td data-label="Mobile">{{ member.mobile }}</td>
+            <td data-label="Username">{{ member.username }}</td>
+            <td data-label="Email">{{ member.email }}</td>
+            <td data-label="Sponsor">{{ member.sponsor }}</td>
+            <td data-label="Package">{{ member.packageAmount }}</td>
+            <td data-label="Joining Date">{{ member.joiningDate }}</td>
+            <td data-label="Team">{{ member.team }}</td>
+            <td data-label="Address">{{ member.address }}, {{ member.city }} - {{ member.pincode }}</td>
+            <td data-label="Status"><span class="admin-pill" [class.success]="member.status === 'Active'">{{ member.status }}</span></td>
+            <td data-label="Actions" class="admin-actions-cell">
+              <div class="admin-inline-actions">
+                <button class="admin-icon-button" type="button" title="Edit user" aria-label="Edit user" (click)="editMember(member)">
+                  <fa-icon [icon]="editIcon"></fa-icon>
+                </button>
+                <button class="admin-icon-button admin-icon-button-danger" type="button" title="Delete user" aria-label="Delete user" (click)="deleteMember(member.userId)">
+                  <fa-icon [icon]="deleteIcon"></fa-icon>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>

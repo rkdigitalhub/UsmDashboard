@@ -1,0 +1,87 @@
+<div class="dashboard">
+  <section class="top card-dark">
+    <h2 class="section-heading"><fa-icon [icon]="dashboardIcon"></fa-icon><span>{{ welcomeTitle }}</span></h2>
+    <p>{{ welcomeSubtext }}</p>
+    <div class="hero-status" *ngIf="isLoading || errorMessage">
+      <span class="loading" *ngIf="isLoading">Loading latest data...</span>
+      <span class="error" *ngIf="errorMessage">{{ errorMessage }}</span>
+    </div>
+  </section>
+
+  <section class="rewards-grid">
+    <div class="card-dark panel rewards-panel investor-panel">
+      <h3 class="section-heading"><fa-icon [icon]="walletIcon"></fa-icon><span>Membership Snapshot</span></h3>
+
+      <div class="flex-box-list">
+        <div class="flex-box">
+          <label>Investment</label>
+          <strong>{{ investment }}</strong>
+        </div>
+
+        <div class="flex-box">
+          <label>Winning Amount</label>
+          <strong>{{ winningAmountInvestorBenefit }}</strong>
+        </div>
+
+        <div class="flex-box">
+          <label>Monthly Interest</label>
+          <strong>{{ monthlyInterestInvestorBenefit }}</strong>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-dark panel rewards-panel leader-panel">
+      <h3 class="section-heading"><fa-icon [icon]="rewardIcon"></fa-icon><span>Referral Rewards</span></h3>
+
+      <div class="flex-box-list">
+        <div class="flex-box incentive-box">
+          <label>Referral Rewards</label>
+          <strong>{{ referralRewardsLeader }}</strong>
+
+          <div class="incentive-timeline" aria-label="Referral reward slab details">
+            <span class="incentive-pill">First 15 days: <b>5%</b></span>
+            <span class="incentive-pill">After 15 days: <b>2.5%</b></span>
+          </div>
+        </div>
+
+        <div class="flex-box incentive-box">
+          <label>Incentive Rewards</label>
+          <strong>{{ incentiveRewardsLeader }}</strong>
+
+          <div class="incentive-timeline" aria-label="Incentive reward slab details">
+            <span class="incentive-pill">First 15 days: <b>2%</b></span>
+            <span class="incentive-pill">After 15 days: <b>1%</b></span>
+          </div>
+        </div>
+
+        <div class="flex-box incentive-box">
+          <label>Redeem Rewards</label>
+          <strong>{{ redeemRewardsWalletLeader }}</strong>
+
+          <div class="incentive-timeline" aria-label="Redeem reward slab details">
+            <span class="incentive-pill">First 15 days: <b>2%</b></span>
+            <span class="incentive-pill">After 15 days: <b>1%</b></span>
+          </div>
+        </div>
+
+        <div class="flex-box">
+          <label>Premium Reward</label>
+          <strong>{{ premiumRewardLeader }}</strong>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="btn-gold" type="button" [disabled]="true" aria-disabled="true">
+          <fa-icon [icon]="rewardIcon"></fa-icon>
+          <span>Redeem Reward</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <section class="card-dark notify">
+    <h3 class="section-heading"><fa-icon [icon]="scheduleIcon"></fa-icon><span>Next Lucky Draw Window</span></h3>
+    <p>{{ nextSpinTeamName }} - {{ nextSpinDateText }}</p>
+    <p class="countdown-line">Remaining: <strong>{{ nextSpinCountdown }}</strong></p>
+  </section>
+</div>

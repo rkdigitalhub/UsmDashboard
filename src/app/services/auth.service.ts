@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map, shareReplay, tap } from 'rxjs/operators';
 
@@ -7,6 +7,7 @@ export interface AppUser {
 	userId: string;
 	name: string;
 	password: string;
+	role?: 'admin' | 'member';
 	mobile?: string;
 	location: string;
 	bankName: string;
@@ -29,6 +30,7 @@ export interface LoginResult {
 })
 
 export class AuthService {
+	private readonly currentUserState = signal<SafeAppUser | null>(this.restoreCurrentUser());
 	private users$?: Observable<AppUser[]>;
 
 	constructor(private readonly http: HttpClient) {}
@@ -41,8 +43,7 @@ export class AuthService {
 			map((users) => users.find((user) => user.userId.toUpperCase() === normalizedId && user.password === normalizedPassword)),
 			tap((matchedUser) => {
 				if (matchedUser) {
-					localStorage.setItem('loggedIn', 'true');
-					localStorage.setItem('currentUser', JSON.stringify(this.toSafeUser(matchedUser)));
+					this.persistCurrentUser(this.toSafeUser(matchedUser));
 				}
 			}),
 			map((matchedUser) => matchedUser
@@ -60,15 +61,36 @@ export class AuthService {
 	}
 
 	isLoggedIn(): boolean {
-		return localStorage.getItem('loggedIn') === 'true';
+		return this.currentUserState() !== null;
 	}
 
 	logout(): void {
 		localStorage.removeItem('loggedIn');
 		localStorage.removeItem('currentUser');
+		this.currentUserState.set(null);
 	}
 
 	getCurrentUser(): SafeAppUser | null {
+		return this.currentUserState();
+	}
+
+	hasRole(role: 'admin' | 'member'): boolean {
+		const currentUser = this.currentUserState();
+		return !!currentUser && (currentUser.role ?? 'member') === role;
+	}
+
+	private toSafeUser(user: AppUser): SafeAppUser {
+		const { password, ...safeUser } = user;
+		return safeUser;
+	}
+
+	private persistCurrentUser(user: SafeAppUser): void {
+		localStorage.setItem('loggedIn', 'true');
+		localStorage.setItem('currentUser', JSON.stringify(user));
+		this.currentUserState.set(user);
+	}
+
+	private restoreCurrentUser(): SafeAppUser | null {
 		const stored = localStorage.getItem('currentUser');
 		if (!stored) {
 			return null;
@@ -77,13 +99,9 @@ export class AuthService {
 		try {
 			return JSON.parse(stored) as SafeAppUser;
 		} catch {
+			localStorage.removeItem('loggedIn');
 			localStorage.removeItem('currentUser');
 			return null;
 		}
-	}
-
-	private toSafeUser(user: AppUser): SafeAppUser {
-		const { password, ...safeUser } = user;
-		return safeUser;
 	}
 }

@@ -1,45 +1,51 @@
-import { Component, OnInit } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Component, DestroyRef, OnInit, inject } from '@angular/core';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { AuthService } from '../../services/auth.service';
 import { LayoutUiService } from '../../services/layout-ui.service';
+import { memberIcons } from '../../member/member-icons';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [],
+  imports: [FontAwesomeModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
 export class HeaderComponent implements OnInit {
+  readonly menuIcon = memberIcons.menu;
+  readonly logoutIcon = memberIcons.logout;
+  readonly profileIcon = memberIcons.profile;
   pageTitle = 'Dashboard';
+  private readonly destroyRef = inject(DestroyRef);
 
-  constructor(private router: Router, private layoutUi: LayoutUiService, private authService: AuthService) {}
+  constructor(
+    private readonly router: Router,
+    private readonly activatedRoute: ActivatedRoute,
+    private readonly layoutUi: LayoutUiService,
+    private readonly authService: AuthService
+  ) {}
 
   ngOnInit(): void {
-    this.updateTitle(this.router.url);
-    this.router.events.pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd))
-      .subscribe((event) => this.updateTitle(event.urlAfterRedirects || event.url));
+    this.updateTitle();
+    this.router.events
+      .pipe(
+        filter((event): event is NavigationEnd => event instanceof NavigationEnd),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe(() => this.updateTitle());
   }
 
-  private updateTitle(url: string) {
-    const route = url.split('?')[0].replace(/^\//, '');
+  private updateTitle(): void {
+    let route = this.activatedRoute;
 
-    const titleMap: Record<string, string> = {
-      '': 'Login',
-      'dashboard': 'Dashboard',
-      'teams': 'Teams',
-      'schemes': 'Teams',
-      'users': 'Users',
-      'spin-wheel': 'Spin Wheel',
-      'transactions': 'Transactions',
-      'reports': 'Reports',
-      'my-referrals': 'My Referrals',
-      'settings': 'Settings',
-      'profile': 'Profile'
-    };
+    while (route.firstChild) {
+      route = route.firstChild;
+    }
 
-    this.pageTitle = titleMap[route] || 'Page';
+    this.pageTitle = route.snapshot.data['title'] ?? 'Dashboard';
   }
 
   logout() {

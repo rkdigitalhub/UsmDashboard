@@ -1,23 +1,25 @@
-import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { RouterModule } from '@angular/router';
 import { LayoutUiService } from '../../services/layout-ui.service';
+import { memberSidebarItems, memberIcons, type MemberNavItem } from '../../member/member-navigation';
 
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [RouterModule],
+  imports: [CommonModule, RouterModule, FontAwesomeModule],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.scss'
 })
-export class SidebarComponent implements OnInit {
+export class SidebarComponent {
+  readonly collapseIcon = memberIcons.collapse;
+  readonly navigationItems = memberSidebarItems;
+
   constructor(public layoutUi: LayoutUiService) {}
 
   get isCollapsed(): boolean {
     return this.layoutUi.sidebarCollapsed;
-  }
-
-  ngOnInit(): void {
-    this.layoutUi.setSidebarCollapsed(this.layoutUi.sidebarCollapsed);
   }
 
   toggleSidebar(): void {
@@ -35,7 +37,7 @@ export class SidebarComponent implements OnInit {
     }
   }
 
-  onSpinWheelClick(): void {
-    this.onNavItemClick();
+  getIcon(item: MemberNavItem) {
+    return memberIcons[item.icon];
   }
 }

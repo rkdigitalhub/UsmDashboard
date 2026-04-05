@@ -1,0 +1,74 @@
+<div class="admin-shell" [class.sidebar-open]="sidebarOpen" [class.sidebar-collapsed]="sidebarCollapsed">
+  <aside class="admin-sidebar">
+    <div class="admin-brand admin-brand-premium">
+      <img src="assets/usm_final.png" alt="USM Logo">
+      <button
+        class="admin-sidebar-toggle"
+        type="button"
+        (click)="toggleDesktopSidebar()"
+        [attr.aria-label]="sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'"
+        [attr.title]="sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'">
+        <fa-icon [icon]="sidebarCollapsed ? collapseRightIcon : collapseLeftIcon"></fa-icon>
+      </button>
+    </div>
+
+    <div *ngFor="let section of navSections">
+      <div class="admin-nav-section">{{ section.title }}</div>
+      <a
+        *ngFor="let item of section.items"
+        class="admin-nav-link"
+        [routerLink]="item.route"
+        routerLinkActive="active"
+        [attr.title]="sidebarCollapsed ? item.label : null">
+        <span class="admin-nav-icon"><fa-icon [icon]="getMenuIcon(item.icon)"></fa-icon></span>
+        <span class="admin-nav-label">{{ item.label }}</span>
+      </a>
+    </div>
+
+    <div class="admin-sidebar-actions">
+      <button class="admin-signout" type="button" (click)="signOut()">Sign Out</button>
+    </div>
+  </aside>
+
+  <button
+    class="admin-sidebar-overlay"
+    *ngIf="sidebarOpen"
+    type="button"
+    aria-label="Close navigation"
+    (click)="toggleSidebar()"></button>
+
+  <main class="admin-main">
+    <header class="admin-topbar">
+      <div class="admin-topbar-leading">
+        <button class="admin-mobile-toggle" type="button" (click)="toggleSidebar()"><fa-icon [icon]="mobileMenuIcon"></fa-icon></button>
+        <div class="admin-topbar-title">
+          <p>{{ currentSectionTitle }}</p>
+          <h1>{{ currentPageTitle }}</h1>
+        </div>
+      </div>
+
+      <div class="admin-topbar-meta">
+        <div class="admin-date-pill">{{ currentDateLabel }}</div>
+        <div class="admin-profile-menu">
+          <button class="admin-profile-pill admin-profile-trigger" type="button" (click)="toggleProfileMenu($event)" [attr.aria-expanded]="profileMenuOpen">
+            <span class="admin-avatar">{{ adminInitials }}</span>
+            <span>
+              <strong>{{ currentUserName }}</strong>
+              <small>Admin</small>
+            </span>
+          </button>
+
+          <div class="admin-profile-dropdown" *ngIf="profileMenuOpen" (click)="$event.stopPropagation()">
+            <div class="admin-profile-dropdown-copy">
+              <strong>{{ currentUserName }}</strong>
+              <span>Admin session</span>
+            </div>
+            <button class="admin-profile-dropdown-action" type="button" (click)="signOut()">Logout</button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <router-outlet></router-outlet>
+  </main>
+</div>

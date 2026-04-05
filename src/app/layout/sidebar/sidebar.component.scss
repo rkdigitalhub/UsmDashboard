@@ -91,10 +91,8 @@ nav a {
   justify-content: center;
 }
 
-.icon-wheel img {
-  width: 18px;
-  height: 18px;
-  display: block;
+.icon-wheel {
+  font-size: 0.95rem;
 }
 
 .menu-label {
@@ -121,7 +119,7 @@ nav a.active {
 }
 
 nav a.active .icon-wheel img {
-  filter: drop-shadow(0 0 6px rgba(255, 222, 68, 0.6));
+  filter: none;
 }
 
 .spin-lock-backdrop {

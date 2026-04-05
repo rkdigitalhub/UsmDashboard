@@ -1,0 +1,28 @@
+<div class="page referrals-page">
+  <div class="page-head">
+    <h1 class="page-title"><fa-icon [icon]="referralsIcon"></fa-icon><span>Referral Network</span></h1>
+    <button class="btn-gold" type="button" (click)="loadReferrals()" [disabled]="isLoading">
+      <fa-icon [icon]="refreshIcon" [class.icon-spinning]="isLoading"></fa-icon>
+      <span>{{ isLoading ? 'Refreshing...' : 'Refresh List' }}</span>
+    </button>
+  </div>
+
+
+  <div class="info loading" *ngIf="isLoading">Fetching latest referrals...</div>
+  <div class="info error" *ngIf="!isLoading && errorMessage">{{ errorMessage }}</div>
+
+  <div class="table-wrap" *ngIf="!isLoading && rows.length">
+    <table>
+      <thead>
+        <tr>
+          <th *ngFor="let header of headers">{{ header }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of rows">
+          <td *ngFor="let cell of row">{{ cell }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

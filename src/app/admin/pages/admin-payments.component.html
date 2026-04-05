@@ -1,0 +1,122 @@
+<div class="admin-content-stack">
+  <section class="admin-workspace-grid">
+    <article class="admin-card admin-page-hero-card">
+      <div class="admin-panel-header">
+        <h2>Payment Operations</h2>
+        <span class="admin-pill warning">Admin controlled</span>
+      </div>
+
+      <div class="admin-key-figure-grid">
+        <div class="admin-key-figure">
+          <span>Online channels</span>
+          <strong>UPI + bank transfer</strong>
+        </div>
+        <div class="admin-key-figure">
+          <span>Monthly ticket</span>
+          <strong>₹25,000 per member</strong>
+        </div>
+        <div class="admin-key-figure">
+          <span>Control objective</span>
+          <strong>Match every receipt before spin day</strong>
+        </div>
+      </div>
+    </article>
+
+    <article class="admin-note-card">
+      <div class="admin-panel-header">
+        <h2>Settlement Checklist</h2>
+      </div>
+      <div class="admin-list">
+        <div class="admin-list-item"><div><h3>Verify channel</h3></div></div>
+        <div class="admin-list-item"><div><h3>Match team receipt</h3></div></div>
+        <div class="admin-list-item"><div><h3>Clear exceptions</h3></div></div>
+      </div>
+      <div class="admin-status-message" *ngIf="statusMessage">{{ statusMessage }}</div>
+    </article>
+  </section>
+
+  <section class="admin-table-card">
+    <div class="admin-table-toolbar">
+      <h2>Online Payment Queue</h2>
+      <div class="admin-toolbar-actions">
+        <span class="admin-pill">UPI and bank transfer</span>
+      </div>
+    </div>
+
+    <div class="admin-table-wrap">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>User ID</th>
+            <th>Name</th>
+            <th>Team</th>
+            <th>Channel</th>
+            <th>Reference</th>
+            <th>Requested On</th>
+            <th>Amount</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let payment of onlinePayments">
+            <td data-label="#">{{ payment.id }}</td>
+            <td data-label="User ID">{{ payment.userId }}</td>
+            <td data-label="Name">{{ payment.name }}</td>
+            <td data-label="Team">{{ payment.team }}</td>
+            <td data-label="Channel">{{ payment.channel }}</td>
+            <td data-label="Reference">{{ payment.reference }}</td>
+            <td data-label="Requested On">{{ payment.requestedOn }}</td>
+            <td data-label="Amount">{{ payment.amount }}</td>
+            <td data-label="Status"><span class="admin-pill" [class.success]="payment.status === 'Matched'">{{ payment.status }}</span></td>
+            <td data-label="Actions" class="admin-actions-cell"><div class="admin-inline-actions"><button class="admin-icon-button admin-icon-button-success" type="button" title="Match payment" aria-label="Match payment" (click)="updateOnlinePaymentStatus(payment.id, 'Matched')"><fa-icon [icon]="matchIcon"></fa-icon></button><button class="admin-icon-button admin-icon-button-warning" type="button" title="Flag payment" aria-label="Flag payment" (click)="updateOnlinePaymentStatus(payment.id, 'Flagged')"><fa-icon [icon]="flagIcon"></fa-icon></button></div></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="admin-table-card">
+    <div class="admin-table-toolbar">
+      <h2>Hand Cash Monitoring</h2>
+      <div class="admin-toolbar-actions">
+        <span class="admin-pill warning">Collection audit</span>
+        <button class="admin-icon-button" type="button" title="Export payment register" aria-label="Export payment register" (click)="exportPayments()"><fa-icon [icon]="exportIcon"></fa-icon></button>
+      </div>
+    </div>
+
+    <div class="admin-table-wrap">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>User ID</th>
+            <th>Name</th>
+            <th>Team</th>
+            <th>Collector</th>
+            <th>Received On</th>
+            <th>Receipt No</th>
+            <th>Amount</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let payment of handCashPayments">
+            <td data-label="#">{{ payment.id }}</td>
+            <td data-label="User ID">{{ payment.userId }}</td>
+            <td data-label="Name">{{ payment.userName }}</td>
+            <td data-label="Team">{{ payment.team }}</td>
+            <td data-label="Collector">{{ payment.collector }}</td>
+            <td data-label="Received On">{{ payment.receivedOn }}</td>
+            <td data-label="Receipt No">{{ payment.receiptNo }}</td>
+            <td data-label="Amount">₹{{ payment.amount }}</td>
+            <td data-label="Status"><span class="admin-pill" [class.success]="payment.status === 'Received' || payment.status === 'Posted'">{{ payment.status }}</span></td>
+            <td data-label="Actions" class="admin-actions-cell"><div class="admin-inline-actions"><button class="admin-icon-button admin-icon-button-success" type="button" title="Verify receipt" aria-label="Verify receipt" (click)="updateHandCashStatus(payment.id, 'Received')"><fa-icon [icon]="verifyIcon"></fa-icon></button><button class="admin-icon-button" type="button" title="Post receipt" aria-label="Post receipt" (click)="updateHandCashStatus(payment.id, 'Posted')"><fa-icon [icon]="postIcon"></fa-icon></button></div></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>

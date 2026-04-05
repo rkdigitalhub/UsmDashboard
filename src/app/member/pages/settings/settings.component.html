@@ -1,0 +1,51 @@
+<div class="page">
+  <h1 class="page-title"><fa-icon [icon]="settingsIcon"></fa-icon><span>Account Settings</span></h1>
+
+  <div class="settings-menu">
+    <button class="menu-item" type="button" (click)="openChangePasswordPopup()">
+      <fa-icon [icon]="passwordIcon"></fa-icon>
+      <span>Password &amp; Access</span>
+    </button>
+  </div>
+
+  <div class="popup-backdrop" *ngIf="showChangePasswordPopup" (click)="closeChangePasswordPopup()">
+    <div class="popup" (click)="$event.stopPropagation()" role="dialog" aria-modal="true" aria-label="Change password">
+      <div class="popup-head">
+        <h2 class="page-title"><fa-icon [icon]="passwordIcon"></fa-icon><span>Change Password</span></h2>
+      </div>
+
+      <div class="form-grid">
+        <label for="currentPassword">Current Password</label>
+        <input
+          id="currentPassword"
+          type="password"
+          [value]="currentPassword"
+          (input)="currentPassword = $any($event.target).value"
+          autocomplete="current-password" />
+
+        <label for="newPassword">New Password</label>
+        <input
+          id="newPassword"
+          type="password"
+          [value]="newPassword"
+          (input)="newPassword = $any($event.target).value"
+          autocomplete="new-password" />
+
+        <label for="reenterPassword">Re-enter Password</label>
+        <input
+          id="reenterPassword"
+          type="password"
+          [value]="reenterPassword"
+          (input)="reenterPassword = $any($event.target).value"
+          autocomplete="new-password" />
+      </div>
+
+      <div class="info-message" *ngIf="statusMessage">{{ statusMessage }}</div>
+
+      <div class="actions">
+        <button class="btn-primary" type="button" (click)="changePassword()"><fa-icon [icon]="passwordIcon"></fa-icon><span>Change Password</span></button>
+        <button class="btn-secondary" type="button" (click)="closeChangePasswordPopup()"><fa-icon [icon]="closeIcon"></fa-icon><span>Cancel</span></button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,68 @@
+<div class="admin-content-stack">
+  <section class="admin-workspace-grid">
+    <article class="admin-card admin-page-hero-card">
+      <div class="admin-panel-header">
+        <h2>Winner Control</h2>
+        <span class="admin-pill">Round closure</span>
+      </div>
+    </article>
+
+    <article class="admin-note-card">
+      <div class="admin-panel-header">
+        <h2>{{ editingWinnerId ? 'Edit Winner' : 'Assign Winner' }}</h2>
+      </div>
+      <div class="admin-form-grid">
+        <div class="admin-field"><label>User ID</label><select [(ngModel)]="winnerForm.userId" (ngModelChange)="onWinnerUserChange()" [ngModelOptions]="{ standalone: true }"><option *ngFor="let member of members" [ngValue]="member.userId">{{ member.userId }} - {{ member.name }}</option></select></div>
+        <div class="admin-field"><label>Group</label><input [(ngModel)]="winnerForm.group" [ngModelOptions]="{ standalone: true }" type="text"></div>
+        <div class="admin-field"><label>Name</label><input [(ngModel)]="winnerForm.name" [ngModelOptions]="{ standalone: true }" type="text"></div>
+        <div class="admin-field"><label>Month</label><input [(ngModel)]="winnerForm.month" [ngModelOptions]="{ standalone: true }" type="month"></div>
+        <div class="admin-field"><label>Prize</label><input [(ngModel)]="winnerForm.prize" [ngModelOptions]="{ standalone: true }" type="text"></div>
+        <div class="admin-field"><label>Settlement</label><select [(ngModel)]="winnerForm.settlementMode" [ngModelOptions]="{ standalone: true }"><option>Bank transfer</option><option>UPI</option><option>Hand cash</option></select></div>
+        <div class="admin-field"><label>Status</label><select [(ngModel)]="winnerForm.status" [ngModelOptions]="{ standalone: true }"><option>Awaiting release</option><option>Released</option></select></div>
+      </div>
+      <div class="admin-toolbar-actions admin-toolbar-actions-compact">
+        <button class="admin-button" type="button" (click)="saveWinner()">{{ editingWinnerId ? 'Save Winner' : 'Assign Winner' }}</button>
+        <button class="admin-button-secondary" type="button" (click)="cancelEdit()">Clear</button>
+      </div>
+      <div class="admin-status-message" *ngIf="statusMessage">{{ statusMessage }}</div>
+    </article>
+  </section>
+
+  <section class="admin-table-card">
+    <div class="admin-table-toolbar">
+      <h2>Round Winner Registry</h2>
+      <button class="admin-button" type="button" (click)="cancelEdit()">Assign Winner</button>
+    </div>
+
+    <div class="admin-table-wrap">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Group</th>
+            <th>User ID</th>
+            <th>Name</th>
+            <th>Month</th>
+            <th>Prize</th>
+            <th>Settlement</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let winner of winners">
+            <td data-label="#">{{ winner.id }}</td>
+            <td data-label="Group">{{ winner.group }}</td>
+            <td data-label="User ID">{{ winner.userId }}</td>
+            <td data-label="Name">{{ winner.name }}</td>
+            <td data-label="Month">{{ winner.month }}</td>
+            <td data-label="Prize">{{ winner.prize }}</td>
+            <td data-label="Settlement">{{ winner.settlementMode }}</td>
+            <td data-label="Status"><span class="admin-pill" [class.success]="winner.status === 'Released'">{{ winner.status }}</span></td>
+            <td data-label="Actions" class="admin-actions-cell"><div class="admin-inline-actions"><button class="admin-icon-button" type="button" title="Edit winner" aria-label="Edit winner" (click)="editWinner(winner)"><fa-icon [icon]="editIcon"></fa-icon></button><button class="admin-icon-button admin-icon-button-success" type="button" title="Release winner" aria-label="Release winner" (click)="releaseWinner(winner.id)"><fa-icon [icon]="releaseIcon"></fa-icon></button><button class="admin-icon-button admin-icon-button-danger" type="button" title="Delete winner" aria-label="Delete winner" (click)="deleteWinner(winner.id)"><fa-icon [icon]="deleteIcon"></fa-icon></button></div></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>

@@ -1,17 +1,18 @@
 <div class="header">
   <button class="menu-toggle" type="button" (click)="toggleMenu()" aria-label="Open menu">
-    &#9776;
+    <fa-icon [icon]="menuIcon"></fa-icon>
   </button>
 
   <div class="menu">{{ pageTitle }}</div>
 
   <div class="right">
-    <input placeholder="Search" />
-
-    <button class="btn-logout" (click)="logout()">Logout</button>
+    <button class="btn-logout" (click)="logout()">
+      <fa-icon [icon]="logoutIcon"></fa-icon>
+      <span>Logout</span>
+    </button>
 
     <div class="profile" title="Profile" (click)="goToProfile()">
-      <span class="avatar">👤</span>
+      <span class="avatar"><fa-icon [icon]="profileIcon"></fa-icon></span>
     </div>
   </div>
 

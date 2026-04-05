@@ -1,0 +1,30 @@
+{
+  "revenueTrend": [
+    { "label": "May", "value": 12 },
+    { "label": "Jun", "value": 18 },
+    { "label": "Jul", "value": 21 },
+    { "label": "Aug", "value": 28 },
+    { "label": "Sep", "value": 25 },
+    { "label": "Oct", "value": 39 },
+    { "label": "Nov", "value": 36 },
+    { "label": "Dec", "value": 33 },
+    { "label": "Jan", "value": 48 },
+    { "label": "Feb", "value": 44 },
+    { "label": "Mar", "value": 58 },
+    { "label": "Apr", "value": 72 }
+  ],
+  "memberGrowth": [
+    { "label": "May", "value": 16 },
+    { "label": "Jun", "value": 21 },
+    { "label": "Jul", "value": 24 },
+    { "label": "Aug", "value": 31 },
+    { "label": "Sep", "value": 36 },
+    { "label": "Oct", "value": 43 },
+    { "label": "Nov", "value": 47 },
+    { "label": "Dec", "value": 55 },
+    { "label": "Jan", "value": 61 },
+    { "label": "Feb", "value": 58 },
+    { "label": "Mar", "value": 63 },
+    { "label": "Apr", "value": 74 }
+  ]
+}

@@ -1,7 +1,7 @@
 <div class="sidebar" [class.collapsed]="isCollapsed" [class.mobile-open]="layoutUi.mobileMenuOpen">
 
   <button class="toggle-btn" type="button" (click)="toggleSidebar()" [attr.aria-label]="isCollapsed ? 'Expand menu' : 'Collapse menu'">
-    <span [class.rotated]="isCollapsed">&#10094;</span>
+    <span [class.rotated]="isCollapsed"><fa-icon [icon]="collapseIcon"></fa-icon></span>
   </button>
 
   <div class="logo">
@@ -9,41 +9,15 @@
   </div>
 
   <nav>
-    <a routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" [attr.title]="isCollapsed ? 'Dashboard' : null" (click)="onNavItemClick()">
-      <span class="menu-icon">&#x25A6;</span>
-      <span class="menu-label">Dashboard</span>
-    </a>
-
-    <a routerLink="/profile" routerLinkActive="active" [attr.title]="isCollapsed ? 'Profile' : null" (click)="onNavItemClick()">
-      <span class="menu-icon">&#x263A;</span>
-      <span class="menu-label">Profile</span>
-    </a>
-
-    <a routerLink="/teams" routerLinkActive="active" [attr.title]="isCollapsed ? 'Teams' : null" (click)="onNavItemClick()">
-      <span class="menu-icon">&#x2630;</span>
-      <span class="menu-label">Teams</span>
-    </a>
-
-    <a routerLink="/my-referrals" routerLinkActive="active" [attr.title]="isCollapsed ? 'My Referrals' : null" (click)="onNavItemClick()">
-      <span class="menu-icon">&#x27F3;</span>
-      <span class="menu-label">My Referrals</span>
-    </a>
-
-    <a routerLink="/reports" routerLinkActive="active" [attr.title]="isCollapsed ? 'Reports' : null" (click)="onNavItemClick()">
-      <span class="menu-icon">&#x2637;</span>
-      <span class="menu-label">Reports</span>
-    </a>
-
-    <a routerLink="/settings" routerLinkActive="active" [attr.title]="isCollapsed ? 'Settings' : null" (click)="onNavItemClick()">
-      <span class="menu-icon">&#9881;</span>
-      <span class="menu-label">Settings</span>
-    </a>
-
-    <a routerLink="/spin-wheel" routerLinkActive="active" [attr.title]="isCollapsed ? 'Spin Wheel' : null" (click)="onSpinWheelClick()">
-      <span class="menu-icon icon-wheel" aria-hidden="true">
-        <img src="assets/spin-wheel-menu.svg" alt="" />
-      </span>
-      <span class="menu-label">Spin Wheel</span>
+    <a
+      *ngFor="let item of navigationItems"
+      [routerLink]="item.route"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+      [attr.title]="isCollapsed ? item.label : null"
+      (click)="onNavItemClick()">
+      <span class="menu-icon" [class.icon-wheel]="item.icon === 'spin'" aria-hidden="true"><fa-icon [icon]="getIcon(item)"></fa-icon></span>
+      <span class="menu-label">{{ item.label }}</span>
     </a>
   </nav>
 </div>

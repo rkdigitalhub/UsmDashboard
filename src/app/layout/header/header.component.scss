@@ -29,18 +29,17 @@
   cursor: pointer;
 }
 
+.btn-logout,
+.profile {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .right {
   display: flex;
   align-items: center;
   gap: 10px;
-}
-
-input {
-  background: #111;
-  border: 1px solid rgba(212, 175, 55, 0.2);
-  padding: 8px 10px;
-  border-radius: 8px;
-  color: white;
 }
 
 .btn-logout {
@@ -51,6 +50,7 @@ input {
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s ease;
+  gap: 8px;
 }
 
 .btn-logout:hover {
@@ -93,11 +93,11 @@ input {
     font-size: 20px;
   }
 
-  input {
-    width: 120px;
-  }
-
   .btn-logout {
     padding: 6px 10px;
+  }
+
+  .btn-logout span {
+    display: none;
   }
 }

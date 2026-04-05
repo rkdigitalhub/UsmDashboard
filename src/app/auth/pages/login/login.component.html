@@ -1,0 +1,52 @@
+<div class="login-wrapper">
+
+<div class="login-card">
+
+<div class="logo">
+  <img src="assets/usm_final.png" alt="USM Logo">
+</div>
+
+<form (ngSubmit)="login()">
+
+  <div class="input-shell">
+    <span class="input-icon"><fa-icon [icon]="userIdIcon"></fa-icon></span>
+    <input
+      type="text"
+      placeholder="User ID (USMxxxxx)"
+      [(ngModel)]="userId"
+      (ngModelChange)="clearMessages()"
+      name="userId"
+      maxlength="8"
+    />
+  </div>
+
+  <div class="input-shell">
+    <span class="input-icon"><fa-icon [icon]="passwordIcon"></fa-icon></span>
+    <input
+      type="password"
+      placeholder="Password"
+      [(ngModel)]="password"
+      (ngModelChange)="clearMessages()"
+      name="password"
+      maxlength="8"
+    />
+  </div>
+
+  <button class="text-link" type="button" (click)="requestPasswordHelp()">
+    <fa-icon [icon]="helpIcon"></fa-icon>
+    <span>Forgot Password?</span>
+  </button>
+
+  <div class="error" *ngIf="errorMessage">{{ errorMessage }}</div>
+  <div class="info" *ngIf="infoMessage">{{ infoMessage }}</div>
+
+  <button class="btn-gold" [disabled]="!canLogin">
+    <fa-icon [icon]="loginIcon"></fa-icon>
+    <span>LOGIN</span>
+  </button>
+
+</form>
+
+</div>
+
+</div>

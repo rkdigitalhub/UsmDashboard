@@ -1,0 +1,90 @@
+<div class="admin-content-stack">
+  <section class="admin-workspace-grid">
+    <article class="admin-form-card">
+      <h2>User Onboarding</h2>
+
+      <form (ngSubmit)="$event.preventDefault()">
+        <div class="admin-form-grid">
+          <div class="admin-field">
+            <label>Next User ID</label>
+            <input [(ngModel)]="memberForm.userId" [ngModelOptions]="{ standalone: true }" type="text" readonly>
+          </div>
+
+          <div class="admin-field">
+            <label>Plan Value</label>
+            <input [(ngModel)]="memberForm.planAmount" [ngModelOptions]="{ standalone: true }" type="text" readonly>
+          </div>
+
+          <div class="admin-field">
+            <label>Team Assignment</label>
+            <select [(ngModel)]="memberForm.team" [ngModelOptions]="{ standalone: true }">
+              <option *ngFor="let group of groups" [ngValue]="group.groupName">{{ group.groupName }}</option>
+            </select>
+          </div>
+
+          <div class="admin-field">
+            <label>Sponsor ID</label>
+            <input [(ngModel)]="memberForm.sponsor" [ngModelOptions]="{ standalone: true }" type="text">
+          </div>
+
+          <div class="admin-field admin-full-span">
+            <label>Full Name</label>
+            <input [(ngModel)]="memberForm.name" [ngModelOptions]="{ standalone: true }" type="text">
+          </div>
+
+          <div class="admin-field">
+            <label>Mobile Number</label>
+            <input [(ngModel)]="memberForm.mobile" [ngModelOptions]="{ standalone: true }" type="text">
+          </div>
+
+          <div class="admin-field">
+            <label>Email</label>
+            <input [(ngModel)]="memberForm.email" [ngModelOptions]="{ standalone: true }" type="email">
+          </div>
+
+          <div class="admin-field admin-full-span">
+            <label>Residential Address</label>
+            <textarea [(ngModel)]="memberForm.address" [ngModelOptions]="{ standalone: true }"></textarea>
+          </div>
+
+          <div class="admin-field">
+            <label>City</label>
+            <input [(ngModel)]="memberForm.city" [ngModelOptions]="{ standalone: true }" type="text">
+          </div>
+
+          <div class="admin-field">
+            <label>Pincode</label>
+            <input [(ngModel)]="memberForm.pincode" [ngModelOptions]="{ standalone: true }" type="text">
+          </div>
+
+          <div class="admin-field">
+            <label>Username</label>
+            <input [(ngModel)]="memberForm.username" [ngModelOptions]="{ standalone: true }" type="text">
+          </div>
+
+          <div class="admin-field">
+            <label>Temporary Password</label>
+            <input [(ngModel)]="memberForm.password" [ngModelOptions]="{ standalone: true }" type="text">
+          </div>
+        </div>
+
+        <div class="admin-toolbar-actions">
+          <button class="admin-button" type="button" (click)="createMember()">Create User and Assign Team</button>
+          <button class="admin-button-secondary" type="button" (click)="resetForm()">Clear Form</button>
+        </div>
+        <div class="admin-status-message" *ngIf="statusMessage">{{ statusMessage }}</div>
+      </form>
+    </article>
+
+    <article class="admin-note-card">
+      <div class="admin-panel-header">
+        <h2>Onboarding Rules</h2>
+      </div>
+      <div class="admin-list">
+        <div class="admin-list-item"><div><h3>Create the user record</h3></div></div>
+        <div class="admin-list-item"><div><h3>Assign an active team</h3></div></div>
+        <div class="admin-list-item"><div><h3>Capture address details</h3></div></div>
+      </div>
+    </article>
+  </section>
+</div>

@@ -1,24 +1,34 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 
 @Injectable({ providedIn: 'root' })
 export class LayoutUiService {
-  mobileMenuOpen = false;
-  sidebarCollapsed = false;
+  private readonly sidebarStorageKey = 'memberSidebarCollapsed';
+  private readonly mobileMenuOpenState = signal(false);
+  private readonly sidebarCollapsedState = signal(this.readSidebarCollapsed());
 
   constructor() {
     this.applySidebarWidth();
   }
 
+  get mobileMenuOpen(): boolean {
+    return this.mobileMenuOpenState();
+  }
+
+  get sidebarCollapsed(): boolean {
+    return this.sidebarCollapsedState();
+  }
+
   toggleMobileMenu(): void {
-    this.mobileMenuOpen = !this.mobileMenuOpen;
+    this.mobileMenuOpenState.update((value) => !value);
   }
 
   closeMobileMenu(): void {
-    this.mobileMenuOpen = false;
+    this.mobileMenuOpenState.set(false);
   }
 
   setSidebarCollapsed(collapsed: boolean): void {
-    this.sidebarCollapsed = collapsed;
+    this.sidebarCollapsedState.set(collapsed);
+    localStorage.setItem(this.sidebarStorageKey, String(collapsed));
     this.applySidebarWidth();
   }
 
@@ -33,5 +43,9 @@ export class LayoutUiService {
 
     const width = this.sidebarCollapsed ? '84px' : '220px';
     document.documentElement.style.setProperty('--sidebar-width', width);
+  }
+
+  private readSidebarCollapsed(): boolean {
+    return localStorage.getItem(this.sidebarStorageKey) === 'true';
   }
 }

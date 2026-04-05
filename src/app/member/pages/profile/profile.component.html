@@ -1,0 +1,84 @@
+<div class="page profile-page">
+  <div class="page-head">
+    <h1 class="page-title"><fa-icon [icon]="profileIcon"></fa-icon><span>My Profile</span></h1>
+    <p>Keep your contact and bank details up to date for payouts and member support.</p>
+  </div>
+
+  <form (ngSubmit)="saveProfile()" class="profile-form profile-card">
+    <h2 class="section-title"><fa-icon [icon]="profileIcon"></fa-icon><span>Personal Details</span></h2>
+
+    <div class="profile-grid">
+      <div class="form-row">
+        <label for="name">Name</label>
+        <input id="name" name="name" type="text" [(ngModel)]="profile.name" required />
+      </div>
+
+      <div class="form-row">
+        <label for="mobile">Mobile</label>
+        <input id="mobile" name="mobile" type="text" [(ngModel)]="profile.mobile" required />
+      </div>
+
+      <div class="form-row full-width">
+        <label for="address">Address</label>
+        <textarea id="address" name="address" rows="3" [(ngModel)]="profile.address" required></textarea>
+      </div>
+
+      <div class="form-row">
+        <label for="city">City</label>
+        <input id="city" name="city" type="text" [(ngModel)]="profile.city" required />
+      </div>
+
+      <div class="form-row">
+        <label for="pincode">Pincode</label>
+        <input id="pincode" name="pincode" type="text" [(ngModel)]="profile.pincode" required />
+      </div>
+
+      <div class="form-row full-width">
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" [(ngModel)]="profile.email" required />
+      </div>
+    </div>
+
+    <div class="button-center">
+      <button type="submit" class="btn-gold"><fa-icon [icon]="saveIcon"></fa-icon><span>Update Profile</span></button>
+    </div>
+
+    <div class="save-message" *ngIf="savedMessage">{{ savedMessage }}</div>
+  </form>
+
+  <div class="profile-form bank-card">
+    <h2 class="section-title"><fa-icon [icon]="walletIcon"></fa-icon><span>Bank Details</span></h2>
+
+    <div class="bank-grid">
+      <div class="form-row">
+        <label for="accountHolder">Account Holder Name</label>
+        <input id="accountHolder" name="accountHolder" type="text" [(ngModel)]="bankDetails.accountHolder" />
+      </div>
+
+      <div class="form-row">
+        <label for="bankName">Bank Name</label>
+        <input id="bankName" name="bankName" type="text" [(ngModel)]="bankDetails.bankName" />
+      </div>
+
+      <div class="form-row">
+        <label for="accountNumber">Account Number</label>
+        <input id="accountNumber" name="accountNumber" type="text" [(ngModel)]="bankDetails.accountNumber" />
+      </div>
+
+      <div class="form-row">
+        <label for="ifscCode">IFSC Code</label>
+        <input id="ifscCode" name="ifscCode" type="text" [(ngModel)]="bankDetails.ifscCode" />
+      </div>
+
+      <div class="form-row">
+        <label for="branch">Branch</label>
+        <input id="branch" name="branch" type="text" [(ngModel)]="bankDetails.branch" />
+      </div>
+
+      <div class="form-row">
+        <label for="upiId">UPI ID</label>
+        <input id="upiId" name="upiId" type="text" [(ngModel)]="bankDetails.upiId" />
+      </div>
+    </div>
+  </div>
+</div>

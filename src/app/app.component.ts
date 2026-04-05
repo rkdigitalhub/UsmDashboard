@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Component, DestroyRef, inject } from '@angular/core';
 import { NgIf } from '@angular/common';
-import { Router, NavigationEnd, NavigationStart, NavigationCancel, NavigationError, RouterOutlet } from '@angular/router';
-import { filter } from 'rxjs/operators';
+import { NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router, RouterOutlet } from '@angular/router';
 import { SidebarComponent } from './layout/sidebar/sidebar.component';
 import { HeaderComponent } from './layout/header/header.component';
 import { LayoutUiService } from './services/layout-ui.service';
@@ -17,26 +17,16 @@ export class AppComponent {
   title = 'USM Dashboard';
   showLayout = false;
   isLoading = false;
+  private readonly destroyRef = inject(DestroyRef);
 
   private loadingStart = 0;
   private loadingTimeout = 0;
-  private readonly minLoadingMs = 1500;
-
-  navItems = [
-    { label: 'Home', link: '#' },
-    { label: 'Analytics', link: '#' },
-    { label: 'Reports', link: '#' },
-    { label: 'Settings', link: '#' }
-  ];
-
-  welcomeMessage = 'Monitor your data and insights here.';
+  private readonly minLoadingMs = 250;
 
   constructor(private router: Router, public layoutUi: LayoutUiService) {
-    // Ensure we set layout visibility for the initial load.
     this.updateLayout(this.router.url);
 
-    // Update layout visibility and loading indicator on navigation events.
-    this.router.events.subscribe((event) => {
+    this.router.events.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((event) => {
       if (event instanceof NavigationStart) {
         this.setLoading(true);
       }
@@ -79,6 +69,6 @@ export class AppComponent {
 
   private updateLayout(url: string) {
     const path = url.split('?')[0];
-    this.showLayout = path !== '/';
+    this.showLayout = path !== '/' && !path.startsWith('/admin');
   }
 }

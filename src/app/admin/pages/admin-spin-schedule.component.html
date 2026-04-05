@@ -1,0 +1,86 @@
+<div class="admin-content-stack">
+  <section class="admin-workspace-grid">
+    <article class="admin-card admin-page-hero-card">
+      <div class="admin-panel-header">
+        <h2>Spin Schedule Control</h2>
+        <span class="admin-pill">Per-team monthly schedule</span>
+      </div>
+
+      <div class="admin-rule-grid">
+        <div class="admin-rule-item">
+          <strong>Plan value</strong>
+          <span>500000 per team</span>
+        </div>
+        <div class="admin-rule-item">
+          <strong>Tenure</strong>
+          <span>20 months</span>
+        </div>
+        <div class="admin-rule-item">
+          <strong>Member capacity</strong>
+          <span>20 users per team</span>
+        </div>
+      </div>
+    </article>
+
+    <article class="admin-note-card">
+      <div class="admin-panel-header">
+        <h2>{{ editingScheduleId ? 'Edit Schedule' : 'Add Schedule' }}</h2>
+      </div>
+      <div class="admin-form-grid">
+        <div class="admin-field"><label>Team</label><select [(ngModel)]="scheduleForm.team" [ngModelOptions]="{ standalone: true }"><option *ngFor="let group of groups" [ngValue]="group.groupName">{{ group.groupName }}</option></select></div>
+        <div class="admin-field"><label>Month</label><input [(ngModel)]="scheduleForm.month" [ngModelOptions]="{ standalone: true }" type="text"></div>
+        <div class="admin-field"><label>Round</label><input [(ngModel)]="scheduleForm.round" [ngModelOptions]="{ standalone: true }" type="number"></div>
+        <div class="admin-field"><label>Date</label><input [(ngModel)]="scheduleForm.date" [ngModelOptions]="{ standalone: true }" type="date"></div>
+        <div class="admin-field"><label>Time</label><input [(ngModel)]="scheduleForm.time" [ngModelOptions]="{ standalone: true }" type="text"></div>
+        <div class="admin-field"><label>Timezone</label><input [(ngModel)]="scheduleForm.timezone" [ngModelOptions]="{ standalone: true }" type="text"></div>
+        <div class="admin-field admin-full-span"><label>Member Window</label><input [(ngModel)]="scheduleForm.window" [ngModelOptions]="{ standalone: true }" type="text"></div>
+        <div class="admin-field"><label>Status</label><select [(ngModel)]="scheduleForm.status" [ngModelOptions]="{ standalone: true }"><option>Scheduled</option><option>Draft</option><option>Closed</option></select></div>
+      </div>
+      <div class="admin-toolbar-actions admin-toolbar-actions-compact">
+        <button class="admin-button" type="button" (click)="saveSchedule()">{{ editingScheduleId ? 'Save Schedule' : 'Add Monthly Slot' }}</button>
+        <button class="admin-button-secondary" type="button" (click)="cancelEdit()">Clear</button>
+      </div>
+      <div class="admin-status-message" *ngIf="statusMessage">{{ statusMessage }}</div>
+    </article>
+  </section>
+
+  <section class="admin-table-card">
+    <div class="admin-table-toolbar">
+      <h2>Configured Team Schedules</h2>
+      <button class="admin-button" type="button" (click)="cancelEdit()">Add Monthly Slot</button>
+    </div>
+
+    <div class="admin-table-wrap">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Team</th>
+            <th>Month</th>
+            <th>Round</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Timezone</th>
+            <th>Member Window</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let schedule of schedules">
+            <td data-label="#">{{ schedule.id }}</td>
+            <td data-label="Team">{{ schedule.team }}</td>
+            <td data-label="Month">{{ schedule.month }}</td>
+            <td data-label="Round">{{ schedule.round }}</td>
+            <td data-label="Date">{{ schedule.date }}</td>
+            <td data-label="Time">{{ schedule.time }}</td>
+            <td data-label="Timezone">{{ schedule.timezone }}</td>
+            <td data-label="Member Window">{{ schedule.window }}</td>
+            <td data-label="Status"><span class="admin-pill" [class.success]="schedule.status === 'Scheduled'">{{ schedule.status }}</span></td>
+            <td data-label="Actions" class="admin-actions-cell"><div class="admin-inline-actions"><button class="admin-icon-button" type="button" title="Edit schedule" aria-label="Edit schedule" (click)="editSchedule(schedule)"><fa-icon [icon]="editIcon"></fa-icon></button><button class="admin-icon-button admin-icon-button-danger" type="button" title="Delete schedule" aria-label="Delete schedule" (click)="deleteSchedule(schedule.id)"><fa-icon [icon]="deleteIcon"></fa-icon></button></div></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>
