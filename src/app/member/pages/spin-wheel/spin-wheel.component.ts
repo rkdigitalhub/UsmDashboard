@@ -33,6 +33,7 @@ export class SpinWheelComponent implements OnDestroy, OnInit {
   readonly scheduleIcon = memberIcons.schedule;
   accessBlocked = false;
   showAccessBlockedPopup = false;
+  private accessBlockedPopupDismissed = false;
   accessBlockedWaitTime = '';
   accessBlockedDateText = '';
   currentUserId = '';
@@ -127,7 +128,7 @@ export class SpinWheelComponent implements OnDestroy, OnInit {
     { id: 'USM71135', name: 'HEMAVARSHINI' }
   ];
 
-  private readonly previousWinnerIds = new Set<string>([]);
+  private readonly previousWinnerIds = new Set<string>(['USM77335']);
 
   readonly winnerStars = Array.from({ length: 10 }, (_, i) => i);
 
@@ -200,7 +201,9 @@ export class SpinWheelComponent implements OnDestroy, OnInit {
 
     this.accessBlockedWaitTime = spinSchedule.remainingText;
     this.accessBlockedDateText = spinSchedule.dateText;
-    this.showAccessBlockedPopup = true;
+    if (!this.accessBlockedPopupDismissed) {
+      this.showAccessBlockedPopup = true;
+    }
     this.message = `Exclusive spin access unlocking soon. Unlocks in ${spinSchedule.remainingText}.`;
   }
 
@@ -253,6 +256,7 @@ export class SpinWheelComponent implements OnDestroy, OnInit {
     this.checkSpinAvailability();
 
     if (this.accessBlocked) {
+      this.accessBlockedPopupDismissed = false;
       this.showAccessBlockedPopup = true;
       this.showWinnerPopup = false;
       return;
@@ -378,7 +382,7 @@ export class SpinWheelComponent implements OnDestroy, OnInit {
 
   closeAccessBlockedPopup(): void {
     this.showAccessBlockedPopup = false;
-    void this.router.navigate(['/dashboard']);
+    this.accessBlockedPopupDismissed = true;
   }
 
   private async enterFullscreen(): Promise<void> {

@@ -36,10 +36,10 @@ const memberRouteDefinitions: MemberRouteDefinition[] = [
   },
   {
     path: 'teams',
-    label: 'Group Plans',
+    label: 'Teams',
     icon: 'teams',
     loadComponent: () => import('./pages/schemes/schemes.component').then((module) => module.SchemesComponent),
-    description: 'Track your subscribed groups and explore available plans.'
+    description: 'Track your subscribed teams and explore available teams.'
   },
   {
     path: 'my-referrals',

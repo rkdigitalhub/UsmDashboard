@@ -1,10 +1,10 @@
 <div class="page teams-page">
-  <h1 class="page-title"><fa-icon [icon]="teamsIcon"></fa-icon><span>Group Plans</span></h1>
+  <h1 class="page-title"><fa-icon [icon]="teamsIcon"></fa-icon><span>Teams</span></h1>
   <p class="subscribe-msg" *ngIf="subscribeMessage">{{ subscribeMessage }}</p>
 
   <div class="teams-layout">
     <section class="card teams-col">
-      <h2>My Active Plans</h2>
+      <h2>My Active Teams</h2>
       <p class="count">Subscribed: <strong>{{ myTeams.length }}</strong></p>
 
       <div class="team-list" *ngIf="myTeams.length; else noMyTeams">
@@ -33,7 +33,7 @@
     </section>
 
     <section class="card teams-col">
-      <h2>Available Plans</h2>
+      <h2>Available Teams</h2>
 
       <div class="team-list" *ngIf="availableTeams.length; else noTeams">
         <div class="team-row" *ngFor="let team of availableTeams">
@@ -59,7 +59,7 @@
   <div class="popup-backdrop" *ngIf="showPopup && selectedTeam as team" (click)="closePopup()">
     <div class="popup" (click)="$event.stopPropagation()" role="dialog" aria-modal="true" aria-label="Team details">
       <div class="popup-head">
-        <h3>{{ team.name }} - Group Details</h3>
+        <h3>{{ team.name }} - Team Details</h3>
         <button class="btn-close" type="button" (click)="closePopup()"><fa-icon [icon]="closeIcon"></fa-icon></button>
       </div>
 
@@ -78,12 +78,12 @@
   <div class="popup-backdrop" *ngIf="showSubscribePopup && selectedSubscribeTeam as team" (click)="closeSubscribePopup()">
     <div class="popup subscribe-popup" (click)="$event.stopPropagation()" role="dialog" aria-modal="true" aria-label="Subscribe team confirmation">
       <div class="popup-head">
-        <h3>Join Plan</h3>
+        <h3>Join Team</h3>
         <button class="btn-close" type="button" (click)="closeSubscribePopup()"><fa-icon [icon]="closeIcon"></fa-icon></button>
       </div>
 
       <div class="subscribe-details">
-        <p><strong>Plan name:</strong> {{ team.name }}</p>
+        <p><strong>Team name:</strong> {{ team.name }}</p>
         <p><strong>Total people subscribed:</strong> {{ team.subscribedCount }} out of 20</p>
         <p><strong>Starting date:</strong> {{ team.startingDate }}</p>
         <p><strong>Investment amount:</strong> {{ team.investmentAmount }}</p>
