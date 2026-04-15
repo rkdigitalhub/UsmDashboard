@@ -99,29 +99,6 @@ export class SpinWheelComponent implements OnDestroy, OnInit {
     { left: '98%', delay: '1.1s', duration: '2.9s', drift: '15px', rotate: '8deg' }
   ];
 
-  private readonly staticUsers: User[] = [
-    { id: 'USM78250', name: 'Biruntha' },
-    { id: 'USM71295', name: 'Manikandan' },
-    { id: 'USM79580', name: 'Mozhi K' },
-    { id: 'USM71504', name: 'SIVA KUMAR R' },
-    { id: 'USM74058', name: 'Sindhuja siva' },
-    { id: 'USM75340', name: 'Sonika.k' },
-    { id: 'USM75213', name: 'Sashvath.k' },
-    { id: 'USM75114', name: 'Sivaranjini' },
-    { id: 'USM71079', name: 'M SHANKAR' },
-    { id: 'USM74008', name: 'Santhosh T' },
-    { id: 'USM73832', name: 'Tamilarasi c' },
-    { id: 'USM77163', name: 'Pasuvaraj' },
-    { id: 'USM76253', name: 'MANIVANNAN' },
-    { id: 'USM77092', name: 'Maheshwari R' },
-    { id: 'USM78438', name: 'SOUNDHAR RAJAN C' },
-    { id: 'USM73690', name: 'Vidhya N' },
-    { id: 'USM77335', name: 'KIRUBAKARAN R' },
-    { id: 'USM76268', name: 'DHANASEKARAN G' },
-    { id: 'USM73347', name: 'ESHWARAN G' },
-    { id: 'USM71135', name: 'HEMAVARSHINI' }
-  ];
-
   private readonly previousWinnerIds = new Set<string>([]);
 
   readonly winnerStars = Array.from({ length: 10 }, (_, i) => i);
@@ -237,11 +214,28 @@ export class SpinWheelComponent implements OnDestroy, OnInit {
   private loadGroupUsers(): void {
     this.usersLoading = true;
     this.usersError = '';
-    this.users = this.staticUsers.map((user) => ({ ...user }));
-    this.usersLoading = false;
-    if (!this.users.length) {
-      this.usersError = 'No participants found.';
+    const currentUser = this.authService.getCurrentUser();
+    if (!currentUser) {
+      this.usersLoading = false;
+      this.usersError = 'Logged in user information is unavailable.';
+      return;
     }
+
+    this.authService.getUsers().subscribe({
+      next: (users) => {
+        this.users = users
+          .filter((user) => user.schemeName === currentUser.schemeName)
+          .map((user) => ({ id: user.userId, name: user.name }));
+        this.usersLoading = false;
+        if (!this.users.length) {
+          this.usersError = 'No participants found.';
+        }
+      },
+      error: () => {
+        this.usersLoading = false;
+        this.usersError = 'Unable to load participants.';
+      }
+    });
   }
 
   roll(): void {
@@ -545,13 +539,14 @@ export class SpinWheelComponent implements OnDestroy, OnInit {
 
   private fetchWinnerFromServer(): Promise<User> {
     // TODO: replace with real server call after API integration.
-    const defaultWinner: User = { id: 'USM77335', name: 'KIRUBAKARAN R' };
     return new Promise((resolve, reject) => {
-      const target = this.users.find((u) => u.id === defaultWinner.id) ?? defaultWinner;
       if (!this.users.length) {
         reject(new Error('No participants loaded.'));
         return;
       }
+
+      const defaultWinnerId = 'USM77335';
+      const target = this.users.find((user) => user.id === defaultWinnerId) ?? this.users[0];
       resolve(target);
     });
   }

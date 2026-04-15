@@ -30,7 +30,6 @@ interface DashboardSnapshot {
   styleUrl: './dashboard.component.scss'
 })
 export class DashboardComponent implements OnInit {
-  private readonly dashboardSpinTeamName = 'THE UNIVERSE';
   private readonly fixedInvestmentAmount = 500000;
   private readonly baseInvestmentAmount = 250000;
   private readonly benefitSchedule: BenefitScheduleRow[] = [
@@ -106,12 +105,12 @@ export class DashboardComponent implements OnInit {
     const snapshot = this.createMockSnapshot(currentUser);
     this.applySnapshot(snapshot);
     const spinSchedule = this.spinScheduleService.getSpinSchedule(currentUser);
-    this.setNextSpinSchedule(this.dashboardSpinTeamName, spinSchedule.dateText);
+    this.setNextSpinSchedule(spinSchedule.teamName, spinSchedule.dateText);
   }
 
   private bindCurrentUser(user: SafeAppUser): void {
     this.welcomeTitle = `Welcome, ${user.name}`;
-    this.welcomeSubtext = `${user.userId} • The Universe`;
+    this.welcomeSubtext = `${user.userId} | ${user.schemeName}`;
   }
 
   private createMockSnapshot(user: SafeAppUser): DashboardSnapshot {
@@ -200,3 +199,4 @@ export class DashboardComponent implements OnInit {
     return this.spinScheduleService.parseIstDateToMs(dateText);
   }
 }
+

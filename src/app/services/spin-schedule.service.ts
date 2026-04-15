@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { SafeAppUser } from './auth.service';
+import { getTeamConfig } from './team-config';
 
 export interface SpinScheduleSnapshot {
   teamName: string;
@@ -14,16 +15,16 @@ export interface SpinScheduleSnapshot {
   providedIn: 'root'
 })
 export class SpinScheduleService {
-  private readonly nextSpinTeamName = 'THE SPARTANS';
-  private readonly nextSpinDateText = 'May 5, 2026, 11:00 AM';
-
-  getSpinSchedule(_user: SafeAppUser | null): SpinScheduleSnapshot {
-    const targetIstMs = this.parseIstDateToMs(this.nextSpinDateText);
+  getSpinSchedule(user: SafeAppUser | null): SpinScheduleSnapshot {
+    const teamName = user?.schemeName ?? '--';
+    const teamConfig = user?.schemeName ? getTeamConfig(user.schemeName) : undefined;
+    const dateText = teamConfig?.nextSpinDateText ?? '--';
+    const targetIstMs = this.parseIstDateToMs(dateText);
     const remainingMs = targetIstMs === null ? 0 : Math.max(0, targetIstMs - this.getCurrentIstMs());
 
     return {
-      teamName: this.nextSpinTeamName,
-      dateText: this.nextSpinDateText,
+      teamName,
+      dateText,
       targetIstMs,
       remainingMs,
       remainingText: this.formatRemainingTime(remainingMs),
