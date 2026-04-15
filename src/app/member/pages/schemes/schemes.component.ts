@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ColDef } from 'ag-grid-community';
 import { AuthService, AppUser } from '../../../services/auth.service';
+import { TEAM_CONFIGS, TeamConfig, getUsersForTeam } from '../../../services/team-config';
 import { DataGridComponent } from '../../../shared/components/data-grid/data-grid.component';
 import { memberIcons } from '../../member-icons';
 
@@ -123,7 +124,7 @@ export class SchemesComponent implements OnInit {
 
     this.authService.getUsers().subscribe({
       next: (users) => {
-        this.mapGroupTableFromUsers(users);
+        this.mapGroupTableFromUsers(getUsersForTeam(users, this.selectedTeam?.name ?? ''));
         this.groupLoading = false;
       },
       error: () => {
@@ -134,16 +135,23 @@ export class SchemesComponent implements OnInit {
   }
 
   private bindTeams(users: AppUser[]): void {
-    const subscribedCount = users.length;
-    this.myTeams = [{
-      id: 1,
-      name: 'THE UNIVERSE',
-      subscribedCount,
-      startingDate: '05 Apr 2026',
-      investmentAmount: 500000,
-      tenureMonths: 20
-    }];
-    this.availableTeams = [];
+    const currentUser = this.authService.getCurrentUser();
+    const currentTeamName = currentUser?.schemeName ?? '';
+    const mapTeam = (team: TeamConfig): Team => ({
+      id: team.id,
+      name: team.name,
+      subscribedCount: getUsersForTeam(users, team.name).length,
+      startingDate: team.startingDate,
+      investmentAmount: team.investmentAmount,
+      tenureMonths: team.tenureMonths
+    });
+
+    this.myTeams = TEAM_CONFIGS
+      .filter((team) => team.name === currentTeamName)
+      .map(mapTeam);
+    this.availableTeams = TEAM_CONFIGS
+      .filter((team) => team.name !== currentTeamName)
+      .map(mapTeam);
   }
 
   private mapGroupTableFromUsers(users: AppUser[]): void {

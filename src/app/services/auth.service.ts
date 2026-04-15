@@ -9,6 +9,10 @@ export interface AppUser {
 	password: string;
 	role?: 'admin' | 'member';
 	mobile?: string;
+	email?: string;
+	address?: string;
+	accountNumber?: string;
+	ifscCode?: string;
 	location: string;
 	bankName: string;
 	branch: string;

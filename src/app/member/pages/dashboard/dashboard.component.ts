@@ -36,7 +36,6 @@ export class DashboardComponent implements OnInit {
   readonly walletIcon = memberIcons.wallet;
   readonly rewardIcon = memberIcons.reward;
   readonly scheduleIcon = memberIcons.schedule;
-  private readonly dashboardSpinTeamName = 'THE UNIVERSE';
   private readonly fixedInvestmentAmount = 500000;
   private readonly baseInvestmentAmount = 250000;
   private readonly benefitSchedule: BenefitScheduleRow[] = [
@@ -112,12 +111,11 @@ export class DashboardComponent implements OnInit {
     const snapshot = this.createMockSnapshot(currentUser);
     this.applySnapshot(snapshot);
     const spinSchedule = this.spinScheduleService.getSpinSchedule(currentUser);
-    this.setNextSpinSchedule(this.dashboardSpinTeamName, spinSchedule.dateText);
+    this.setNextSpinSchedule(spinSchedule.teamName, spinSchedule.dateText);
   }
-
   private bindCurrentUser(user: SafeAppUser): void {
     this.welcomeTitle = `Welcome, ${user.name}`;
-    this.welcomeSubtext = `${user.userId} • Member dashboard for THE UNIVERSE plan`;
+    this.welcomeSubtext = `${user.userId} | Member dashboard for ${user.schemeName} plan`;
   }
 
   private createMockSnapshot(user: SafeAppUser): DashboardSnapshot {

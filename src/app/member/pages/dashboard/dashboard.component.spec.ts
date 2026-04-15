@@ -15,9 +15,9 @@ describe('DashboardComponent', () => {
       location: 'Kallakurichi',
       bankName: 'Federal bank',
       branch: 'Kallakurichi',
-      schemeAmount: 12500,
-      schemeName: 'Unispace',
-      tenureMonths: 10
+      schemeAmount: 500000,
+      schemeName: 'THE UNIVERSE',
+      tenureMonths: 20
     }));
 
     await TestBed.configureTestingModule({

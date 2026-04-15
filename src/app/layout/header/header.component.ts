@@ -1,5 +1,6 @@
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { NgIf } from '@angular/common';
 import { Component, DestroyRef, OnInit, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs/operators';
@@ -10,7 +11,7 @@ import { memberIcons } from '../../member/member-icons';
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [FontAwesomeModule],
+  imports: [NgIf, FontAwesomeModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
@@ -19,6 +20,7 @@ export class HeaderComponent implements OnInit {
   readonly logoutIcon = memberIcons.logout;
   readonly profileIcon = memberIcons.profile;
   pageTitle = 'Dashboard';
+  currentTeamLabel = '';
   private readonly destroyRef = inject(DestroyRef);
 
   constructor(
@@ -29,13 +31,17 @@ export class HeaderComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.refreshCurrentUserContext();
     this.updateTitle();
     this.router.events
       .pipe(
         filter((event): event is NavigationEnd => event instanceof NavigationEnd),
         takeUntilDestroyed(this.destroyRef)
       )
-      .subscribe(() => this.updateTitle());
+      .subscribe(() => {
+        this.refreshCurrentUserContext();
+        this.updateTitle();
+      });
   }
 
   private updateTitle(): void {
@@ -59,5 +65,10 @@ export class HeaderComponent implements OnInit {
 
   toggleMenu(): void {
     this.layoutUi.toggleMobileMenu();
+  }
+
+  private refreshCurrentUserContext(): void {
+    const currentUser = this.authService.getCurrentUser();
+    this.currentTeamLabel = currentUser ? `${currentUser.userId} | ${currentUser.schemeName}` : '';
   }
 }
