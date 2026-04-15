@@ -69,18 +69,18 @@ export class ProfileComponent implements OnInit {
 
     this.profile = {
       name: currentUser.name,
-      address: '',
+      address: currentUser.address ?? '',
       city: currentUser.location,
       mobile: currentUser.mobile ?? '',
-      email: '',
-      pincode: ''
+      email: currentUser.email ?? '',
+      pincode: currentUser.pincode ?? ''
     };
 
     this.bankDetails = {
       accountHolder: currentUser.name,
       bankName: currentUser.bankName,
-      accountNumber: '',
-      ifscCode: '',
+      accountNumber: currentUser.accountNumber ?? '',
+      ifscCode: currentUser.ifscCode ?? '',
       branch: currentUser.branch,
       upiId: ''
     };

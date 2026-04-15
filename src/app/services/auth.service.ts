@@ -8,8 +8,13 @@ export interface AppUser {
 	name: string;
 	password: string;
 	mobile?: string;
+	email?: string;
+	address?: string;
+	pincode?: string;
 	location: string;
 	bankName: string;
+	accountNumber?: string;
+	ifscCode?: string;
 	branch: string;
 	schemeAmount: number;
 	schemeName: string;

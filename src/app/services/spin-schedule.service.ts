@@ -14,15 +14,14 @@ export interface SpinScheduleSnapshot {
   providedIn: 'root'
 })
 export class SpinScheduleService {
-  private readonly nextSpinTeamName = 'THE SPARTANS';
   private readonly nextSpinDateText = 'May 5, 2026, 11:00 AM';
 
-  getSpinSchedule(_user: SafeAppUser | null): SpinScheduleSnapshot {
+  getSpinSchedule(user: SafeAppUser | null): SpinScheduleSnapshot {
     const targetIstMs = this.parseIstDateToMs(this.nextSpinDateText);
     const remainingMs = targetIstMs === null ? 0 : Math.max(0, targetIstMs - this.getCurrentIstMs());
 
     return {
-      teamName: this.nextSpinTeamName,
+      teamName: user?.schemeName?.trim() || 'THE UNIVERSE',
       dateText: this.nextSpinDateText,
       targetIstMs,
       remainingMs,

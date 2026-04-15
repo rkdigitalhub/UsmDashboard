@@ -219,5 +219,22 @@
     "schemeAmount": 500000,
     "schemeName": "THE UNIVERSE",
     "tenureMonths": 20
+  },
+  {
+    "userId": "USM77121",
+    "name": "Anburaj",
+    "password": "An7B3rQ9",
+    "mobile": "+917373700003",
+    "email": "anbuef@gmail.com",
+    "address": "3/135B, MGR Nagar, Karuveppampatti",
+    "pincode": "637304",
+    "location": "Tiruchengode, Namakkal District, Tamil Nadu",
+    "bankName": "STATE BANK OF INDIA",
+    "accountNumber": "32135033785",
+    "ifscCode": "SBIN0000968",
+    "branch": "TIRUCHENGODE",
+    "schemeAmount": 500000,
+    "schemeName": "NOVA EMPIRE",
+    "tenureMonths": 20
   }
 ]

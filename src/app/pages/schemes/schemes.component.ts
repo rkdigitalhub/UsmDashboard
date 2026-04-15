@@ -123,21 +123,29 @@ export class SchemesComponent implements OnInit {
   }
 
   private bindTeams(users: AppUser[]): void {
-    const subscribedCount = users.length;
-    this.myTeams = [{
-      id: 1,
-      name: 'THE UNIVERSE',
-      subscribedCount,
-      startingDate: '05 Apr 2026',
-      investmentAmount: 500000,
-      tenureMonths: 20
-    }];
-    this.availableTeams = [];
+    const currentUserId = this.authService.getCurrentUser()?.userId;
+    const teams = this.createTeamsFromUsers(users);
+
+    if (!currentUserId) {
+      this.myTeams = teams;
+      this.availableTeams = [];
+      return;
+    }
+
+    const currentUser = users.find((user) => user.userId === currentUserId);
+    const currentSchemeName = currentUser?.schemeName;
+
+    this.myTeams = teams.filter((team) => team.name === currentSchemeName);
+    this.availableTeams = teams.filter((team) => team.name !== currentSchemeName);
   }
 
   private mapGroupTableFromUsers(users: AppUser[]): void {
+    const teamUsers = this.selectedTeam
+      ? users.filter((user) => user.schemeName === this.selectedTeam?.name)
+      : users;
+
     this.groupHeaders = ['User ID', 'Name', 'Location', 'Bank', 'Branch', 'Investment', 'Tenure'];
-    this.groupRows = users.map((user) => [
+    this.groupRows = teamUsers.map((user) => [
       user.userId,
       user.name,
       user.location,
@@ -150,6 +158,26 @@ export class SchemesComponent implements OnInit {
     if (!this.groupRows.length) {
       this.groupError = 'No rows found in group data.';
     }
+  }
+
+  private createTeamsFromUsers(users: AppUser[]): Team[] {
+    const teamsByName = new Map<string, AppUser[]>();
+
+    for (const user of users) {
+      const teamName = this.cleanText(user.schemeName) || 'THE UNIVERSE';
+      const members = teamsByName.get(teamName) ?? [];
+      members.push(user);
+      teamsByName.set(teamName, members);
+    }
+
+    return Array.from(teamsByName.entries()).map(([name, members], index) => ({
+      id: index + 1,
+      name,
+      subscribedCount: members.length,
+      startingDate: '05 Apr 2026',
+      investmentAmount: members[0]?.schemeAmount ?? 500000,
+      tenureMonths: members[0]?.tenureMonths ?? 20
+    }));
   }
 
   private cleanText(value: string | null): string {
