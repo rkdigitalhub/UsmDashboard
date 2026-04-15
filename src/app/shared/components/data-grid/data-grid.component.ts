@@ -4,11 +4,9 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faFileCsv, faFileExcel, faFilePdf } from '@fortawesome/free-solid-svg-icons';
 import { AgGridAngular } from 'ag-grid-angular';
 import {
-  ClientSideRowModelModule,
   ColDef,
   GridApi,
   GridReadyEvent,
-  Module,
   RowClassRules,
   ValueFormatterParams,
   ValueGetterParams
@@ -45,7 +43,6 @@ import {
       <ag-grid-angular
         class="ag-theme-quartz usm-data-grid"
         [style.height]="height"
-        [modules]="modules"
         [rowData]="rowData"
         [columnDefs]="columnDefs"
         [defaultColDef]="defaultColDef"
@@ -79,7 +76,6 @@ export class DataGridComponent {
   @Input() rowHeight = 46;
   @Input() headerHeight = 44;
   @Input() noRowsText = '<span class="usm-grid-empty">No records available.</span>';
-  readonly modules: Module[] = [ClientSideRowModelModule];
   private gridApi?: GridApi;
 
   readonly defaultColDef: ColDef = {
