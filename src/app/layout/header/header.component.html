@@ -3,7 +3,10 @@
     &#9776;
   </button>
 
-  <div class="menu">{{ pageTitle }}</div>
+  <div class="menu">
+    <span class="menu-title">{{ pageTitle }}</span>
+    <span class="menu-subtitle" *ngIf="currentTeamLabel">{{ currentTeamLabel }}</span>
+  </div>
 
   <div class="right">
     <input placeholder="Search" />

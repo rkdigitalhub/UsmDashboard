@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { AuthService, AppUser } from '../../services/auth.service';
+import { TEAM_CONFIGS, TeamConfig, getUsersForTeam } from '../../services/team-config';
 
 interface Team {
   id: number;
@@ -112,7 +113,7 @@ export class SchemesComponent implements OnInit {
 
     this.authService.getUsers().subscribe({
       next: (users) => {
-        this.mapGroupTableFromUsers(users);
+        this.mapGroupTableFromUsers(getUsersForTeam(users, this.selectedTeam?.name ?? ''));
         this.groupLoading = false;
       },
       error: () => {
@@ -123,20 +124,23 @@ export class SchemesComponent implements OnInit {
   }
 
   private bindTeams(users: AppUser[]): void {
-    const currentUserId = this.authService.getCurrentUser()?.userId;
-    const teams = this.createTeamsFromUsers(users);
+    const currentUser = this.authService.getCurrentUser();
+    const currentTeamName = currentUser?.schemeName ?? '';
+    const mapTeam = (team: TeamConfig): Team => ({
+      id: team.id,
+      name: team.name,
+      subscribedCount: getUsersForTeam(users, team.name).length,
+      startingDate: team.startingDate,
+      investmentAmount: team.investmentAmount,
+      tenureMonths: team.tenureMonths
+    });
 
-    if (!currentUserId) {
-      this.myTeams = teams;
-      this.availableTeams = [];
-      return;
-    }
-
-    const currentUser = users.find((user) => user.userId === currentUserId);
-    const currentSchemeName = currentUser?.schemeName;
-
-    this.myTeams = teams.filter((team) => team.name === currentSchemeName);
-    this.availableTeams = teams.filter((team) => team.name !== currentSchemeName);
+    this.myTeams = TEAM_CONFIGS
+      .filter((team) => team.name === currentTeamName)
+      .map(mapTeam);
+    this.availableTeams = TEAM_CONFIGS
+      .filter((team) => team.name !== currentTeamName)
+      .map(mapTeam);
   }
 
   private mapGroupTableFromUsers(users: AppUser[]): void {
@@ -158,29 +162,5 @@ export class SchemesComponent implements OnInit {
     if (!this.groupRows.length) {
       this.groupError = 'No rows found in group data.';
     }
-  }
-
-  private createTeamsFromUsers(users: AppUser[]): Team[] {
-    const teamsByName = new Map<string, AppUser[]>();
-
-    for (const user of users) {
-      const teamName = this.cleanText(user.schemeName) || 'THE UNIVERSE';
-      const members = teamsByName.get(teamName) ?? [];
-      members.push(user);
-      teamsByName.set(teamName, members);
-    }
-
-    return Array.from(teamsByName.entries()).map(([name, members], index) => ({
-      id: index + 1,
-      name,
-      subscribedCount: members.length,
-      startingDate: '05 Apr 2026',
-      investmentAmount: members[0]?.schemeAmount ?? 500000,
-      tenureMonths: members[0]?.tenureMonths ?? 20
-    }));
-  }
-
-  private cleanText(value: string | null): string {
-    return (value || '').replace(/\s+/g, ' ').trim();
   }
 }

@@ -236,5 +236,37 @@
     "schemeAmount": 500000,
     "schemeName": "NOVA EMPIRE",
     "tenureMonths": 20
+  },
+  {
+    "userId": "USM73370",
+    "name": "Mahaa Swetha Nagarajan",
+    "password": "Rc5A7wTu",
+    "mobile": "9445514961",
+    "email": "mahaavalar@gmail.com",
+    "address": "329/423, near glass factory, therkkukadu, Attur, salem, Tamil Nadu-636102",
+    "location": "Salem",
+    "bankName": "IDBI",
+    "accountNumber": "0211104000224383",
+    "ifscCode": "IBKL0000739",
+    "branch": "Attur",
+    "schemeAmount": 500000,
+    "schemeName": "NOVA EMPIRE",
+    "tenureMonths": 20
+  },
+  {
+    "userId": "USM74533",
+    "name": "Dhanu Sri Nachiyar",
+    "password": "Dc8s42Lx",
+    "mobile": "9489490056",
+    "email": "dhanusrinachiyar@gmail.com",
+    "address": "Plot no :15, Padma nagar , Ammapatti,Othakadai , Madurai-625107",
+    "location": "Madurai",
+    "bankName": "HDFC Kandigai",
+    "accountNumber": "50200090659512",
+    "ifscCode": "HDFC0008964",
+    "branch": "Kandigai",
+    "schemeAmount": 500000,
+    "schemeName": "NOVA EMPIRE",
+    "tenureMonths": 20
   }
 ]

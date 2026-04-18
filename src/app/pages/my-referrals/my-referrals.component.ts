@@ -56,7 +56,7 @@ export class MyReferralsComponent implements OnInit {
   }
 
   private buildReferralRows(currentUser: SafeAppUser, users: AppUser[]): string[][] {
-    const otherUsers = users.filter((user) => user.userId !== currentUser.userId);
+    const otherUsers = users.filter((user) => user.userId !== currentUser.userId && user.schemeName === currentUser.schemeName);
     if (!otherUsers.length) {
       return [];
     }

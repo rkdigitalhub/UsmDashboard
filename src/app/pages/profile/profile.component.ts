@@ -73,8 +73,13 @@ export class ProfileComponent implements OnInit {
       city: currentUser.location,
       mobile: currentUser.mobile ?? '',
       email: currentUser.email ?? '',
-      pincode: currentUser.pincode ?? ''
+      pincode: ''
     };
+
+    const pincodeMatch = (currentUser.address ?? '').match(/(\d{6})(?!.*\d)/);
+    if (pincodeMatch) {
+      this.profile.pincode = pincodeMatch[1];
+    }
 
     this.bankDetails = {
       accountHolder: currentUser.name,

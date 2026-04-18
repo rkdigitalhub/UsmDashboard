@@ -10,11 +10,10 @@ export interface AppUser {
 	mobile?: string;
 	email?: string;
 	address?: string;
-	pincode?: string;
-	location: string;
-	bankName: string;
 	accountNumber?: string;
 	ifscCode?: string;
+	location: string;
+	bankName: string;
 	branch: string;
 	schemeAmount: number;
 	schemeName: string;
