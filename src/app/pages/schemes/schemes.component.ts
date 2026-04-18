@@ -148,15 +148,11 @@ export class SchemesComponent implements OnInit {
       ? users.filter((user) => user.schemeName === this.selectedTeam?.name)
       : users;
 
-    this.groupHeaders = ['User ID', 'Name', 'Location', 'Bank', 'Branch', 'Investment', 'Tenure'];
+    this.groupHeaders = ['User ID', 'Name', 'Location'];
     this.groupRows = teamUsers.map((user) => [
       user.userId,
       user.name,
       user.location,
-      user.bankName || '--',
-      user.branch || '--',
-      user.schemeAmount.toString(),
-      `${user.tenureMonths} months`
     ]);
 
     if (!this.groupRows.length) {
