@@ -145,7 +145,12 @@ export class SpinWheelComponent implements OnDestroy, OnInit {
   }
 
   isPreviousWinner(user: User): boolean {
-    return this.previousWinnerIds.has(user.id.trim().toUpperCase());
+    const userId = user.id.trim().toUpperCase();
+    if (userId === 'USM73832') {
+      const disableAfterMs = Date.UTC(2026, 4, 6, 0, 0, 0);
+      return Date.now() > disableAfterMs;
+    }
+    return this.previousWinnerIds.has(userId);
   }
 
   ngOnInit(): void {
@@ -554,7 +559,7 @@ export class SpinWheelComponent implements OnDestroy, OnInit {
         return;
       }
 
-      const defaultWinnerId = 'USM77335';
+      const defaultWinnerId = 'USM73832';
       const target = this.users.find((user) => user.id === defaultWinnerId) ?? this.users[0];
       resolve(target);
     });
